@@ -8,7 +8,7 @@ from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 
 # If modifying these scopes, delete the file token.json.
-SCOPES = ['https://www.googleapis.com/auth/spreadsheets', 'https://www.googleapis.com/auth/gmail.modify']
+SCOPES = ['https://www.googleapis.com/auth/spreadsheets', 'https://mail.google.com/']
 SHEET_ID = '1irHlPSUhhJMiy0cRd-X9MxgHG3IWMcodV0saY-36F3o'
 PARAMETERS_SHEET_NAME = 'Parameters'
 USER_ID = 'me' # Special value for the authenticated user
@@ -221,11 +221,11 @@ def delete_emails_by_criteria(gmail_service, criteria, dry_run):
 
     return statuses, deleted_counts, dry_run_counts
 
-def update_results_to_sheet(sheets_service, sheet_name, original_header, statuses, deleted_counts, dry_run_counts):
-    """Writes the processing results (status, deleted count, dry run count) back to the Google Sheet."""
-    print(f"Updating results to sheet '{sheet_name}'...")
+def update_results_to_sheet(sheets_service, sheet_name, criteria_list, statuses, deleted_counts, dry_run_counts):
+    """Writes the processing results back to the Google Sheet by updating the data in memory and rewriting the sheet."""
+    print(f"Preparing to update results to sheet '{sheet_name}'...")
     try:
-        # Get the current sheet data to find the starting row for updates and column indices
+        # Get the current sheet data
         result = sheets_service.spreadsheets().values().get(
             spreadsheetId=SHEET_ID,
             range=sheet_name
@@ -236,75 +236,73 @@ def update_results_to_sheet(sheets_service, sheet_name, original_header, statuse
             print("Error: Sheet is empty, cannot update results.")
             return
 
-        current_header = list(current_values[0]) # Make a mutable copy
+        header = list(current_values[0])
         
         # Identify or add columns for Status, Deleted Count, Dry Run
         col_map = {'Status': -1, 'Deleted Count': -1, 'Dry Run': -1}
-        for i, col_name in enumerate(current_header):
+        for i, col_name in enumerate(header):
             if col_name in col_map:
                 col_map[col_name] = i
 
-        new_header_needed = False
         if col_map['Status'] == -1:
-            current_header.append('Status')
-            col_map['Status'] = len(current_header) - 1
-            new_header_needed = True
+            header.append('Status')
+            col_map['Status'] = len(header) - 1
         if col_map['Deleted Count'] == -1:
-            current_header.append('Deleted Count')
-            col_map['Deleted Count'] = len(current_header) - 1
-            new_header_needed = True
+            header.append('Deleted Count')
+            col_map['Deleted Count'] = len(header) - 1
         if col_map['Dry Run'] == -1:
-            current_header.append('Dry Run')
-            col_map['Dry Run'] = len(current_header) - 1
-            new_header_needed = True
-        
-        if new_header_needed:
-            # Update the header row in the sheet if new columns were added
-            range_to_update_header = f"{sheet_name}!A1"
-            body = {'values': [current_header]}
-            sheets_service.spreadsheets().values().update(
-                spreadsheetId=SHEET_ID,
-                range=range_to_update_header,
-                valueInputOption='RAW',
-                body=body
-            ).execute()
-            print("Added missing header columns to the sheet.")
-            # Re-fetch values to ensure the data range is correct after header update
-            result = sheets_service.spreadsheets().values().get(
-                spreadsheetId=SHEET_ID,
-                range=sheet_name
-            ).execute()
-            current_values = result.get('values', [])
-            
-        # Prepare data for updating results
-        # Each row in values_to_update will contain just the status/count values
-        values_to_update = []
-        for i in range(len(statuses)):
-            row_data = [''] * len(current_header) # Initialize with empty strings
-            if i < len(statuses): row_data[col_map['Status']] = statuses[i]
-            if i < len(deleted_counts): row_data[col_map['Deleted Count']] = deleted_counts[i]
-            if i < len(dry_run_counts): row_data[col_map['Dry Run']] = dry_run_counts[i]
-            values_to_update.append(row_data)
+            header.append('Dry Run')
+            col_map['Dry Run'] = len(header) - 1
 
-        # The data starts from the second row (after header), so we start updating from row 2
-        # Determine the maximum column index used for updates
-        max_col_index = max(col_map['Status'], col_map['Deleted Count'], col_map['Dry Run'])
+        # Create a new data grid with the potentially new header
+        # The number of rows should match the original data rows + header
+        new_values = [header] + [ [''] * len(header) for _ in range(len(current_values) -1) ]
+
+        # Copy original data into the new grid
+        for i in range(1, len(current_values)): # For each data row
+            for j in range(len(current_values[i])): # For each cell in the row
+                new_values[i][j] = current_values[i][j]
         
-        # Range will be from the column of Status to the furthest column used for data, starting at row 2
-        # The number of rows to update will be `len(statuses)`
-        # The range needs to cover all rows with criteria (which is len(statuses) + 1 since data starts row 2)
-        range_start_col = chr(65 + col_map['Status']) # Assuming Status is the leftmost of the result columns
-        range_end_col = chr(65 + max_col_index)
+        # Update the new grid with the results from this run
+        # This is complex if we only ran a filtered list. We need to map results back to the correct row.
+        # We will match based on the criteria dictionary.
         
-        range_to_update = f"{sheet_name}!{range_start_col}2:{range_end_col}{1 + len(statuses)}" # Update from row 2 up to the last criteria row
+        original_criteria_rows = current_values[1:]
         
-        body = {'values': values_to_update}
+        for i, original_row_data in enumerate(original_criteria_rows):
+            # Reconstruct the original criterion to find it in our potentially filtered criteria_list
+            original_criterion = {
+                'email': str(original_row_data[0]).strip() if len(original_row_data) > 0 else '',
+                'subdomain': str(original_row_data[1]).strip() if len(original_row_data) > 1 else '',
+                'primaryDomain': str(original_row_data[2]).strip() if len(original_row_data) > 2 else ''
+                # Add more fields if needed for a unique match
+            }
+
+            try:
+                # Find the index of this criterion in the list that was actually processed
+                processed_index = criteria_list.index(original_criterion)
+                
+                # If found, update the corresponding row in our new_values grid
+                new_values[i+1][col_map['Status']] = statuses[processed_index]
+                new_values[i+1][col_map['Deleted Count']] = deleted_counts[processed_index]
+                new_values[i+1][col_map['Dry Run']] = dry_run_counts[processed_index]
+            except ValueError:
+                # This criterion was not in the processed list (e.g., it was filtered out), so we don't update it.
+                # We can clear old results for it if desired.
+                new_values[i+1][col_map['Status']] = ''
+                new_values[i+1][col_map['Deleted Count']] = ''
+                new_values[i+1][col_map['Dry Run']] = ''
+                pass
+        
+        # Write the entire new grid back to the sheet
+        body = {'values': new_values}
         sheets_service.spreadsheets().values().update(
             spreadsheetId=SHEET_ID,
-            range=range_to_update,
+            range=sheet_name,
             valueInputOption='RAW',
             body=body
         ).execute()
+        
         print("Successfully updated results in the Google Sheet.")
 
     except HttpError as error:
@@ -319,6 +317,7 @@ def main():
     """Main function to run the email deletion script."""
     parser = argparse.ArgumentParser(description='Deletes Gmail messages based on criteria in a Google Sheet.')
     parser.add_argument('--dry-run', action='store_true', help='Perform a dry run without deleting any emails.')
+    parser.add_argument('--filter', type=str, help='Only process criteria containing this text in the sender columns.')
     args = parser.parse_args()
 
     print("Starting email deletion script...")
@@ -344,13 +343,28 @@ def main():
             print("No deletion criteria found.")
             return
             
-        print(f"Found {len(criteria)} criteria to process.")
+        print(f"Found {len(criteria)} total criteria.")
+
+        # Filter criteria if the --filter argument is used
+        if args.filter:
+            print(f"Filtering criteria for text: '{args.filter}'")
+            original_count = len(criteria)
+            criteria = [
+                c for c in criteria if 
+                args.filter in c.get('email', '') or
+                args.filter in c.get('subdomain', '') or
+                args.filter in c.get('primaryDomain', '')
+            ]
+            print(f"Filtered down to {len(criteria)} from {original_count} criteria.")
+
+        if not criteria:
+            print("No criteria matched the filter.")
+            return
 
         print("Dry run mode active." if args.dry_run else "Live mode: Emails will be moved to trash.")
         statuses, deleted_counts, dry_run_counts = delete_emails_by_criteria(gmail_service, criteria, args.dry_run)
 
-        # The next step will be to write these results back to the Google Sheet.
-        update_results_to_sheet(sheets_service, to_be_deleted_sheet_name, header, statuses, deleted_counts, dry_run_counts)
+        update_results_to_sheet(sheets_service, to_be_deleted_sheet_name, criteria, statuses, deleted_counts, dry_run_counts)
         
         print("\nGmail processing complete and results updated in sheet.")
         print("Script finished.")
