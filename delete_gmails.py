@@ -137,14 +137,10 @@ def delete_emails_by_criteria(gmail_service, criteria, dry_run):
     for i, criterion in enumerate(criteria):
         query = build_query(criterion)
         if not query or query.strip() == 'is:unread': # If query is only 'is:unread' or empty, skip.
-            print(f"Skipping criterion {i+1}: Invalid or too broad query generated: '{query}'")
             statuses.append('Failed: Invalid query')
             deleted_counts.append(0)
             dry_run_counts.append(0)
-            time.sleep(1) # Pacing even for skipped criteria
             continue
-        
-        print(f"Processing criterion {i+1}: Query: '{query}'")
         
         current_retries = 0
         current_delay = INITIAL_RETRY_DELAY
@@ -165,11 +161,12 @@ def delete_emails_by_criteria(gmail_service, criteria, dry_run):
                     response = gmail_service.users().messages().list(userId=USER_ID, q=query, pageToken=page_token).execute()
                     messages = response.get('messages', [])
                 else:
-                    # Add messages from the last page
                     for message in messages:
                         message_ids.append(message['id'])
 
                 if message_ids:
+                    # This block is now only entered if matches are found.
+                    print(f"Processing criterion {i+1}: Query: '{query}'")
                     print(f"  Found {len(message_ids)} matching emails.")
                     if not dry_run:
                         # Batch delete messages
@@ -188,7 +185,7 @@ def delete_emails_by_criteria(gmail_service, criteria, dry_run):
                     statuses.append('No matching emails found')
                     deleted_counts.append(0)
                     dry_run_counts.append(0)
-                    print("  No matching emails found.")
+                    # The "No matching emails found" print statement is removed for quieter output.
                 success = True
                 break # Break out of retry loop on success
 
@@ -204,25 +201,118 @@ def delete_emails_by_criteria(gmail_service, criteria, dry_run):
                     statuses.append(error_message)
                     deleted_counts.append(0)
                     dry_run_counts.append(0)
-                    break # Break out of retry loop for other HTTP errors
+                    break 
             except Exception as e:
                 error_message = f'Failed: An unexpected error occurred: {e}'
                 print(f"  {error_message}")
                 statuses.append(error_message)
                 deleted_counts.append(0)
                 dry_run_counts.append(0)
-                break # Break out of retry loop for other unexpected errors
+                break
         
-        if not success: # If loop completed without success after retries
+        if not success: 
             error_message = f'Failed: Retries exhausted for query: {query}'
             print(f"  {error_message}")
             statuses.append(error_message)
             deleted_counts.append(0)
             dry_run_counts.append(0)
         
-        time.sleep(1) # Pacing: Wait 1 second before processing the next criterion
+        time.sleep(1)
 
     return statuses, deleted_counts, dry_run_counts
+
+def update_results_to_sheet(sheets_service, sheet_name, original_header, statuses, deleted_counts, dry_run_counts):
+    """Writes the processing results (status, deleted count, dry run count) back to the Google Sheet."""
+    print(f"Updating results to sheet '{sheet_name}'...")
+    try:
+        # Get the current sheet data to find the starting row for updates and column indices
+        result = sheets_service.spreadsheets().values().get(
+            spreadsheetId=SHEET_ID,
+            range=sheet_name
+        ).execute()
+        current_values = result.get('values', [])
+        
+        if not current_values:
+            print("Error: Sheet is empty, cannot update results.")
+            return
+
+        current_header = list(current_values[0]) # Make a mutable copy
+        
+        # Identify or add columns for Status, Deleted Count, Dry Run
+        col_map = {'Status': -1, 'Deleted Count': -1, 'Dry Run': -1}
+        for i, col_name in enumerate(current_header):
+            if col_name in col_map:
+                col_map[col_name] = i
+
+        new_header_needed = False
+        if col_map['Status'] == -1:
+            current_header.append('Status')
+            col_map['Status'] = len(current_header) - 1
+            new_header_needed = True
+        if col_map['Deleted Count'] == -1:
+            current_header.append('Deleted Count')
+            col_map['Deleted Count'] = len(current_header) - 1
+            new_header_needed = True
+        if col_map['Dry Run'] == -1:
+            current_header.append('Dry Run')
+            col_map['Dry Run'] = len(current_header) - 1
+            new_header_needed = True
+        
+        if new_header_needed:
+            # Update the header row in the sheet if new columns were added
+            range_to_update_header = f"{sheet_name}!A1"
+            body = {'values': [current_header]}
+            sheets_service.spreadsheets().values().update(
+                spreadsheetId=SHEET_ID,
+                range=range_to_update_header,
+                valueInputOption='RAW',
+                body=body
+            ).execute()
+            print("Added missing header columns to the sheet.")
+            # Re-fetch values to ensure the data range is correct after header update
+            result = sheets_service.spreadsheets().values().get(
+                spreadsheetId=SHEET_ID,
+                range=sheet_name
+            ).execute()
+            current_values = result.get('values', [])
+            
+        # Prepare data for updating results
+        # Each row in values_to_update will contain just the status/count values
+        values_to_update = []
+        for i in range(len(statuses)):
+            row_data = [''] * len(current_header) # Initialize with empty strings
+            if i < len(statuses): row_data[col_map['Status']] = statuses[i]
+            if i < len(deleted_counts): row_data[col_map['Deleted Count']] = deleted_counts[i]
+            if i < len(dry_run_counts): row_data[col_map['Dry Run']] = dry_run_counts[i]
+            values_to_update.append(row_data)
+
+        # The data starts from the second row (after header), so we start updating from row 2
+        # Determine the maximum column index used for updates
+        max_col_index = max(col_map['Status'], col_map['Deleted Count'], col_map['Dry Run'])
+        
+        # Range will be from the column of Status to the furthest column used for data, starting at row 2
+        # The number of rows to update will be `len(statuses)`
+        # The range needs to cover all rows with criteria (which is len(statuses) + 1 since data starts row 2)
+        range_start_col = chr(65 + col_map['Status']) # Assuming Status is the leftmost of the result columns
+        range_end_col = chr(65 + max_col_index)
+        
+        range_to_update = f"{sheet_name}!{range_start_col}2:{range_end_col}{1 + len(statuses)}" # Update from row 2 up to the last criteria row
+        
+        body = {'values': values_to_update}
+        sheets_service.spreadsheets().values().update(
+            spreadsheetId=SHEET_ID,
+            range=range_to_update,
+            valueInputOption='RAW',
+            body=body
+        ).execute()
+        print("Successfully updated results in the Google Sheet.")
+
+    except HttpError as error:
+        print(f'An API error occurred while updating results to sheet: {error}')
+        raise
+    except Exception as e:
+        print(f'An unexpected error occurred while updating results to sheet: {e}')
+        raise
 
 
 def main():
@@ -260,8 +350,10 @@ def main():
         statuses, deleted_counts, dry_run_counts = delete_emails_by_criteria(gmail_service, criteria, args.dry_run)
 
         # The next step will be to write these results back to the Google Sheet.
-        print("\nGmail processing complete.")
-        print("Script finished. (Writing results to sheet to be implemented)")
+        update_results_to_sheet(sheets_service, to_be_deleted_sheet_name, header, statuses, deleted_counts, dry_run_counts)
+        
+        print("\nGmail processing complete and results updated in sheet.")
+        print("Script finished.")
 
     except HttpError as error:
         print(f'An API error occurred: {error}')
