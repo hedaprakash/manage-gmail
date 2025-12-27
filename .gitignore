@@ -1,0 +1,17 @@
+# Credentials and secrets
+credentials.json
+token.json
+
+# Virtual environment
+venv/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
