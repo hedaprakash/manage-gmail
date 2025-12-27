@@ -1,0 +1,3332 @@
+[
+  {
+    "email": "",
+    "subdomain": "pge@email.opower.com",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "email@market.temuemail.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "",
+    "subdomain": "",
+    "primaryDomain": "seekingalpha.com",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "",
+    "subdomain": "",
+    "primaryDomain": "nfl.com",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "",
+    "subdomain": "",
+    "primaryDomain": "creditkarma.com",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "",
+    "subdomain": "info15.citi.com",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "",
+    "subdomain": "",
+    "primaryDomain": "magicbricks.com",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "",
+    "subdomain": "",
+    "primaryDomain": "discoursemail.com",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "",
+    "subdomain": "",
+    "primaryDomain": "yelp.com",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "",
+    "subdomain": "",
+    "primaryDomain": "nobroker.in",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "",
+    "subdomain": "",
+    "primaryDomain": "meetup.com",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "",
+    "subdomain": "",
+    "primaryDomain": "keymate.ai",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "",
+    "subdomain": "em.pge.com",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "",
+    "subdomain": "",
+    "primaryDomain": "digitaltrends.com",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "",
+    "subdomain": "",
+    "primaryDomain": "jobscan.co",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "",
+    "subdomain": "",
+    "primaryDomain": "releasemyad.com",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "",
+    "subdomain": "",
+    "primaryDomain": "em1.turbotax.intuit.com",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "",
+    "subdomain": "notes@e.pnc.com",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "jobalerts-noreply@linkedin.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "editors-noreply@linkedin.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "UnitedAirlines@enews.united.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "info@flyingreturns.airindia.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "googleaistudio-noreply@google.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "search-labs-noreply@google.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "news-noreply@google.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "google-maps-noreply@google.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "bard-noreply@google.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "goosdfsdfglefi-noreply@google.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "googlefi-noreply@google.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": "order"
+  },
+  {
+    "email": "googlestore-noreply@google.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "noreply-travel@google.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "location-history-noreply@google.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "",
+    "subdomain": "",
+    "primaryDomain": "pge.com",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": "Payment"
+  },
+  {
+    "email": "",
+    "subdomain": "info@e.monterra.org",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "xfinity@emails.xfinity.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "energy@tesla.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "newslettter@tesla.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "costco@reviews.costco.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "",
+    "subdomain": "",
+    "primaryDomain": "wellsfargo.com",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "",
+    "subdomain": "",
+    "primaryDomain": "vidyo.ai",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "",
+    "subdomain": "",
+    "primaryDomain": "ebay.com",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": "Order"
+  },
+  {
+    "email": "",
+    "subdomain": "",
+    "primaryDomain": "shutterfly.com",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "",
+    "subdomain": "",
+    "primaryDomain": "gravitywrite.com",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "",
+    "subdomain": "",
+    "primaryDomain": "builder.io",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "",
+    "subdomain": "",
+    "primaryDomain": "discord.com",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "",
+    "subdomain": "",
+    "primaryDomain": "arkinvest.com",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "",
+    "subdomain": "",
+    "primaryDomain": "x.com",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "",
+    "subdomain": "",
+    "primaryDomain": "topcashback.com",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": "Transaction"
+  },
+  {
+    "email": "",
+    "subdomain": "",
+    "primaryDomain": "grafana.com",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "poulsengrouprealestate@gmail.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "",
+    "subdomain": "",
+    "primaryDomain": "govdelivery.com",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "",
+    "subdomain": "",
+    "primaryDomain": "drstephaniebridwell.com",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "",
+    "subdomain": "",
+    "primaryDomain": "sevenrooms.com",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "",
+    "subdomain": "",
+    "primaryDomain": "capcut.com",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": "order"
+  },
+  {
+    "email": "",
+    "subdomain": "",
+    "primaryDomain": "bestbuy.com",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": "Order"
+  },
+  {
+    "email": "",
+    "subdomain": "",
+    "primaryDomain": "meetgeek.ai",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "1105info.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "absolute-snow.co.uk",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "activeandfitdirect.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "admin@vagaro.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "alerts.comcast.net",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "alertsp.chase.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "aliexpress.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "amazon.in",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "AmericanExpress@welcome.americanexpress.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "analytics-noreply@google.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "applefitnessplus@insideapple.apple.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "appletv@insideapple.apple.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "arizent.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "arkfunds.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "ark-funds.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "awards@mp1.tripadvisor.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "aws-marketing-email-replies@amazon.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "azure@email.microsoft.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "bank.em.discover.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "bing.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "blink@hello.blink.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "builtinaustin.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "businessprofile-noreply@google.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "c21selectgroup.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "Card@info17.citi.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "careerbuilder.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "cbintouch.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "chase@email.chase.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "chrispessy.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "chugh.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "citysportsfitness@e.citysportsfitness.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "client@notifications.tdameritrade.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "cnbc.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "contact@leonardo.ai",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "contact@sqlmaestros.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "contact@zerorezcolumbia.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "content-magazine.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "cozymaid.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "craigslisasdasdt.org",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "customers@builder.io",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "dice.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "digitalocean.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "disqus.net",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "dominos.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "donotreply@appfolio.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "donotreply@interactivebrokers.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "drive-shares-dm-noreply@google.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "DrsHallSzetoOptometry@demandforced3.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "dvcapp.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "e.chase.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "e.epicpass.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "e.etradefinancial.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "economictimes.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "economictimesnews.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "em.intermiles.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "email.ahswarranty.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "email.bedbathandbeyond.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "e-mail.columbia.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "email.informeddelivery.usps.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "email.microsoft.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "email.peacocktv.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "email.rh.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "email.usbank.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "email-marriott.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "emeraldx.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "equitymaster.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "etrade.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "eventbrite.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "expedia.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "expediamail.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "flipkart.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "fool.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "foolsubs.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "freelancer.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "from@communications.tdameritrade.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "garmin.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "getinvolved@atthecrossroads.org",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "github.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "gitlab@mg.gitlab.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "glassdoor.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "gmx.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "goldstar.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "googleassistant-noreply@google.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "googlechromecast-noreply@google.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "googlepay-noreply@google.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "googleplay-noreply@google.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "googlestore-noreply@google.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "groupon.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "groupupdates@facebookmail.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "gurufocus.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "gurusofdance@gmail.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "hallcpallc.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "handy.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "hayneedle.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "hello@crexi.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "hello@email.hays.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "hello@emails.fleetfeet.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "hello@mail-2.hive.co",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "hello@mailing.aiprm.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "hello@send.vidiq.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "hello@tailscale.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "HomeDepotCustomerCare",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "homesnap.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "hotpads.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "hsabank.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "hulumail.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "hyundaiauto.in",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "icicisecurities.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "iheart.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "indeed.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "indiatimes.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "info.remitly.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "info@anthonypresents.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "info@dmpmusicgroup.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "info@e.smcu.org",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "info@emporiaenergy.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "info@ionos.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "info@mail.tdameritrade.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "info@marketing.moviepass.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "info@milesformigraine.org",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "info@myaccount.ring.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "info@resolve.io",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "info@yourasianconnection.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "info4.citi.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "info6.citi.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "informeddelivery.usps.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "insidermonkey.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "investorshub.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "iracing.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "itp.net",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "itprotoday.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "itunes.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "jeff.rhoades@conciergeauctions.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "JobRecommendations@sites.careerbuilder.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "katie@milesformigraine.org",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "kimble@kimblegroup.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "kodekloud.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "lenovo@wknd.email-lenovo.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "lensa.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "levi.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "lge.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "linkedin.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "livingsocial.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "loans@thecapsource.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "lovekumar@usgrpinc.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "lowes.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "m.email-fordpassrewards.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "magwc.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "mail.carvana.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "mail.disneyplus.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "mail.fidelity.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "mail.tdameritrade.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "mailchimpapp.net",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "manasa@netvisionresources.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "manish.kk@usgrpinc.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "mansi.j@usgrpinc.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "marketing@grandsierraresort.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "marketing@gurusofdance.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "matt@vidyo.ai",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "matterport.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "mcinfo@ups.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "medallia.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "medium.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "meetup.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "member.americanexpress.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "membership@oaklandzoo.org",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "microsoft.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "miltongranger.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "mint.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "mint.intuit.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "modelmayhem",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "moneycontrol.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "mongodbteam@mail1.mongodb.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "morganstanley.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "morningsave.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "morningstar.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "mpug.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "namecheap.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "naor.giat@guidde.co",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "netflix.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "news.united.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "news@mail.maxfashion.in",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "newsletter@tesla.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "newyorktimes.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "nextdoor.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "nike.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "no.reply.alerts@chase.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "no_reply@heygen.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "nonstopbhangra@gmail.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "no-reply@canva.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "no-reply@d-id.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "noreply@email.influitive.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "noreply@epiqpay.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "noreply@google.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "noreply@keymate.ai",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "no-reply@lyftmail.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "no-reply@messaging.peacocktv.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "noreply@messaging.squareup.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "noreply@propertyware.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "no-reply@sender.skyscanner.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "noreply@tm.openai.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "no-reply@ussquash.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "noreply-ibkrcampus@interactivebrokers.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "noreply-maps-timeline@google.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "noreply-photos@google.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "noreply-travel@google.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "noresponse@interactivebrokers.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "notifications@chargepoint.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "nsdl.co.in",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "nsdl.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "nyandcompany.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "nytimes.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "o.delta.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "onedrive.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "ozgur@keymate.ai",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "payback.in",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "PayPal@emails.paypal.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "perfume.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "pioneer@notification-naviextras.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "pme@10times.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "product-noreply@google.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "promo.newegg.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "prpsjeans.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "questdiagnostics.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "quora.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "raviodr99@aol.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "realscout.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "redditmail.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "redfin.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "reelgood.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "reply@turbotenant.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "RMG@1105newsletters.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "rxorder.walgreens.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "sales@parts-stocked.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "sbcglobal.net",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "SeasonPass@epicpassmail.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "security@facebookmail.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "selina.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "service@iciciprulife.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "service@mail2.zocdoc.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "service@mail5.zocdoc.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "service@paypal.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "services.discover.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "services@custcomm.icicibank.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "sfciti.org",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "shelly.cloud",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "shift.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "shopmoment.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "shoppersstop.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "simplywall.st",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "sqlservercentral.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "sqlskills.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "stadia-noreply@google.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "stocktwits.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "streamsets.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "success@portainer.io",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "support@guidde.co",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "support@muzata.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "swadesfest@gmail.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "swiggy.in",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "target.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "ThankYouRewards@thankyou.citi.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "thekeyword-noreply@google.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "thekrazycouponlady.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "thepixelconnection.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "thepopularinvestor",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "therealestatecpa.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "tickets@explorehidden.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "tigerdirect.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "tikr.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "timeoutdubai.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "tipranks.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "tripadvisor.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "tripit.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "TruStage@email.trustage.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "uber.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "ubereats",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "united.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "update@e.nabshow.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "viator.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "virtualevents@cio.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "walgreens.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "wavebroadband.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "way-portal@asuswebstorage.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "wellsfargoemail.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "wondertechlabs.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "workspace-noreply@google.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "yourfriends@mygoodtape.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "zen-makemytrip.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "zillow.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "ziprecruiter.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "zomato.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "zyngamail.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "",
+    "subdomain": "sales.temuemail.com",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "insights@99acres.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "",
+    "subdomain": "",
+    "primaryDomain": "interactivebrokers-email.com",
+    "subject": "Newsletter",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "",
+    "subdomain": "",
+    "primaryDomain": "hivebritecommunity.com",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "orderstatus@costco.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": "Order"
+  },
+  {
+    "email": "",
+    "subdomain": "",
+    "primaryDomain": "nextdoor.com",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "",
+    "subdomain": "",
+    "primaryDomain": "ahswarranty.com",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "",
+    "subdomain": "",
+    "primaryDomain": "circlemedical.co",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "",
+    "subdomain": "",
+    "primaryDomain": "getmunch.com",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "",
+    "subdomain": "",
+    "primaryDomain": "builtin.com",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "",
+    "subdomain": "",
+    "primaryDomain": "rate.com",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "News@insideapple.apple.com",
+    "subdomain": "",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "",
+    "subdomain": "",
+    "primaryDomain": "nextdoor.com",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "",
+    "subdomain": "",
+    "primaryDomain": "Phillip@rate.com",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "",
+    "subdomain": "ecampaigns.dell.com",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "",
+    "subdomain": "e.mail.realtor.com",
+    "primaryDomain": "",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "",
+    "subdomain": "",
+    "primaryDomain": "circlemedical.co",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "",
+    "subdomain": "",
+    "primaryDomain": "getmunch.com",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "",
+    "subdomain": "",
+    "primaryDomain": "builtin.com",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "",
+    "subdomain": "",
+    "primaryDomain": "smartrecruiters.com",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "",
+    "subdomain": "",
+    "primaryDomain": "moen.com",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  }
+]
