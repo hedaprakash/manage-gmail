@@ -149,6 +149,7 @@ def delete_emails_by_criteria(gmail_service, criteria, dry_run):
         while current_retries < RETRY_ATTEMPTS:
             try:
                 # Search for messages
+                print(f"Executing query: '{query}'")
                 response = gmail_service.users().messages().list(userId=USER_ID, q=query).execute()
                 messages = response.get('messages', [])
                 
@@ -164,10 +165,10 @@ def delete_emails_by_criteria(gmail_service, criteria, dry_run):
                     for message in messages:
                         message_ids.append(message['id'])
 
+                print(f"  Found {len(message_ids)} matching emails.")
                 if message_ids:
                     # This block is now only entered if matches are found.
                     print(f"Processing criterion {i+1}: Query: '{query}'")
-                    print(f"  Found {len(message_ids)} matching emails.")
                     if not dry_run:
                         # Batch delete messages
                         batch_delete_request = {'ids': message_ids}
@@ -349,11 +350,12 @@ def main():
         if args.filter:
             print(f"Filtering criteria for text: '{args.filter}'")
             original_count = len(criteria)
+            filter_lower = args.filter.lower()
             criteria = [
-                c for c in criteria if 
-                args.filter in c.get('email', '') or
-                args.filter in c.get('subdomain', '') or
-                args.filter in c.get('primaryDomain', '')
+                c for c in criteria if
+                filter_lower in c.get('email', '').lower() or
+                filter_lower in c.get('subdomain', '').lower() or
+                filter_lower in c.get('primaryDomain', '').lower()
             ]
             print(f"Filtered down to {len(criteria)} from {original_count} criteria.")
 
