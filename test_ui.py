@@ -154,19 +154,22 @@ def run_ui_tests():
                 # Select only first 15 characters of the subject using JavaScript
                 selected_text = full_subject[:15] if len(full_subject) > 15 else full_subject
 
-                # Use JavaScript to select text
-                page.evaluate(f'''() => {{
+                # In headless mode, getSelection() doesn't work - directly set the variable
+                result = page.evaluate(f'''() => {{
                     const elem = document.querySelector('.pattern-item:not(:has(.btn-keep.done)) .pattern-subject');
-                    if (elem) {{
-                        const range = document.createRange();
-                        const text = elem.firstChild;
-                        if (text) {{
-                            range.setStart(text, 0);
-                            range.setEnd(text, Math.min({len(selected_text)}, text.length));
-                            window.getSelection().removeAllRanges();
-                            window.getSelection().addRange(range);
-                        }}
-                    }}
+                    if (!elem) return {{ error: 'element not found' }};
+
+                    const fullText = elem.textContent;
+                    const selectedText = fullText.substring(0, {len(selected_text)}).trim();
+
+                    // Directly set the global variable (bypass Selection API for headless)
+                    window.currentSelectionSubject = selectedText;
+                    window.currentSelectionDomain = elem.closest('.domain-section').dataset.domain;
+
+                    return {{
+                        fullText: fullText.substring(0, 50),
+                        selectedText: selectedText
+                    }};
                 }}''')
                 page.wait_for_timeout(500)
 

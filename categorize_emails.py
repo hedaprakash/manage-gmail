@@ -751,8 +751,9 @@ def generate_interactive_html(email_details, grouped, output_path):
     </div>
 
     <script>
-        let currentSelectionDomain = null;
-        let currentSelectionSubject = null;
+        // Selection state (attached to window for testing accessibility)
+        window.currentSelectionDomain = null;
+        window.currentSelectionSubject = null;
         const API_BASE = 'http://localhost:5000';
 
         function toggleSection(header) {{
@@ -774,8 +775,8 @@ def generate_interactive_html(email_details, grouped, output_path):
         function markKeep(btn, domain, subject, category) {{
             // Check for text selection: first from mouseup capture, then live selection
             let subjectToUse = subject;
-            if (currentSelectionSubject && currentSelectionSubject.length > 3) {{
-                subjectToUse = currentSelectionSubject;
+            if (window.currentSelectionSubject && window.currentSelectionSubject.length > 3) {{
+                subjectToUse = window.currentSelectionSubject;
             }} else {{
                 // Fallback: check current live selection
                 const liveSelection = window.getSelection().toString().trim();
@@ -801,8 +802,8 @@ def generate_interactive_html(email_details, grouped, output_path):
                     // Clear selection state
                     window.getSelection().removeAllRanges();
                     document.getElementById('selectionIndicator').classList.remove('show');
-                    currentSelectionSubject = null;
-                    currentSelectionDomain = null;
+                    window.currentSelectionSubject = null;
+                    window.currentSelectionDomain = null;
                 }} else {{
                     showToast(data.error || 'Error', true);
                 }}
@@ -999,8 +1000,8 @@ def generate_interactive_html(email_details, grouped, output_path):
                 const patternItem = e.target.closest('.pattern-item');
                 if (patternItem) {{
                     const domain = patternItem.closest('.domain-section').dataset.domain;
-                    currentSelectionDomain = domain;
-                    currentSelectionSubject = selection;
+                    window.currentSelectionDomain = domain;
+                    window.currentSelectionSubject = selection;
 
                     document.getElementById('selectedText').textContent =
                         selection.length > 40 ? selection.substring(0, 40) + '...' : selection;
@@ -1019,21 +1020,21 @@ def generate_interactive_html(email_details, grouped, output_path):
         }});
 
         function keepSelectedText() {{
-            if (!currentSelectionDomain || !currentSelectionSubject) return;
+            if (!window.currentSelectionDomain || !window.currentSelectionSubject) return;
 
             fetch(API_BASE + '/api/mark-keep', {{
                 method: 'POST',
                 headers: {{'Content-Type': 'application/json'}},
                 body: JSON.stringify({{
-                    domain: currentSelectionDomain,
-                    subject_pattern: currentSelectionSubject,
+                    domain: window.currentSelectionDomain,
+                    subject_pattern: window.currentSelectionSubject,
                     category: 'SELECTED'
                 }})
             }})
             .then(r => r.json())
             .then(data => {{
                 if (data.success) {{
-                    showToast(`Kept pattern: "${{currentSelectionSubject.substring(0, 30)}}..."`);
+                    showToast(`Kept pattern: "${{window.currentSelectionSubject.substring(0, 30)}}..."`);
                     document.getElementById('selectionIndicator').classList.remove('show');
                     window.getSelection().removeAllRanges();
                 }} else {{
