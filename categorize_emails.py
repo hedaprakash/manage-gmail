@@ -772,10 +772,22 @@ def generate_interactive_html(email_details, grouped, output_path):
         }}
 
         function markKeep(btn, domain, subject, category) {{
+            // Check for text selection: first from mouseup capture, then live selection
+            let subjectToUse = subject;
+            if (currentSelectionSubject && currentSelectionSubject.length > 3) {{
+                subjectToUse = currentSelectionSubject;
+            }} else {{
+                // Fallback: check current live selection
+                const liveSelection = window.getSelection().toString().trim();
+                if (liveSelection.length > 3) {{
+                    subjectToUse = liveSelection;
+                }}
+            }}
+
             fetch(API_BASE + '/api/mark-keep', {{
                 method: 'POST',
                 headers: {{'Content-Type': 'application/json'}},
-                body: JSON.stringify({{domain, subject_pattern: subject, category}})
+                body: JSON.stringify({{domain, subject_pattern: subjectToUse, category}})
             }})
             .then(r => r.json())
             .then(data => {{
@@ -783,7 +795,14 @@ def generate_interactive_html(email_details, grouped, output_path):
                     btn.classList.add('done');
                     btn.textContent = '✓ Kept';
                     btn.disabled = true;
-                    showToast('Marked as keep');
+                    // Show what was saved
+                    const savedText = subjectToUse.length > 30 ? subjectToUse.substring(0, 30) + '...' : subjectToUse;
+                    showToast(`Kept: "${{savedText}}"`);
+                    // Clear selection state
+                    window.getSelection().removeAllRanges();
+                    document.getElementById('selectionIndicator').classList.remove('show');
+                    currentSelectionSubject = null;
+                    currentSelectionDomain = null;
                 }} else {{
                     showToast(data.error || 'Error', true);
                 }}
