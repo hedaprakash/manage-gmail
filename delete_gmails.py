@@ -107,9 +107,9 @@ def delete_emails_by_criteria(logger, gmail_service, criteria, dry_run, debug=Fa
                 if message_ids:
                     logger.info(f"Processing criterion {i+1}: Query: '{query}'")
                     if not dry_run:
-                        # Batch delete messages
-                        batch_delete_request = {'ids': message_ids}
-                        gmail_service.users().messages().batchDelete(userId=USER_ID, body=batch_delete_request).execute()
+                        # Trash messages one by one
+                        for message_id in message_ids:
+                            gmail_service.users().messages().trash(userId=USER_ID, id=message_id).execute()
                         logger.info(f"  Successfully moved {len(message_ids)} emails to trash.")
                     else:
                         logger.info(f"  Dry run: Would move {len(message_ids)} emails to trash.")

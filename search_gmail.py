@@ -41,26 +41,47 @@ def count_emails(service, query):
 
 def main():
     """Searches for emails from a specific sender and prints the read/unread counts."""
-    parser = argparse.ArgumentParser(description='Counts read and unread emails from a specific sender.')
-    parser.add_argument('sender', type=str, help='The sender email or domain to search for (e.g., "USPS.com").')
+    parser = argparse.ArgumentParser(description='Counts read and unread emails from a specific sender or in specific categories.')
+    parser.add_argument('sender', type=str, nargs='?', default=None, help='The sender email or domain to search for (e.g., "USPS.com").')
+    parser.add_argument('--promotions', action='store_true', help='Count unread promotional emails.')
+    parser.add_argument('--social', action='store_true', help='Count unread social emails.')
+    parser.add_argument('--forums', action='store_true', help='Count unread forum emails.')
     args = parser.parse_args()
 
     creds = get_credentials()
     try:
         gmail_service = build('gmail', 'v1', credentials=creds)
 
-        sender = args.sender
-        print(f"Searching for emails from: {sender}")
+        if args.promotions:
+            print("Searching for promotional emails...")
+            promo_query = "category:promotions is:unread"
+            promo_count = count_emails(gmail_service, promo_query)
+            print(f"Unread promotional emails: {promo_count}")
+        elif args.social:
+            print("Searching for social emails...")
+            social_query = "category:social is:unread"
+            social_count = count_emails(gmail_service, social_query)
+            print(f"Unread social emails: {social_count}")
+        elif args.forums:
+            print("Searching for forum emails...")
+            forums_query = "category:forums is:unread"
+            forums_count = count_emails(gmail_service, forums_query)
+            print(f"Unread forum emails: {forums_count}")
+        elif args.sender:
+            sender = args.sender
+            print(f"Searching for emails from: {sender}")
 
-        # Count unread emails
-        unread_query = f"from:{sender} is:unread"
-        unread_count = count_emails(gmail_service, unread_query)
-        print(f"Unread emails: {unread_count}")
+            # Count unread emails
+            unread_query = f"from:{sender} is:unread"
+            unread_count = count_emails(gmail_service, unread_query)
+            print(f"Unread emails: {unread_count}")
 
-        # Count read emails
-        read_query = f"from:{sender} is:read"
-        read_count = count_emails(gmail_service, read_query)
-        print(f"Read emails: {read_count}")
+            # Count read emails
+            read_query = f"from:{sender} is:read"
+            read_count = count_emails(gmail_service, read_query)
+            print(f"Read emails: {read_count}")
+        else:
+            parser.print_help()
 
     except HttpError as error:
         print(f'An API error occurred: {error}')
