@@ -66,7 +66,7 @@ def build_query(criterion):
     return " ".join(query_parts).strip()
 
 
-def delete_emails_by_criteria(logger, gmail_service, criteria, dry_run, debug=False):
+def delete_emails_by_criteria(logger, gmail_service, criteria, dry_run):
     """
     Searches for and deletes (or dry-runs deletion of) emails based on the provided criteria.
     Logs the results.
@@ -83,9 +83,8 @@ def delete_emails_by_criteria(logger, gmail_service, criteria, dry_run, debug=Fa
         
         while current_retries < RETRY_ATTEMPTS:
             try:
-                # Search for messages
-                if debug:
-                    logger.info(f"Executing query: '{query}'")
+                # Search for messages - log query to file only (debug level)
+                logger.debug(f"Executing query: '{query}'")
                 response = gmail_service.users().messages().list(userId=USER_ID, q=query).execute()
                 messages = response.get('messages', [])
                 
@@ -102,10 +101,11 @@ def delete_emails_by_criteria(logger, gmail_service, criteria, dry_run, debug=Fa
                         for message in messages:
                             message_ids.append(message['id'])
                 
-                if debug or len(message_ids) > 0:
-                    logger.info(f"  Found {len(message_ids)} matching emails.")
+                # Log zero matches to file only, matches > 0 to console
+                if len(message_ids) == 0:
+                    logger.debug(f"  Found 0 matching emails for query: '{query}'")
                 if message_ids:
-                    logger.info(f"Processing criterion {i+1}: Query: '{query}'")
+                    logger.info(f"Found {len(message_ids)} emails - Query: '{query}'")
                     if not dry_run:
                         # Trash messages one by one
                         for message_id in message_ids:
@@ -143,20 +143,27 @@ def main():
         os.makedirs('logs')
     
     log_filename = f"logs/delete_gmails_{time.strftime('%Y-%m-%d_%H-%M-%S')}.log"
-    logging.basicConfig(
-        level=logging.INFO,
-        format='%(asctime)s - %(levelname)s - %(message)s',
-        handlers=[
-            logging.FileHandler(log_filename),
-            logging.StreamHandler()
-        ]
-    )
+
+    # Create logger
     logger = logging.getLogger()
+    logger.setLevel(logging.DEBUG)
+
+    # File handler - logs everything including zero matches (DEBUG level)
+    file_handler = logging.FileHandler(log_filename)
+    file_handler.setLevel(logging.DEBUG)
+    file_handler.setFormatter(logging.Formatter('%(asctime)s - %(levelname)s - %(message)s'))
+
+    # Console handler - only logs matches and important info (INFO level)
+    console_handler = logging.StreamHandler()
+    console_handler.setLevel(logging.INFO)
+    console_handler.setFormatter(logging.Formatter('%(asctime)s - %(levelname)s - %(message)s'))
+
+    logger.addHandler(file_handler)
+    logger.addHandler(console_handler)
 
     parser = argparse.ArgumentParser(description='Deletes Gmail messages based on criteria in a local JSON file.')
     parser.add_argument('--dry-run', action='store_true', help='Perform a dry run without deleting any emails.')
     parser.add_argument('--filter', type=str, help='Only process criteria containing this text in the sender columns.')
-    parser.add_argument('--debug', action='store_true', help='Enable debug logging.')
     args = parser.parse_args()
 
     logger.info("Starting email deletion script...")
@@ -192,7 +199,7 @@ def main():
             return
 
         logger.info("Dry run mode active." if args.dry_run else "Live mode: Emails will be moved to trash.")
-        delete_emails_by_criteria(logger, gmail_service, criteria, args.dry_run, args.debug)
+        delete_emails_by_criteria(logger, gmail_service, criteria, args.dry_run)
         
         logger.info("\nGmail processing complete.")
         logger.info("Script finished.")
