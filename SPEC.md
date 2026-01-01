@@ -387,6 +387,7 @@ Options:
 | `/api/mark-keep` | POST | Remove from delete + add to keep |
 | `/api/stats` | GET | Get criteria statistics |
 | `/api/undo-last` | POST | Remove last added criteria |
+| `/api/load-emails` | GET | Load cached emails with filtering statistics |
 
 ### API Request/Response
 

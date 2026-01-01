@@ -137,6 +137,7 @@ These are important nuances that must be preserved:
 | `/api/add-criteria-1d` | POST | Add to criteria_1day_old.json |
 | `/api/mark-keep` | POST | Remove from delete + add to keep |
 | `/api/stats` | GET | Get criteria counts |
+| `/api/load-emails` | GET | Load emails & show filtering stats |
 
 ## Email Categories
 
@@ -174,7 +175,11 @@ These are important nuances that must be preserved:
 ## Skills
 
 ### /test-email-api
-Test all Email Review API endpoints. Runs 7 automated tests:
+**Trigger phrases:** "run the test script", "test the email API", "run /test-email-api", "run tests", "test the API"
+
+**Action:** Immediately run `python test_api.py` in the gmail directory. Do NOT ask any questions - just execute and show results.
+
+Test all Email Review API endpoints. Runs 8 automated tests:
 1. Delete button (add to criteria.json)
 2. Keep button (removes from delete, adds to keep)
 3. Del All (domain-level delete)
@@ -182,6 +187,7 @@ Test all Email Review API endpoints. Runs 7 automated tests:
 5. Keep after Del 1d (cross-file removal)
 6. Keep All (domain-level protection)
 7. Del 1d All (domain-level 1-day delete)
+8. Load Emails (filtering statistics report)
 
 Usage: Just ask "run /test-email-api" or "test the email API"
 
@@ -189,5 +195,20 @@ The skill automatically:
 - Starts Flask server if needed
 - Runs all tests with `test-skill-` prefixed domains
 - Verifies file changes
+- Shows email filtering report (total, deleted, protected, undecided)
 - Cleans up test data
 - Reports pass/fail for each test
+
+### New API Endpoint: `/api/load-emails`
+Returns filtering statistics for all cached emails:
+```json
+{
+  "summary": {
+    "total_emails": 1120,
+    "will_delete_now": 172,
+    "will_delete_1d": 173,
+    "protected": 19,
+    "need_review": 756
+  }
+}
+```

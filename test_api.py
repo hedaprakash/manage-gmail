@@ -212,6 +212,50 @@ def run_tests():
         results.append(("Del 1d All", "/api/add-criteria-1d", False, str(e)))
         print(f"  FAIL: {e}")
 
+    # Test 8: Load Emails API (filtering statistics)
+    print("\nTEST 8: Load Emails API (filtering statistics)")
+    try:
+        r = requests.get(f"{API_BASE}/api/load-emails")
+        data = r.json()
+        summary = data.get("summary", {})
+        passed = data.get("success") and "total_emails" in summary
+        results.append(("Load Emails", "/api/load-emails", passed,
+                       f"total={summary.get('total_emails', 0)}"))
+        if passed:
+            print(f"  {GREEN}PASS{RESET}: Loaded email statistics")
+            print(f"\n  {YELLOW}=== EMAIL FILTERING REPORT ==={RESET}")
+            print(f"  Cache file: {data.get('cache_file')} ({data.get('cache_age_hours')}h old)")
+            print(f"  Rules: {data.get('criteria_rules')} delete | {data.get('criteria_1d_rules')} del-1d | {data.get('keep_rules')} keep")
+            print(f"\n  {'-'*40}")
+            print(f"  {'Category':<25} {'Count':>10}")
+            print(f"  {'-'*40}")
+            print(f"  {'Total Unread Emails':<25} {summary.get('total_emails', 0):>10}")
+            print(f"  {'Will Delete (criteria)':<25} {summary.get('will_delete_now', 0):>10}")
+            print(f"  {'Will Delete 1d (criteria_1d)':<25} {summary.get('will_delete_1d', 0):>10}")
+            print(f"  {'Protected (keep)':<25} {summary.get('protected', 0):>10}")
+            print(f"  {'Need Review (undecided)':<25} {summary.get('need_review', 0):>10}")
+            print(f"  {'-'*40}")
+
+            # Show top domains for each category
+            stats = data.get("stats", {})
+            if stats.get("criteria_domains"):
+                print(f"\n  Top domains to DELETE:")
+                for domain, count in list(stats["criteria_domains"].items())[:5]:
+                    print(f"    - {domain}: {count}")
+            if stats.get("criteria_1d_domains"):
+                print(f"\n  Top domains to DELETE after 1 day:")
+                for domain, count in list(stats["criteria_1d_domains"].items())[:5]:
+                    print(f"    - {domain}: {count}")
+            if stats.get("keep_domains"):
+                print(f"\n  Top PROTECTED domains:")
+                for domain, count in list(stats["keep_domains"].items())[:5]:
+                    print(f"    - {domain}: {count}")
+        else:
+            print(f"  FAIL: {data.get('error', 'Unknown error')}")
+    except Exception as e:
+        results.append(("Load Emails", "/api/load-emails", False, str(e)))
+        print(f"  FAIL: {e}")
+
     # Cleanup
     print("\nPost-test cleanup...")
     cleanup()

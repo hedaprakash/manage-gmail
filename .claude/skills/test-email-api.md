@@ -82,6 +82,20 @@ curl -s -X POST http://localhost:5000/api/add-criteria-1d \
 **Expected:** `success: true`, entry has empty `subject`
 **Verify:** Entry in criteria_1day_old.json has `"subject": ""`
 
+#### Test 8: Load Emails API (filtering statistics)
+```bash
+curl -s http://localhost:5000/api/load-emails
+```
+**Expected:** `success: true`, `summary` object with filtering stats
+**Report should show:**
+- `total_emails` - Total unread emails in cache
+- `will_delete_now` - Emails matching criteria.json
+- `will_delete_1d` - Emails matching criteria_1day_old.json
+- `protected` - Emails matching keep_criteria.json
+- `need_review` - Undecided emails
+
+**Output:** Display the filtering report showing counts and top domains for each category
+
 ### Cleanup
 After all tests, remove test data:
 ```python

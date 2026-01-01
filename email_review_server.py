@@ -318,6 +318,132 @@ def undo_last():
         return jsonify({'success': False, 'error': str(e)}), 500
 
 
+def find_latest_cache():
+    """Find the most recent cached emails JSON file."""
+    import glob
+    cache_files = glob.glob('logs/emails_categorized_*.json')
+    if not cache_files:
+        return None
+    cache_files.sort(key=os.path.getmtime, reverse=True)
+    return cache_files[0]
+
+
+def matches_any_criteria(email_data, criteria_list):
+    """Check if an email matches any criteria in the list."""
+    domain = email_data.get('primaryDomain', '').lower()
+    subject = email_data.get('subject', '').lower()
+
+    for c in criteria_list:
+        c_domain = c.get('primaryDomain', '').lower()
+        c_subject = c.get('subject', '').lower()
+
+        if c_domain and c_domain in domain:
+            # Domain matches
+            if not c_subject:
+                # No subject filter = matches all from domain
+                return True
+            if c_subject in subject:
+                # Subject also matches
+                return True
+    return False
+
+
+@app.route('/api/load-emails', methods=['GET'])
+def load_emails():
+    """
+    Load all cached emails and report filtering statistics.
+
+    Returns breakdown of:
+    - Total emails in cache
+    - Emails matching criteria.json (will be deleted)
+    - Emails matching criteria_1day_old.json (will be deleted after 1 day)
+    - Emails matching keep_criteria.json (protected)
+    - Remaining undecided emails
+    """
+    try:
+        # Find and load cached emails
+        cache_path = find_latest_cache()
+        if not cache_path:
+            return jsonify({
+                'success': False,
+                'error': 'No cached emails found. Run categorize_emails.py first.'
+            }), 404
+
+        with open(cache_path, 'r', encoding='utf-8') as f:
+            emails = json.load(f)
+
+        # Load all criteria files
+        criteria = load_json_file(CRITERIA_FILE)
+        criteria_1d = load_json_file(CRITERIA_1DAY_FILE)
+        keep_criteria = load_json_file(KEEP_CRITERIA_FILE)
+
+        # Categorize each email
+        stats = {
+            'total': len(emails),
+            'matched_criteria': 0,
+            'matched_criteria_1d': 0,
+            'matched_keep': 0,
+            'undecided': 0,
+            'criteria_domains': {},
+            'criteria_1d_domains': {},
+            'keep_domains': {}
+        }
+
+        for email in emails:
+            domain = email.get('primaryDomain', 'unknown')
+
+            # Check keep first (highest priority)
+            if matches_any_criteria(email, keep_criteria):
+                stats['matched_keep'] += 1
+                stats['keep_domains'][domain] = stats['keep_domains'].get(domain, 0) + 1
+            # Then check immediate delete
+            elif matches_any_criteria(email, criteria):
+                stats['matched_criteria'] += 1
+                stats['criteria_domains'][domain] = stats['criteria_domains'].get(domain, 0) + 1
+            # Then check 1-day delete
+            elif matches_any_criteria(email, criteria_1d):
+                stats['matched_criteria_1d'] += 1
+                stats['criteria_1d_domains'][domain] = stats['criteria_1d_domains'].get(domain, 0) + 1
+            else:
+                stats['undecided'] += 1
+
+        # Sort domain breakdowns by count (top 10)
+        stats['criteria_domains'] = dict(sorted(
+            stats['criteria_domains'].items(), key=lambda x: x[1], reverse=True
+        )[:10])
+        stats['criteria_1d_domains'] = dict(sorted(
+            stats['criteria_1d_domains'].items(), key=lambda x: x[1], reverse=True
+        )[:10])
+        stats['keep_domains'] = dict(sorted(
+            stats['keep_domains'].items(), key=lambda x: x[1], reverse=True
+        )[:10])
+
+        # File info
+        import time
+        cache_age_hours = (time.time() - os.path.getmtime(cache_path)) / 3600
+
+        return jsonify({
+            'success': True,
+            'cache_file': os.path.basename(cache_path),
+            'cache_age_hours': round(cache_age_hours, 2),
+            'stats': stats,
+            'criteria_rules': len(criteria),
+            'criteria_1d_rules': len(criteria_1d),
+            'keep_rules': len(keep_criteria),
+            'summary': {
+                'total_emails': stats['total'],
+                'will_delete_now': stats['matched_criteria'],
+                'will_delete_1d': stats['matched_criteria_1d'],
+                'protected': stats['matched_keep'],
+                'need_review': stats['undecided']
+            }
+        })
+
+    except Exception as e:
+        logger.error(f"Error loading emails: {e}")
+        return jsonify({'success': False, 'error': str(e)}), 500
+
+
 def run_server(port=5000):
     """Start the Flask server."""
     logger.info(f"Starting email review server on http://localhost:{port}")
