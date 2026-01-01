@@ -29,6 +29,8 @@ export interface EmailData {
 
 export interface EmailPattern {
   domain: string;
+  subdomain: string;
+  sender: string;
   subject: string;
   category: string;
   count: number;
@@ -40,9 +42,17 @@ export interface EmailPattern {
   categoryBg: string;
 }
 
+export interface SubdomainGroup {
+  subdomain: string;
+  displayName: string;
+  totalEmails: number;
+  patterns: EmailPattern[];
+}
+
 export interface DomainGroup {
   domain: string;
   totalEmails: number;
+  subdomains: SubdomainGroup[];
   patterns: EmailPattern[];
 }
 

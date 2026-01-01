@@ -290,15 +290,6 @@
   {
     "email": "",
     "subdomain": "",
-    "primaryDomain": "anthropic.com",
-    "subject": "",
-    "toEmails": "",
-    "ccEmails": "",
-    "excludeSubject": "receipt"
-  },
-  {
-    "email": "",
-    "subdomain": "",
     "primaryDomain": "youtube.com",
     "subject": "",
     "toEmails": "",

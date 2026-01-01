@@ -1,12 +1,15 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { useEmails, useMarkKeep, useAddCriteria, useAddCriteria1d, formatDateRange } from '../hooks/useEmails';
+import type { DomainGroup } from '../hooks/useEmails';
 import StatsCard from '../components/Stats/StatsCard';
 import DomainSection from '../components/Email/DomainSection';
 
 const categories = ['All', 'PROMO', 'NEWSLETTER', 'UNKNOWN', 'SECURITY', 'ALERT', 'STATEMENT', 'ORDER'];
+type SortOption = 'count' | 'alpha';
 
 export default function Review() {
   const [categoryFilter, setCategoryFilter] = useState('All');
+  const [sortBy, setSortBy] = useState<SortOption>('alpha'); // Default to alphabetical for stability
   const { data, isLoading, error } = useEmails();
   const markKeep = useMarkKeep();
   const addCriteria = useAddCriteria();
@@ -31,16 +34,40 @@ export default function Review() {
     );
   }
 
-  if (!data) return null;
+  // Filter and sort domains
+  const filteredDomains = useMemo(() => {
+    if (!data) return [];
 
-  // Filter domains by category if needed
-  const filteredDomains = categoryFilter === 'All'
-    ? data.domains
-    : data.domains.map(d => ({
-        ...d,
-        patterns: d.patterns.filter(p => p.category === categoryFilter),
-        totalEmails: d.patterns.filter(p => p.category === categoryFilter).reduce((sum, p) => sum + p.count, 0)
-      })).filter(d => d.patterns.length > 0);
+    let domains: DomainGroup[] = data.domains;
+
+    // Filter by category if needed
+    if (categoryFilter !== 'All') {
+      domains = domains.map(d => {
+        // Filter patterns in each subdomain
+        const filteredSubdomains = d.subdomains?.map(sub => ({
+          ...sub,
+          patterns: sub.patterns.filter(p => p.category === categoryFilter),
+          totalEmails: sub.patterns.filter(p => p.category === categoryFilter).reduce((sum, p) => sum + p.count, 0)
+        })).filter(sub => sub.patterns.length > 0) ?? [];
+
+        return {
+          ...d,
+          subdomains: filteredSubdomains,
+          patterns: d.patterns.filter(p => p.category === categoryFilter),
+          totalEmails: filteredSubdomains.reduce((sum, sub) => sum + sub.totalEmails, 0)
+        };
+      }).filter(d => d.totalEmails > 0);
+    }
+
+    // Sort domains
+    if (sortBy === 'alpha') {
+      return [...domains].sort((a, b) => a.domain.localeCompare(b.domain));
+    } else {
+      return [...domains].sort((a, b) => b.totalEmails - a.totalEmails);
+    }
+  }, [data, categoryFilter, sortBy]);
+
+  if (!data) return null;
 
   const handleKeep = (domain: string, subject: string, category: string) => {
     markKeep.mutate({ domain, subject, category });
@@ -69,21 +96,35 @@ export default function Review() {
         />
       </div>
 
-      {/* Category Filters */}
-      <div className="flex flex-wrap gap-2">
-        {categories.map(cat => (
+      {/* Filters Row */}
+      <div className="flex flex-wrap items-center justify-between gap-4">
+        {/* Category Filters */}
+        <div className="flex flex-wrap gap-2">
+          {categories.map(cat => (
+            <button
+              key={cat}
+              onClick={() => setCategoryFilter(cat)}
+              className={`px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${
+                categoryFilter === cat
+                  ? 'bg-blue-500 text-white'
+                  : 'bg-white text-gray-700 border border-gray-300 hover:bg-gray-50'
+              }`}
+            >
+              {cat}
+            </button>
+          ))}
+        </div>
+
+        {/* Sort Toggle */}
+        <div className="flex items-center gap-2 text-sm">
+          <span className="text-gray-500">Sort:</span>
           <button
-            key={cat}
-            onClick={() => setCategoryFilter(cat)}
-            className={`px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${
-              categoryFilter === cat
-                ? 'bg-blue-500 text-white'
-                : 'bg-white text-gray-700 border border-gray-300 hover:bg-gray-50'
-            }`}
+            onClick={() => setSortBy(sortBy === 'alpha' ? 'count' : 'alpha')}
+            className="px-3 py-1.5 rounded border border-gray-300 bg-white hover:bg-gray-50 font-medium"
           >
-            {cat}
+            {sortBy === 'alpha' ? 'A-Z' : 'Count'}
           </button>
-        ))}
+        </div>
       </div>
 
       {/* Domain List */}

@@ -164,8 +164,44 @@
   {
     "email": "",
     "subdomain": "",
-    "primaryDomain": "co.in",
+    "primaryDomain": "sbi.co.in",
     "subject": "E-account statement for your SBI account(s).",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "",
+    "subdomain": "",
+    "primaryDomain": "altais.com",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "",
+    "subdomain": "",
+    "primaryDomain": "amazonpay.in",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "",
+    "subdomain": "",
+    "primaryDomain": "anthem.com",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "",
+    "subdomain": "",
+    "primaryDomain": "anthropic.com",
+    "subject": "Your receipt from Anthropic",
     "toEmails": "",
     "ccEmails": "",
     "excludeSubject": ""

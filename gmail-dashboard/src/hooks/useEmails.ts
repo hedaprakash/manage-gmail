@@ -2,6 +2,8 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 
 export interface EmailPattern {
   domain: string;
+  subdomain: string;
+  sender: string;
   subject: string;
   category: string;
   count: number;
@@ -14,9 +16,17 @@ export interface EmailPattern {
   gmailUrl?: string;
 }
 
+export interface SubdomainGroup {
+  subdomain: string;
+  displayName: string;
+  totalEmails: number;
+  patterns: EmailPattern[];
+}
+
 export interface DomainGroup {
   domain: string;
   totalEmails: number;
+  subdomains: SubdomainGroup[];
   patterns: EmailPattern[];
 }
 

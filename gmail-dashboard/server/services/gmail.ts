@@ -28,17 +28,45 @@ function extractEmailAddress(headerValue: string): string {
   return match ? match[1] : headerValue.trim();
 }
 
+// Two-level TLDs that require taking 3 parts for primary domain
+const TWO_LEVEL_TLDS = new Set([
+  'co.in', 'co.uk', 'co.nz', 'co.za', 'co.jp', 'co.kr',
+  'com.au', 'com.br', 'com.mx', 'com.sg', 'com.hk', 'com.tw',
+  'org.uk', 'org.au', 'org.in',
+  'net.au', 'net.in',
+  'gov.uk', 'gov.in',
+  'ac.uk', 'ac.in',
+  'edu.au', 'edu.in'
+]);
+
 /**
  * Extract subdomain and primary domain from email address.
+ * Handles two-level TLDs like .co.in, .co.uk, .com.au correctly.
  */
 function extractDomainInfo(email: string): { subdomain: string; primaryDomain: string } {
   if (!email.includes('@')) {
     return { subdomain: '', primaryDomain: '' };
   }
-  const subdomain = email.split('@')[1] ?? '';
-  const parts = subdomain.split('.');
-  const primaryDomain = parts.length >= 2 ? parts.slice(-2).join('.') : subdomain;
-  return { subdomain, primaryDomain };
+  const fullDomain = email.split('@')[1] ?? '';
+  const parts = fullDomain.split('.');
+
+  if (parts.length < 2) {
+    return { subdomain: fullDomain, primaryDomain: fullDomain };
+  }
+
+  // Check if last two parts form a two-level TLD
+  const lastTwo = parts.slice(-2).join('.').toLowerCase();
+  let primaryDomain: string;
+
+  if (TWO_LEVEL_TLDS.has(lastTwo) && parts.length >= 3) {
+    // Two-level TLD: take last 3 parts (e.g., sbi.co.in)
+    primaryDomain = parts.slice(-3).join('.');
+  } else {
+    // Standard TLD: take last 2 parts (e.g., google.com)
+    primaryDomain = parts.slice(-2).join('.');
+  }
+
+  return { subdomain: fullDomain, primaryDomain };
 }
 
 /**

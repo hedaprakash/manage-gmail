@@ -6,7 +6,7 @@
 
 import fs from 'fs';
 import path from 'path';
-import type { EmailData, DomainGroup, EmailPattern } from '../types/index.js';
+import type { EmailData, DomainGroup, SubdomainGroup, EmailPattern } from '../types/index.js';
 import { matchesAnyCriteria, loadJsonFile, CRITERIA_FILE, CRITERIA_1DAY_FILE, KEEP_CRITERIA_FILE } from './criteria.js';
 import type { CriteriaEntry } from '../types/index.js';
 
@@ -85,11 +85,38 @@ export function shouldRefreshCache(): boolean {
 }
 
 /**
- * Group emails by domain and subject pattern.
+ * Extract sender (local part) from email address.
+ */
+function extractSender(emailAddress: string): string {
+  if (!emailAddress || !emailAddress.includes('@')) {
+    return '';
+  }
+  return emailAddress.split('@')[0] ?? '';
+}
+
+/**
+ * Get display name for subdomain relative to primary domain.
+ */
+function getSubdomainDisplayName(subdomain: string, primaryDomain: string): string {
+  if (!subdomain || subdomain === primaryDomain) {
+    return '(direct)';
+  }
+  // Remove the primary domain suffix to show just the subdomain part
+  if (subdomain.endsWith(primaryDomain)) {
+    const prefix = subdomain.slice(0, -(primaryDomain.length + 1)); // +1 for the dot
+    return prefix || '(direct)';
+  }
+  return subdomain;
+}
+
+/**
+ * Group emails by domain > subdomain > sender > subject pattern.
  */
 export function groupEmailsByPattern(emailDetails: EmailData[]): DomainGroup[] {
-  const grouped: Record<string, Record<string, {
+  // Structure: domain -> subdomain -> patternKey -> pattern data
+  const grouped: Record<string, Record<string, Record<string, {
     subject: string;
+    sender: string;
     category: string;
     categoryIcon: string;
     categoryColor: string;
@@ -99,21 +126,28 @@ export function groupEmailsByPattern(emailDetails: EmailData[]): DomainGroup[] {
     minDate: Date;
     maxDate: Date;
     messageIds: string[];
-  }>> = {};
+  }>>> = {};
 
   for (const email of emailDetails) {
-    const domain = email.primaryDomain || 'unknown';
-    const subject = email.subject.slice(0, 50); // First 50 chars as pattern key
+    const primaryDomain = email.primaryDomain || 'unknown';
+    const subdomain = email.subdomain || primaryDomain;
+    const sender = extractSender(email.email);
+    const subject = email.subject.slice(0, 50);
     const category = email.category || 'UNKNOWN';
-    const patternKey = `${category}:${subject}`;
+    const patternKey = `${sender}:${category}:${subject}`;
 
-    if (!grouped[domain]) {
-      grouped[domain] = {};
+    // Initialize nested structures
+    if (!grouped[primaryDomain]) {
+      grouped[primaryDomain] = {};
+    }
+    if (!grouped[primaryDomain][subdomain]) {
+      grouped[primaryDomain][subdomain] = {};
     }
 
-    if (!grouped[domain][patternKey]) {
-      grouped[domain][patternKey] = {
+    if (!grouped[primaryDomain][subdomain][patternKey]) {
+      grouped[primaryDomain][subdomain][patternKey] = {
         subject,
+        sender,
         category,
         categoryIcon: email.categoryIcon || '🟡',
         categoryColor: email.categoryColor || '#ffc107',
@@ -126,12 +160,11 @@ export function groupEmailsByPattern(emailDetails: EmailData[]): DomainGroup[] {
       };
     }
 
-    const group = grouped[domain][patternKey]!;
+    const group = grouped[primaryDomain][subdomain][patternKey]!;
     group.count++;
     group.emails.push(email);
     group.messageIds.push(email.id);
 
-    // Update date range
     const emailDate = new Date(email.date);
     if (emailDate < group.minDate) {
       group.minDate = emailDate;
@@ -141,38 +174,58 @@ export function groupEmailsByPattern(emailDetails: EmailData[]): DomainGroup[] {
     }
   }
 
-  // Convert to DomainGroup array
+  // Convert to DomainGroup array with subdomain hierarchy
   const result: DomainGroup[] = [];
 
-  for (const [domain, patterns] of Object.entries(grouped)) {
-    const patternList: EmailPattern[] = [];
+  for (const [primaryDomain, subdomains] of Object.entries(grouped)) {
+    const subdomainGroups: SubdomainGroup[] = [];
+    const allPatterns: EmailPattern[] = [];
 
-    for (const pattern of Object.values(patterns)) {
-      patternList.push({
-        domain,
-        subject: pattern.subject,
-        category: pattern.category,
-        count: pattern.count,
-        minDate: pattern.minDate.toISOString(),
-        maxDate: pattern.maxDate.toISOString(),
-        messageIds: pattern.messageIds,
-        categoryIcon: pattern.categoryIcon,
-        categoryColor: pattern.categoryColor,
-        categoryBg: pattern.categoryBg
+    for (const [subdomain, patterns] of Object.entries(subdomains)) {
+      const patternList: EmailPattern[] = [];
+
+      for (const pattern of Object.values(patterns)) {
+        const emailPattern: EmailPattern = {
+          domain: primaryDomain,
+          subdomain,
+          sender: pattern.sender,
+          subject: pattern.subject,
+          category: pattern.category,
+          count: pattern.count,
+          minDate: pattern.minDate.toISOString(),
+          maxDate: pattern.maxDate.toISOString(),
+          messageIds: pattern.messageIds,
+          categoryIcon: pattern.categoryIcon,
+          categoryColor: pattern.categoryColor,
+          categoryBg: pattern.categoryBg
+        };
+        patternList.push(emailPattern);
+        allPatterns.push(emailPattern);
+      }
+
+      // Sort patterns by count
+      patternList.sort((a, b) => b.count - a.count);
+
+      subdomainGroups.push({
+        subdomain,
+        displayName: getSubdomainDisplayName(subdomain, primaryDomain),
+        totalEmails: patternList.reduce((sum, p) => sum + p.count, 0),
+        patterns: patternList
       });
     }
 
-    // Sort patterns by count (descending)
-    patternList.sort((a, b) => b.count - a.count);
+    // Sort subdomains by email count
+    subdomainGroups.sort((a, b) => b.totalEmails - a.totalEmails);
 
     result.push({
-      domain,
-      totalEmails: patternList.reduce((sum, p) => sum + p.count, 0),
-      patterns: patternList
+      domain: primaryDomain,
+      totalEmails: allPatterns.reduce((sum, p) => sum + p.count, 0),
+      subdomains: subdomainGroups,
+      patterns: allPatterns
     });
   }
 
-  // Sort domains by total email count (descending)
+  // Sort domains by total email count
   result.sort((a, b) => b.totalEmails - a.totalEmails);
 
   return result;

@@ -4,12 +4,13 @@ import { formatDateRange } from '../../hooks/useEmails';
 
 interface PatternItemProps {
   pattern: EmailPattern;
+  showSender?: boolean;
   onKeep: (selectedText?: string) => void;
   onDelete: (selectedText?: string) => void;
   onDelete1d: (selectedText?: string) => void;
 }
 
-export default function PatternItem({ pattern, onKeep, onDelete, onDelete1d }: PatternItemProps) {
+export default function PatternItem({ pattern, showSender = false, onKeep, onDelete, onDelete1d }: PatternItemProps) {
   const dateDisplay = formatDateRange(pattern.minDate, pattern.maxDate, pattern.count);
   const subjectRef = useRef<HTMLSpanElement>(null);
   const [hasSelection, setHasSelection] = useState(false);
@@ -73,6 +74,11 @@ export default function PatternItem({ pattern, onKeep, onDelete, onDelete1d }: P
 
       {/* Subject - selectable */}
       <div className="flex-1 min-w-0">
+        {showSender && pattern.sender && (
+          <span className="text-xs text-blue-600 font-medium mr-2">
+            {pattern.sender}@
+          </span>
+        )}
         <span
           ref={subjectRef}
           className={`text-sm text-gray-900 select-text cursor-text inline-block max-w-full ${hasSelection ? 'bg-yellow-100' : ''}`}

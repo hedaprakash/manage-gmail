@@ -1,8 +1,8 @@
 [
   {
     "email": "",
-    "subdomain": "pge@email.opower.com",
-    "primaryDomain": "",
+    "subdomain": "email.opower.com",
+    "primaryDomain": "opower.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -11,7 +11,7 @@
   {
     "email": "email@market.temuemail.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "temuemail.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -47,7 +47,7 @@
   {
     "email": "",
     "subdomain": "info15.citi.com",
-    "primaryDomain": "",
+    "primaryDomain": "citi.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -110,7 +110,7 @@
   {
     "email": "",
     "subdomain": "em.pge.com",
-    "primaryDomain": "",
+    "primaryDomain": "pge.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -154,8 +154,8 @@
   },
   {
     "email": "",
-    "subdomain": "notes@e.pnc.com",
-    "primaryDomain": "",
+    "subdomain": "e.pnc.com",
+    "primaryDomain": "pnc.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -164,7 +164,7 @@
   {
     "email": "jobalerts-noreply@linkedin.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "linkedin.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -173,7 +173,7 @@
   {
     "email": "editors-noreply@linkedin.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "linkedin.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -182,7 +182,7 @@
   {
     "email": "UnitedAirlines@enews.united.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "united.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -191,7 +191,7 @@
   {
     "email": "info@flyingreturns.airindia.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "airindia.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -200,7 +200,7 @@
   {
     "email": "googleaistudio-noreply@google.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "google.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -209,7 +209,7 @@
   {
     "email": "search-labs-noreply@google.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "google.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -218,7 +218,7 @@
   {
     "email": "news-noreply@google.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "google.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -227,7 +227,7 @@
   {
     "email": "google-maps-noreply@google.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "google.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -236,7 +236,7 @@
   {
     "email": "bard-noreply@google.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "google.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -245,7 +245,7 @@
   {
     "email": "goosdfsdfglefi-noreply@google.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "google.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -254,7 +254,7 @@
   {
     "email": "googlefi-noreply@google.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "google.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -263,7 +263,7 @@
   {
     "email": "googlestore-noreply@google.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "google.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -272,7 +272,7 @@
   {
     "email": "noreply-travel@google.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "google.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -281,7 +281,7 @@
   {
     "email": "location-history-noreply@google.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "google.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -298,8 +298,8 @@
   },
   {
     "email": "",
-    "subdomain": "info@e.monterra.org",
-    "primaryDomain": "",
+    "subdomain": "e.monterra.org",
+    "primaryDomain": "monterra.org",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -308,7 +308,7 @@
   {
     "email": "xfinity@emails.xfinity.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "xfinity.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -317,7 +317,7 @@
   {
     "email": "energy@tesla.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "tesla.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -326,7 +326,7 @@
   {
     "email": "newslettter@tesla.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "tesla.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -335,7 +335,7 @@
   {
     "email": "costco@reviews.costco.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "costco.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -443,7 +443,7 @@
   {
     "email": "poulsengrouprealestate@gmail.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "gmail.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -506,7 +506,7 @@
   {
     "email": "1105info.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "1105info.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -515,7 +515,7 @@
   {
     "email": "absolute-snow.co.uk",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "absolute-snow.co.uk",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -524,7 +524,7 @@
   {
     "email": "activeandfitdirect.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "activeandfitdirect.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -533,7 +533,7 @@
   {
     "email": "admin@vagaro.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "vagaro.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -542,7 +542,7 @@
   {
     "email": "alerts.comcast.net",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "comcast.net",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -551,7 +551,7 @@
   {
     "email": "alertsp.chase.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "chase.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -560,7 +560,7 @@
   {
     "email": "aliexpress.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "aliexpress.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -569,7 +569,7 @@
   {
     "email": "amazon.in",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "amazon.in",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -578,7 +578,7 @@
   {
     "email": "AmericanExpress@welcome.americanexpress.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "americanexpress.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -587,7 +587,7 @@
   {
     "email": "analytics-noreply@google.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "google.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -596,7 +596,7 @@
   {
     "email": "applefitnessplus@insideapple.apple.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "apple.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -605,7 +605,7 @@
   {
     "email": "appletv@insideapple.apple.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "apple.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -614,7 +614,7 @@
   {
     "email": "arizent.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "arizent.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -623,7 +623,7 @@
   {
     "email": "arkfunds.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "arkfunds.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -632,7 +632,7 @@
   {
     "email": "ark-funds.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "ark-funds.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -641,7 +641,7 @@
   {
     "email": "awards@mp1.tripadvisor.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "tripadvisor.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -650,7 +650,7 @@
   {
     "email": "aws-marketing-email-replies@amazon.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "amazon.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -659,7 +659,7 @@
   {
     "email": "azure@email.microsoft.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "microsoft.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -668,7 +668,7 @@
   {
     "email": "bank.em.discover.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "discover.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -677,7 +677,7 @@
   {
     "email": "bing.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "bing.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -686,7 +686,7 @@
   {
     "email": "blink@hello.blink.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "blink.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -695,7 +695,7 @@
   {
     "email": "builtinaustin.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "builtinaustin.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -704,7 +704,7 @@
   {
     "email": "businessprofile-noreply@google.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "google.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -713,7 +713,7 @@
   {
     "email": "c21selectgroup.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "c21selectgroup.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -722,7 +722,7 @@
   {
     "email": "Card@info17.citi.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "citi.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -731,7 +731,7 @@
   {
     "email": "careerbuilder.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "careerbuilder.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -740,7 +740,7 @@
   {
     "email": "cbintouch.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "cbintouch.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -749,7 +749,7 @@
   {
     "email": "chase@email.chase.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "chase.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -758,7 +758,7 @@
   {
     "email": "chrispessy.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "chrispessy.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -767,7 +767,7 @@
   {
     "email": "chugh.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "chugh.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -776,7 +776,7 @@
   {
     "email": "citysportsfitness@e.citysportsfitness.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "citysportsfitness.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -785,7 +785,7 @@
   {
     "email": "client@notifications.tdameritrade.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "tdameritrade.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -794,7 +794,7 @@
   {
     "email": "cnbc.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "cnbc.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -803,7 +803,7 @@
   {
     "email": "contact@leonardo.ai",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "leonardo.ai",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -812,7 +812,7 @@
   {
     "email": "contact@sqlmaestros.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "sqlmaestros.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -821,7 +821,7 @@
   {
     "email": "contact@zerorezcolumbia.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "zerorezcolumbia.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -830,7 +830,7 @@
   {
     "email": "content-magazine.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "content-magazine.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -839,7 +839,7 @@
   {
     "email": "cozymaid.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "cozymaid.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -848,7 +848,7 @@
   {
     "email": "craigslisasdasdt.org",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "craigslisasdasdt.org",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -857,7 +857,7 @@
   {
     "email": "customers@builder.io",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "builder.io",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -866,7 +866,7 @@
   {
     "email": "dice.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "dice.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -875,7 +875,7 @@
   {
     "email": "digitalocean.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "digitalocean.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -884,7 +884,7 @@
   {
     "email": "disqus.net",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "disqus.net",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -893,7 +893,7 @@
   {
     "email": "dominos.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "dominos.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -902,7 +902,7 @@
   {
     "email": "donotreply@appfolio.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "appfolio.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -911,7 +911,7 @@
   {
     "email": "donotreply@interactivebrokers.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "interactivebrokers.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -920,7 +920,7 @@
   {
     "email": "drive-shares-dm-noreply@google.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "google.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -929,7 +929,7 @@
   {
     "email": "DrsHallSzetoOptometry@demandforced3.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "demandforced3.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -938,7 +938,7 @@
   {
     "email": "dvcapp.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "dvcapp.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -947,7 +947,7 @@
   {
     "email": "e.chase.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "chase.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -956,7 +956,7 @@
   {
     "email": "e.epicpass.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "epicpass.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -965,7 +965,7 @@
   {
     "email": "e.etradefinancial.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "etradefinancial.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -974,7 +974,7 @@
   {
     "email": "economictimes.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "economictimes.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -983,7 +983,7 @@
   {
     "email": "economictimesnews.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "economictimesnews.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -992,7 +992,7 @@
   {
     "email": "em.intermiles.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "intermiles.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -1001,7 +1001,7 @@
   {
     "email": "email.ahswarranty.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "ahswarranty.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -1010,7 +1010,7 @@
   {
     "email": "email.bedbathandbeyond.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "bedbathandbeyond.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -1019,7 +1019,7 @@
   {
     "email": "e-mail.columbia.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "columbia.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -1028,7 +1028,7 @@
   {
     "email": "email.informeddelivery.usps.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "usps.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -1037,7 +1037,7 @@
   {
     "email": "email.microsoft.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "microsoft.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -1046,7 +1046,7 @@
   {
     "email": "email.peacocktv.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "peacocktv.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -1055,7 +1055,7 @@
   {
     "email": "email.rh.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "rh.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -1064,7 +1064,7 @@
   {
     "email": "email.usbank.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "usbank.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -1073,7 +1073,7 @@
   {
     "email": "email-marriott.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "email-marriott.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -1082,7 +1082,7 @@
   {
     "email": "emeraldx.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "emeraldx.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -1091,7 +1091,7 @@
   {
     "email": "equitymaster.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "equitymaster.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -1100,7 +1100,7 @@
   {
     "email": "etrade.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "etrade.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -1109,7 +1109,7 @@
   {
     "email": "eventbrite.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "eventbrite.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -1118,7 +1118,7 @@
   {
     "email": "expedia.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "expedia.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -1127,7 +1127,7 @@
   {
     "email": "expediamail.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "expediamail.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -1136,7 +1136,7 @@
   {
     "email": "flipkart.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "flipkart.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -1145,7 +1145,7 @@
   {
     "email": "fool.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "fool.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -1154,7 +1154,7 @@
   {
     "email": "foolsubs.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "foolsubs.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -1163,7 +1163,7 @@
   {
     "email": "freelancer.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "freelancer.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -1172,7 +1172,7 @@
   {
     "email": "from@communications.tdameritrade.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "tdameritrade.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -1181,7 +1181,7 @@
   {
     "email": "garmin.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "garmin.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -1190,7 +1190,7 @@
   {
     "email": "getinvolved@atthecrossroads.org",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "atthecrossroads.org",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -1199,7 +1199,7 @@
   {
     "email": "github.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "github.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -1208,7 +1208,7 @@
   {
     "email": "gitlab@mg.gitlab.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "gitlab.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -1217,7 +1217,7 @@
   {
     "email": "glassdoor.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "glassdoor.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -1226,7 +1226,7 @@
   {
     "email": "gmx.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "gmx.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -1235,7 +1235,7 @@
   {
     "email": "goldstar.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "goldstar.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -1244,7 +1244,7 @@
   {
     "email": "googleassistant-noreply@google.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "google.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -1253,7 +1253,7 @@
   {
     "email": "googlechromecast-noreply@google.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "google.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -1262,7 +1262,7 @@
   {
     "email": "googlepay-noreply@google.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "google.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -1271,7 +1271,7 @@
   {
     "email": "googleplay-noreply@google.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "google.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -1280,7 +1280,7 @@
   {
     "email": "googlestore-noreply@google.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "google.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -1289,7 +1289,7 @@
   {
     "email": "groupon.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "groupon.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -1298,7 +1298,7 @@
   {
     "email": "groupupdates@facebookmail.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "facebookmail.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -1307,7 +1307,7 @@
   {
     "email": "gurufocus.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "gurufocus.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -1316,7 +1316,7 @@
   {
     "email": "gurusofdance@gmail.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "gmail.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -1325,7 +1325,7 @@
   {
     "email": "hallcpallc.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "hallcpallc.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -1334,7 +1334,7 @@
   {
     "email": "handy.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "handy.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -1343,7 +1343,7 @@
   {
     "email": "hayneedle.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "hayneedle.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -1352,7 +1352,7 @@
   {
     "email": "hello@crexi.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "crexi.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -1361,7 +1361,7 @@
   {
     "email": "hello@email.hays.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "hays.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -1370,7 +1370,7 @@
   {
     "email": "hello@emails.fleetfeet.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "fleetfeet.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -1379,7 +1379,7 @@
   {
     "email": "hello@mail-2.hive.co",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "hive.co",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -1388,7 +1388,7 @@
   {
     "email": "hello@mailing.aiprm.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "aiprm.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -1397,7 +1397,7 @@
   {
     "email": "hello@send.vidiq.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "vidiq.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -1406,7 +1406,7 @@
   {
     "email": "hello@tailscale.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "tailscale.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -1424,7 +1424,7 @@
   {
     "email": "homesnap.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "homesnap.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -1433,7 +1433,7 @@
   {
     "email": "hotpads.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "hotpads.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -1442,7 +1442,7 @@
   {
     "email": "hsabank.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "hsabank.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -1451,7 +1451,7 @@
   {
     "email": "hulumail.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "hulumail.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -1460,7 +1460,7 @@
   {
     "email": "hyundaiauto.in",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "hyundaiauto.in",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -1469,7 +1469,7 @@
   {
     "email": "icicisecurities.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "icicisecurities.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -1478,7 +1478,7 @@
   {
     "email": "iheart.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "iheart.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -1487,7 +1487,7 @@
   {
     "email": "indeed.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "indeed.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -1496,7 +1496,7 @@
   {
     "email": "indiatimes.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "indiatimes.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -1505,7 +1505,7 @@
   {
     "email": "info.remitly.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "remitly.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -1514,7 +1514,7 @@
   {
     "email": "info@anthonypresents.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "anthonypresents.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -1523,7 +1523,7 @@
   {
     "email": "info@dmpmusicgroup.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "dmpmusicgroup.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -1532,7 +1532,7 @@
   {
     "email": "info@e.smcu.org",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "smcu.org",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -1541,7 +1541,7 @@
   {
     "email": "info@emporiaenergy.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "emporiaenergy.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -1550,7 +1550,7 @@
   {
     "email": "info@ionos.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "ionos.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -1559,7 +1559,7 @@
   {
     "email": "info@mail.tdameritrade.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "tdameritrade.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -1568,7 +1568,7 @@
   {
     "email": "info@marketing.moviepass.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "moviepass.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -1577,7 +1577,7 @@
   {
     "email": "info@milesformigraine.org",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "milesformigraine.org",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -1586,7 +1586,7 @@
   {
     "email": "info@myaccount.ring.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "ring.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -1595,7 +1595,7 @@
   {
     "email": "info@resolve.io",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "resolve.io",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -1604,7 +1604,7 @@
   {
     "email": "info@yourasianconnection.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "yourasianconnection.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -1613,7 +1613,7 @@
   {
     "email": "info4.citi.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "citi.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -1622,7 +1622,7 @@
   {
     "email": "info6.citi.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "citi.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -1631,7 +1631,7 @@
   {
     "email": "informeddelivery.usps.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "usps.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -1640,7 +1640,7 @@
   {
     "email": "insidermonkey.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "insidermonkey.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -1649,7 +1649,7 @@
   {
     "email": "investorshub.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "investorshub.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -1658,7 +1658,7 @@
   {
     "email": "iracing.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "iracing.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -1667,7 +1667,7 @@
   {
     "email": "itp.net",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "itp.net",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -1676,7 +1676,7 @@
   {
     "email": "itprotoday.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "itprotoday.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -1685,7 +1685,7 @@
   {
     "email": "itunes.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "itunes.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -1694,7 +1694,7 @@
   {
     "email": "jeff.rhoades@conciergeauctions.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "conciergeauctions.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -1703,7 +1703,7 @@
   {
     "email": "JobRecommendations@sites.careerbuilder.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "careerbuilder.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -1712,7 +1712,7 @@
   {
     "email": "katie@milesformigraine.org",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "milesformigraine.org",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -1721,7 +1721,7 @@
   {
     "email": "kimble@kimblegroup.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "kimblegroup.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -1730,7 +1730,7 @@
   {
     "email": "kodekloud.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "kodekloud.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -1739,7 +1739,7 @@
   {
     "email": "lenovo@wknd.email-lenovo.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "email-lenovo.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -1748,7 +1748,7 @@
   {
     "email": "lensa.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "lensa.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -1757,7 +1757,7 @@
   {
     "email": "levi.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "levi.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -1766,7 +1766,7 @@
   {
     "email": "lge.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "lge.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -1775,7 +1775,7 @@
   {
     "email": "linkedin.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "linkedin.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -1784,7 +1784,7 @@
   {
     "email": "livingsocial.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "livingsocial.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -1793,7 +1793,7 @@
   {
     "email": "loans@thecapsource.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "thecapsource.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -1802,7 +1802,7 @@
   {
     "email": "lovekumar@usgrpinc.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "usgrpinc.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -1811,7 +1811,7 @@
   {
     "email": "lowes.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "lowes.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -1820,7 +1820,7 @@
   {
     "email": "m.email-fordpassrewards.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "email-fordpassrewards.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -1829,7 +1829,7 @@
   {
     "email": "magwc.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "magwc.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -1838,7 +1838,7 @@
   {
     "email": "mail.carvana.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "carvana.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -1847,7 +1847,7 @@
   {
     "email": "mail.disneyplus.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "disneyplus.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -1856,7 +1856,7 @@
   {
     "email": "mail.fidelity.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "fidelity.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -1865,7 +1865,7 @@
   {
     "email": "mail.tdameritrade.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "tdameritrade.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -1874,7 +1874,7 @@
   {
     "email": "mailchimpapp.net",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "mailchimpapp.net",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -1883,7 +1883,7 @@
   {
     "email": "manasa@netvisionresources.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "netvisionresources.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -1892,7 +1892,7 @@
   {
     "email": "manish.kk@usgrpinc.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "usgrpinc.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -1901,7 +1901,7 @@
   {
     "email": "mansi.j@usgrpinc.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "usgrpinc.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -1910,7 +1910,7 @@
   {
     "email": "marketing@grandsierraresort.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "grandsierraresort.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -1919,7 +1919,7 @@
   {
     "email": "marketing@gurusofdance.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "gurusofdance.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -1928,7 +1928,7 @@
   {
     "email": "matt@vidyo.ai",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "vidyo.ai",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -1937,7 +1937,7 @@
   {
     "email": "matterport.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "matterport.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -1946,7 +1946,7 @@
   {
     "email": "mcinfo@ups.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "ups.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -1955,7 +1955,7 @@
   {
     "email": "medallia.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "medallia.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -1964,7 +1964,7 @@
   {
     "email": "medium.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "medium.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -1973,7 +1973,7 @@
   {
     "email": "meetup.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "meetup.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -1982,7 +1982,7 @@
   {
     "email": "member.americanexpress.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "americanexpress.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -1991,7 +1991,7 @@
   {
     "email": "membership@oaklandzoo.org",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "oaklandzoo.org",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -2000,7 +2000,7 @@
   {
     "email": "microsoft.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "microsoft.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -2009,7 +2009,7 @@
   {
     "email": "miltongranger.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "miltongranger.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -2018,7 +2018,7 @@
   {
     "email": "mint.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "mint.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -2027,7 +2027,7 @@
   {
     "email": "mint.intuit.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "intuit.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -2045,7 +2045,7 @@
   {
     "email": "moneycontrol.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "moneycontrol.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -2054,7 +2054,7 @@
   {
     "email": "mongodbteam@mail1.mongodb.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "mongodb.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -2063,7 +2063,7 @@
   {
     "email": "morganstanley.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "morganstanley.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -2072,7 +2072,7 @@
   {
     "email": "morningsave.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "morningsave.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -2081,7 +2081,7 @@
   {
     "email": "morningstar.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "morningstar.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -2090,7 +2090,7 @@
   {
     "email": "mpug.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "mpug.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -2099,7 +2099,7 @@
   {
     "email": "namecheap.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "namecheap.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -2108,7 +2108,7 @@
   {
     "email": "naor.giat@guidde.co",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "guidde.co",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -2117,7 +2117,7 @@
   {
     "email": "netflix.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "netflix.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -2126,7 +2126,7 @@
   {
     "email": "news.united.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "united.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -2135,7 +2135,7 @@
   {
     "email": "news@mail.maxfashion.in",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "maxfashion.in",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -2144,7 +2144,7 @@
   {
     "email": "newsletter@tesla.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "tesla.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -2153,7 +2153,7 @@
   {
     "email": "newyorktimes.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "newyorktimes.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -2162,7 +2162,7 @@
   {
     "email": "nextdoor.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "nextdoor.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -2171,7 +2171,7 @@
   {
     "email": "nike.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "nike.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -2180,7 +2180,7 @@
   {
     "email": "no.reply.alerts@chase.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "chase.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -2189,7 +2189,7 @@
   {
     "email": "no_reply@heygen.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "heygen.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -2198,7 +2198,7 @@
   {
     "email": "nonstopbhangra@gmail.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "gmail.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -2207,7 +2207,7 @@
   {
     "email": "no-reply@canva.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "canva.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -2216,7 +2216,7 @@
   {
     "email": "no-reply@d-id.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "d-id.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -2225,7 +2225,7 @@
   {
     "email": "noreply@email.influitive.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "influitive.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -2234,7 +2234,7 @@
   {
     "email": "noreply@epiqpay.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "epiqpay.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -2243,7 +2243,7 @@
   {
     "email": "noreply@google.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "google.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -2252,7 +2252,7 @@
   {
     "email": "noreply@keymate.ai",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "keymate.ai",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -2261,7 +2261,7 @@
   {
     "email": "no-reply@lyftmail.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "lyftmail.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -2270,7 +2270,7 @@
   {
     "email": "no-reply@messaging.peacocktv.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "peacocktv.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -2279,7 +2279,7 @@
   {
     "email": "noreply@messaging.squareup.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "squareup.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -2288,7 +2288,7 @@
   {
     "email": "noreply@propertyware.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "propertyware.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -2297,7 +2297,7 @@
   {
     "email": "no-reply@sender.skyscanner.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "skyscanner.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -2306,7 +2306,7 @@
   {
     "email": "noreply@tm.openai.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "openai.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -2315,7 +2315,7 @@
   {
     "email": "no-reply@ussquash.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "ussquash.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -2324,7 +2324,7 @@
   {
     "email": "noreply-ibkrcampus@interactivebrokers.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "interactivebrokers.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -2333,7 +2333,7 @@
   {
     "email": "noreply-maps-timeline@google.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "google.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -2342,7 +2342,7 @@
   {
     "email": "noreply-photos@google.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "google.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -2351,7 +2351,7 @@
   {
     "email": "noreply-travel@google.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "google.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -2360,7 +2360,7 @@
   {
     "email": "noresponse@interactivebrokers.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "interactivebrokers.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -2369,7 +2369,7 @@
   {
     "email": "notifications@chargepoint.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "chargepoint.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -2378,7 +2378,7 @@
   {
     "email": "nsdl.co.in",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "nsdl.co.in",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -2387,7 +2387,7 @@
   {
     "email": "nsdl.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "nsdl.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -2396,7 +2396,7 @@
   {
     "email": "nyandcompany.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "nyandcompany.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -2405,7 +2405,7 @@
   {
     "email": "nytimes.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "nytimes.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -2414,7 +2414,7 @@
   {
     "email": "o.delta.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "delta.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -2423,7 +2423,7 @@
   {
     "email": "onedrive.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "onedrive.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -2432,7 +2432,7 @@
   {
     "email": "ozgur@keymate.ai",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "keymate.ai",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -2441,7 +2441,7 @@
   {
     "email": "payback.in",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "payback.in",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -2450,7 +2450,7 @@
   {
     "email": "PayPal@emails.paypal.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "paypal.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -2459,7 +2459,7 @@
   {
     "email": "perfume.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "perfume.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -2468,7 +2468,7 @@
   {
     "email": "pioneer@notification-naviextras.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "notification-naviextras.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -2477,7 +2477,7 @@
   {
     "email": "pme@10times.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "10times.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -2486,7 +2486,7 @@
   {
     "email": "product-noreply@google.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "google.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -2495,7 +2495,7 @@
   {
     "email": "promo.newegg.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "newegg.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -2504,7 +2504,7 @@
   {
     "email": "prpsjeans.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "prpsjeans.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -2513,7 +2513,7 @@
   {
     "email": "questdiagnostics.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "questdiagnostics.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -2522,7 +2522,7 @@
   {
     "email": "quora.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "quora.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -2531,7 +2531,7 @@
   {
     "email": "raviodr99@aol.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "aol.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -2540,7 +2540,7 @@
   {
     "email": "realscout.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "realscout.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -2549,7 +2549,7 @@
   {
     "email": "redditmail.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "redditmail.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -2558,7 +2558,7 @@
   {
     "email": "redfin.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "redfin.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -2567,7 +2567,7 @@
   {
     "email": "reelgood.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "reelgood.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -2576,7 +2576,7 @@
   {
     "email": "reply@turbotenant.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "turbotenant.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -2585,7 +2585,7 @@
   {
     "email": "RMG@1105newsletters.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "1105newsletters.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -2594,7 +2594,7 @@
   {
     "email": "rxorder.walgreens.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "walgreens.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -2603,7 +2603,7 @@
   {
     "email": "sales@parts-stocked.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "parts-stocked.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -2612,7 +2612,7 @@
   {
     "email": "sbcglobal.net",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "sbcglobal.net",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -2621,7 +2621,7 @@
   {
     "email": "SeasonPass@epicpassmail.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "epicpassmail.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -2630,7 +2630,7 @@
   {
     "email": "security@facebookmail.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "facebookmail.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -2639,7 +2639,7 @@
   {
     "email": "selina.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "selina.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -2648,7 +2648,7 @@
   {
     "email": "service@iciciprulife.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "iciciprulife.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -2657,7 +2657,7 @@
   {
     "email": "service@mail2.zocdoc.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "zocdoc.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -2666,7 +2666,7 @@
   {
     "email": "service@mail5.zocdoc.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "zocdoc.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -2675,7 +2675,7 @@
   {
     "email": "service@paypal.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "paypal.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -2684,7 +2684,7 @@
   {
     "email": "services.discover.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "discover.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -2693,7 +2693,7 @@
   {
     "email": "services@custcomm.icicibank.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "icicibank.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -2702,7 +2702,7 @@
   {
     "email": "sfciti.org",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "sfciti.org",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -2711,7 +2711,7 @@
   {
     "email": "shelly.cloud",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "shelly.cloud",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -2720,7 +2720,7 @@
   {
     "email": "shift.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "shift.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -2729,7 +2729,7 @@
   {
     "email": "shopmoment.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "shopmoment.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -2738,7 +2738,7 @@
   {
     "email": "shoppersstop.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "shoppersstop.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -2747,7 +2747,7 @@
   {
     "email": "simplywall.st",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "simplywall.st",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -2756,7 +2756,7 @@
   {
     "email": "sqlservercentral.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "sqlservercentral.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -2765,7 +2765,7 @@
   {
     "email": "sqlskills.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "sqlskills.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -2774,7 +2774,7 @@
   {
     "email": "stadia-noreply@google.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "google.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -2783,7 +2783,7 @@
   {
     "email": "stocktwits.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "stocktwits.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -2792,7 +2792,7 @@
   {
     "email": "streamsets.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "streamsets.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -2801,7 +2801,7 @@
   {
     "email": "success@portainer.io",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "portainer.io",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -2810,7 +2810,7 @@
   {
     "email": "support@guidde.co",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "guidde.co",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -2819,7 +2819,7 @@
   {
     "email": "support@muzata.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "muzata.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -2828,7 +2828,7 @@
   {
     "email": "swadesfest@gmail.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "gmail.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -2837,7 +2837,7 @@
   {
     "email": "swiggy.in",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "swiggy.in",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -2846,7 +2846,7 @@
   {
     "email": "target.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "target.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -2855,7 +2855,7 @@
   {
     "email": "ThankYouRewards@thankyou.citi.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "citi.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -2864,7 +2864,7 @@
   {
     "email": "thekeyword-noreply@google.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "google.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -2873,7 +2873,7 @@
   {
     "email": "thekrazycouponlady.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "thekrazycouponlady.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -2882,7 +2882,7 @@
   {
     "email": "thepixelconnection.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "thepixelconnection.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -2900,7 +2900,7 @@
   {
     "email": "therealestatecpa.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "therealestatecpa.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -2909,7 +2909,7 @@
   {
     "email": "tickets@explorehidden.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "explorehidden.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -2918,7 +2918,7 @@
   {
     "email": "tigerdirect.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "tigerdirect.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -2927,7 +2927,7 @@
   {
     "email": "tikr.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "tikr.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -2936,7 +2936,7 @@
   {
     "email": "timeoutdubai.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "timeoutdubai.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -2945,7 +2945,7 @@
   {
     "email": "tipranks.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "tipranks.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -2954,7 +2954,7 @@
   {
     "email": "tripadvisor.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "tripadvisor.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -2963,7 +2963,7 @@
   {
     "email": "tripit.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "tripit.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -2972,7 +2972,7 @@
   {
     "email": "TruStage@email.trustage.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "trustage.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -2981,7 +2981,7 @@
   {
     "email": "uber.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "uber.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -2999,7 +2999,7 @@
   {
     "email": "united.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "united.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -3008,7 +3008,7 @@
   {
     "email": "update@e.nabshow.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "nabshow.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -3017,7 +3017,7 @@
   {
     "email": "viator.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "viator.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -3026,7 +3026,7 @@
   {
     "email": "virtualevents@cio.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "cio.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -3035,7 +3035,7 @@
   {
     "email": "walgreens.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "walgreens.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -3044,7 +3044,7 @@
   {
     "email": "wavebroadband.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "wavebroadband.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -3053,7 +3053,7 @@
   {
     "email": "way-portal@asuswebstorage.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "asuswebstorage.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -3062,7 +3062,7 @@
   {
     "email": "wellsfargoemail.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "wellsfargoemail.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -3071,7 +3071,7 @@
   {
     "email": "wondertechlabs.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "wondertechlabs.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -3080,7 +3080,7 @@
   {
     "email": "workspace-noreply@google.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "google.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -3089,7 +3089,7 @@
   {
     "email": "yourfriends@mygoodtape.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "mygoodtape.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -3098,7 +3098,7 @@
   {
     "email": "zen-makemytrip.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "zen-makemytrip.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -3107,7 +3107,7 @@
   {
     "email": "zillow.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "zillow.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -3116,7 +3116,7 @@
   {
     "email": "ziprecruiter.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "ziprecruiter.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -3125,7 +3125,7 @@
   {
     "email": "zomato.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "zomato.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -3134,7 +3134,7 @@
   {
     "email": "zyngamail.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "zyngamail.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -3143,7 +3143,7 @@
   {
     "email": "",
     "subdomain": "sales.temuemail.com",
-    "primaryDomain": "",
+    "primaryDomain": "temuemail.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -3152,7 +3152,7 @@
   {
     "email": "insights@99acres.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "99acres.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -3179,7 +3179,7 @@
   {
     "email": "orderstatus@costco.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "costco.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -3242,7 +3242,7 @@
   {
     "email": "News@insideapple.apple.com",
     "subdomain": "",
-    "primaryDomain": "",
+    "primaryDomain": "apple.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -3269,7 +3269,7 @@
   {
     "email": "",
     "subdomain": "ecampaigns.dell.com",
-    "primaryDomain": "",
+    "primaryDomain": "dell.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -3278,7 +3278,7 @@
   {
     "email": "",
     "subdomain": "e.mail.realtor.com",
-    "primaryDomain": "",
+    "primaryDomain": "realtor.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -3559,24 +3559,6 @@
     "subdomain": "",
     "primaryDomain": "godaddy.com",
     "subject": "Start selling with a free $499 POS device.",
-    "toEmails": "",
-    "ccEmails": "",
-    "excludeSubject": ""
-  },
-  {
-    "email": "",
-    "subdomain": "",
-    "primaryDomain": "anthem.com",
-    "subject": "Reminder: Earn your Fitbit and get your free scale",
-    "toEmails": "",
-    "ccEmails": "",
-    "excludeSubject": ""
-  },
-  {
-    "email": "",
-    "subdomain": "",
-    "primaryDomain": "anthem.com",
-    "subject": "Prakash, get a free smart scale and earn a Fitbit",
     "toEmails": "",
     "ccEmails": "",
     "excludeSubject": ""
@@ -4090,6 +4072,15 @@
     "subdomain": "",
     "primaryDomain": "co.in",
     "subject": "Funds/Securities Balance",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "",
+    "subdomain": "",
+    "primaryDomain": "anker.com",
+    "subject": "Reminder: Please Sign and Upload Your NDA",
     "toEmails": "",
     "ccEmails": "",
     "excludeSubject": ""

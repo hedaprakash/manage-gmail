@@ -61,21 +61,50 @@ def get_primary_domain(domain: str) -> str:
         return '.'.join(parts[-2:])
 
 
+def extract_domain_from_entry(entry: dict) -> str:
+    """Extract domain from any field that contains domain info."""
+    # Try primaryDomain first
+    domain = entry.get('primaryDomain', '').strip()
+    if domain:
+        return domain
+
+    # Try subdomain field (might contain full domain or email)
+    subdomain = entry.get('subdomain', '').strip()
+    if subdomain:
+        if '@' in subdomain:
+            return subdomain.split('@')[-1]
+        else:
+            return subdomain
+
+    # Try email field - might be full email OR just domain
+    email = entry.get('email', '').strip()
+    if email:
+        if '@' in email:
+            return email.split('@')[-1]
+        elif '.' in email:
+            # It's a domain in the email field (common pattern)
+            return email
+
+    return ''
+
+
 def group_by_domain(entries: list) -> dict:
     """Group entries by primary domain with subdomain breakdown."""
     grouped = defaultdict(lambda: {'subdomains': defaultdict(list), 'entries': []})
 
     for entry in entries:
-        domain = entry.get('primaryDomain', '') or entry.get('email', '').split('@')[-1] if '@' in entry.get('email', '') else ''
-        subdomain = entry.get('subdomain', '')
+        domain = extract_domain_from_entry(entry)
+        subdomain_field = entry.get('subdomain', '').strip()
 
         if domain:
             primary = get_primary_domain(domain)
             grouped[primary]['entries'].append(entry)
 
-            # Track subdomain if different from primary
-            if subdomain and subdomain != primary:
-                grouped[primary]['subdomains'][subdomain].append(entry)
+            # Track subdomain if it's a full domain different from primary
+            if subdomain_field and '@' not in subdomain_field:
+                subdomain_primary = get_primary_domain(subdomain_field)
+                if subdomain_field != subdomain_primary:
+                    grouped[primary]['subdomains'][subdomain_field].append(entry)
 
     return grouped
 
@@ -172,8 +201,9 @@ def print_summary():
         count = len(entries)
         total += count
 
-        # Count unique domains
-        domains = set(e.get('primaryDomain', '') for e in entries if e.get('primaryDomain'))
+        # Count unique domains using proper extraction
+        domains = set(get_primary_domain(extract_domain_from_entry(e)) for e in entries)
+        domains.discard('')  # Remove empty strings
 
         print(f"\n  {name}")
         print(f"    Rules: {count}")
@@ -183,7 +213,7 @@ def print_summary():
             # Show top 5 domains by rule count
             domain_counts = defaultdict(int)
             for e in entries:
-                d = e.get('primaryDomain', 'unknown')
+                d = get_primary_domain(extract_domain_from_entry(e)) or 'unknown'
                 domain_counts[d] += 1
 
             top = sorted(domain_counts.items(), key=lambda x: x[1], reverse=True)[:5]
