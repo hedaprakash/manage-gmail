@@ -376,5 +376,113 @@
     "toEmails": "",
     "ccEmails": "",
     "excludeSubject": "login, device"
+  },
+  {
+    "email": "",
+    "subdomain": "",
+    "primaryDomain": "icicibank.com",
+    "subject": "Request for Funds transfer in",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "",
+    "subdomain": "",
+    "primaryDomain": "icicibank.com",
+    "subject": "Updation of Non-Resident statu",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "",
+    "subdomain": "",
+    "primaryDomain": "icicibank.com",
+    "subject": "Payee Add Confirmation for you",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "",
+    "subdomain": "",
+    "primaryDomain": "icicibank.com",
+    "subject": "Transaction alert for your ICI",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "",
+    "subdomain": "",
+    "primaryDomain": "icicibank.com",
+    "subject": "Alert for transaction through",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "",
+    "subdomain": "",
+    "primaryDomain": "icicibank.com",
+    "subject": "Grid Card Authentication (GCA)",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "",
+    "subdomain": "",
+    "primaryDomain": "icicibank.com",
+    "subject": "OTP confirmation alert for you",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "",
+    "subdomain": "",
+    "primaryDomain": "icicibank.com",
+    "subject": "OTP to log in to Money2India U",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "",
+    "subdomain": "",
+    "primaryDomain": "google.com",
+    "subject": "Security alert",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "",
+    "subdomain": "",
+    "primaryDomain": "google.com",
+    "subject": "Security alert for prakash.hed",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "",
+    "subdomain": "",
+    "primaryDomain": "google.com",
+    "subject": "Security alert for phedadba@gm",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "",
+    "subdomain": "",
+    "primaryDomain": "google.com",
+    "subject": "Critical security alert",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
   }
 ]

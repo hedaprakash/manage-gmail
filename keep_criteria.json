@@ -1,0 +1,29 @@
+[
+  {
+    "email": "",
+    "subdomain": "",
+    "primaryDomain": "icicibank.com",
+    "subject": "Nominee updation for your ICICI Bank Account",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "",
+    "subdomain": "",
+    "primaryDomain": "icicibank.com",
+    "subject": "ICICI Bank Statement from November 01, 2025 to Nov",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "",
+    "subdomain": "",
+    "primaryDomain": "icicibank.com",
+    "subject": "Form 16A (TDS certificate) for the period July 1 t",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  }
+]

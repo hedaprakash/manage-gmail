@@ -22,7 +22,8 @@ logger = logging.getLogger(__name__)
 # File paths
 CRITERIA_FILE = 'criteria.json'
 CRITERIA_1DAY_FILE = 'criteria_1day_old.json'
-KEEP_LIST_FILE = 'logs/keep_list.json'
+KEEP_CRITERIA_FILE = 'keep_criteria.json'  # Safe list - emails matching these are NEVER deleted
+KEEP_LIST_FILE = 'logs/keep_list.json'  # Log of keep decisions
 CURRENT_REPORT_FILE = 'logs/current_report.html'
 
 
@@ -62,6 +63,39 @@ def is_duplicate_criteria(criteria_list, new_entry):
             entry.get('subject', '').lower() == new_entry.get('subject', '').lower()):
             return True
     return False
+
+
+def matches_criteria_pattern(entry, domain, subject_pattern):
+    """Check if a criteria entry matches the given domain and subject pattern."""
+    entry_domain = entry.get('primaryDomain', '').lower()
+    entry_subject = entry.get('subject', '').lower()
+
+    domain_lower = domain.lower() if domain else ''
+    subject_lower = subject_pattern.lower() if subject_pattern else ''
+
+    # Match if domain matches AND (subject matches OR either subject is empty)
+    if entry_domain == domain_lower:
+        if not entry_subject or not subject_lower:
+            return True
+        if entry_subject in subject_lower or subject_lower in entry_subject:
+            return True
+    return False
+
+
+def remove_from_criteria(domain, subject_pattern):
+    """Remove matching entries from criteria.json. Returns count of removed entries."""
+    criteria = load_json_file(CRITERIA_FILE)
+    original_count = len(criteria)
+
+    # Filter out matching entries
+    criteria = [c for c in criteria if not matches_criteria_pattern(c, domain, subject_pattern)]
+
+    removed_count = original_count - len(criteria)
+    if removed_count > 0:
+        save_json_file(CRITERIA_FILE, criteria)
+        logger.info(f"Removed {removed_count} entries from criteria.json for {domain}")
+
+    return removed_count
 
 
 @app.route('/')
@@ -160,7 +194,7 @@ def add_criteria_1day():
 
 @app.route('/api/mark-keep', methods=['POST'])
 def mark_keep():
-    """Mark an email pattern as 'keep' for future reference."""
+    """Mark an email pattern as 'keep' - removes from delete criteria AND adds to safe list."""
     try:
         data = request.json
         domain = data.get('domain')
@@ -170,26 +204,50 @@ def mark_keep():
         if not domain:
             return jsonify({'success': False, 'error': 'Domain is required'}), 400
 
-        # Load existing keep list
-        keep_list = load_json_file(KEEP_LIST_FILE)
+        # 1. FIRST: Remove from criteria.json if present (undo auto-add for PROMO)
+        removed_count = remove_from_criteria(domain, subject_pattern)
 
-        # Add entry with timestamp
-        keep_entry = {
+        # 2. Add to keep_criteria.json (the actual safe list used by delete_gmails.py)
+        keep_criteria = load_json_file(KEEP_CRITERIA_FILE)
+
+        # Create criteria entry in same format as delete criteria
+        keep_entry = create_criteria_entry(domain, subject_pattern)
+
+        # Check for duplicates
+        added_to_keep = False
+        if not is_duplicate_criteria(keep_criteria, keep_entry):
+            keep_criteria.append(keep_entry)
+            save_json_file(KEEP_CRITERIA_FILE, keep_criteria)
+            added_to_keep = True
+            logger.info(f"Added to safe list: {domain} (subject: {subject_pattern})")
+
+        # 3. Also log to keep_list.json for reference with timestamp
+        keep_list = load_json_file(KEEP_LIST_FILE)
+        log_entry = {
             'domain': domain,
             'subject_pattern': subject_pattern,
             'category': category,
-            'marked_at': datetime.now().isoformat()
+            'marked_at': datetime.now().isoformat(),
+            'removed_from_delete': removed_count
         }
-
-        keep_list.append(keep_entry)
+        keep_list.append(log_entry)
         save_json_file(KEEP_LIST_FILE, keep_list)
 
-        logger.info(f"Marked as keep: {domain} (subject: {subject_pattern})")
+        # Build response message
+        message_parts = []
+        if removed_count > 0:
+            message_parts.append(f'Removed {removed_count} from delete criteria')
+        if added_to_keep:
+            message_parts.append(f'Added to safe list ({len(keep_criteria)} protected)')
+        else:
+            message_parts.append('Already in safe list')
 
         return jsonify({
             'success': True,
-            'message': 'Marked as keep',
-            'entry': keep_entry
+            'message': ' | '.join(message_parts),
+            'entry': keep_entry,
+            'total_protected': len(keep_criteria),
+            'removed_from_delete': removed_count
         })
 
     except Exception as e:

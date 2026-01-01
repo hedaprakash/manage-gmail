@@ -244,6 +244,66 @@ def group_emails_by_pattern(email_details):
     return grouped
 
 
+def auto_add_promo_to_criteria(logger, grouped):
+    """
+    Auto-add PROMO and NEWSLETTER patterns to criteria.json.
+
+    Returns the count of patterns added.
+    """
+    CRITERIA_FILE = 'criteria.json'
+
+    # Load existing criteria
+    if os.path.exists(CRITERIA_FILE):
+        with open(CRITERIA_FILE, 'r', encoding='utf-8') as f:
+            criteria = json.load(f)
+    else:
+        criteria = []
+
+    # Helper to check if criteria already exists
+    def is_duplicate(domain, subject):
+        domain_lower = domain.lower()
+        subject_lower = subject.lower() if subject else ''
+        for entry in criteria:
+            if (entry.get('primaryDomain', '').lower() == domain_lower and
+                entry.get('subject', '').lower() == subject_lower):
+                return True
+        return False
+
+    # Helper to create criteria entry
+    def create_entry(domain, subject):
+        return {
+            "email": "",
+            "subdomain": "",
+            "primaryDomain": domain,
+            "subject": subject,
+            "toEmails": "",
+            "ccEmails": "",
+            "excludeSubject": ""
+        }
+
+    added_count = 0
+    promo_categories = ['PROMO', 'NEWSLETTER']
+
+    for domain, patterns in grouped.items():
+        for pattern_key, pattern_data in patterns.items():
+            category = pattern_data.get('category', 'UNKNOWN')
+
+            if category in promo_categories:
+                subject = pattern_data.get('subject_sample', '')
+
+                if not is_duplicate(domain, subject):
+                    criteria.append(create_entry(domain, subject))
+                    added_count += 1
+                    logger.debug(f"Auto-added PROMO: {domain} - {subject[:30]}...")
+
+    if added_count > 0:
+        with open(CRITERIA_FILE, 'w', encoding='utf-8') as f:
+            json.dump(criteria, f, indent=2, ensure_ascii=False)
+        logger.info(f"Auto-added {added_count} PROMO/NEWSLETTER patterns to criteria.json")
+
+    return added_count
+
+
 def generate_interactive_html(email_details, grouped, output_path):
     """Generates an interactive HTML report with action buttons."""
 
@@ -324,18 +384,33 @@ def generate_interactive_html(email_details, grouped, output_path):
             background: #1a73e8;
             color: white;
             padding: 12px 20px;
-            cursor: pointer;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            gap: 10px;
         }}
         .domain-header:hover {{ background: #1557b0; }}
+        .domain-info {{
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            flex: 1;
+        }}
         .domain-name {{ font-weight: bold; font-size: 1.1em; }}
         .domain-count {{
             background: rgba(255,255,255,0.2);
             padding: 4px 12px;
             border-radius: 15px;
             font-size: 0.9em;
+        }}
+        .domain-actions {{
+            display: flex;
+            gap: 6px;
+        }}
+        .domain-actions .action-btn {{
+            padding: 4px 8px;
+            font-size: 0.75em;
         }}
 
         .pattern-list {{ display: none; }}
@@ -363,11 +438,41 @@ def generate_interactive_html(email_details, grouped, output_path):
             font-size: 0.95em;
             color: #333;
             margin-bottom: 3px;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
+            user-select: text;
+            cursor: text;
         }}
         .pattern-count {{ font-size: 0.85em; color: #666; }}
+
+        /* Selection indicator */
+        .selection-indicator {{
+            position: fixed;
+            bottom: 70px;
+            right: 20px;
+            background: #1a73e8;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 8px;
+            display: none;
+            z-index: 1001;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            max-width: 300px;
+        }}
+        .selection-indicator.show {{ display: block; }}
+        .selection-text {{
+            font-size: 0.85em;
+            margin-bottom: 8px;
+            word-break: break-word;
+        }}
+        .selection-btn {{
+            background: white;
+            color: #1a73e8;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 500;
+        }}
+        .selection-btn:hover {{ background: #e8f0fe; }}
 
         .action-buttons {{ display: flex; gap: 8px; flex-shrink: 0; }}
         .action-btn {{
@@ -517,11 +622,22 @@ def generate_interactive_html(email_details, grouped, output_path):
             </div>
 '''
 
+        # Collect all subject patterns for this domain (for domain-level keep)
+        all_subjects = [p['subject_sample'] for p in patterns.values()]
+        subjects_json = json.dumps(all_subjects).replace("'", "\\'")
+
         html += f'''
         <div class="domain-section" data-domain="{domain}">
-            <div class="domain-header" onclick="toggleSection(this)">
-                <span class="domain-name">{domain}</span>
-                <span class="domain-count">{domain_count} emails</span>
+            <div class="domain-header">
+                <div class="domain-info" onclick="toggleSection(this.parentElement)">
+                    <span class="domain-name">{domain}</span>
+                    <span class="domain-count">{domain_count} emails</span>
+                </div>
+                <div class="domain-actions">
+                    <button class="action-btn btn-keep" onclick="event.stopPropagation(); keepAllDomain(this, '{domain}', {subjects_json})">Keep All</button>
+                    <button class="action-btn btn-delete" onclick="event.stopPropagation(); deleteAllDomain(this, '{domain}')">Del All</button>
+                    <button class="action-btn btn-delete-1d" onclick="event.stopPropagation(); deleteAllDomain1d(this, '{domain}')">Del 1d All</button>
+                </div>
             </div>
             <div class="pattern-list">
                 {pattern_items}
@@ -536,12 +652,22 @@ def generate_interactive_html(email_details, grouped, output_path):
     </div>
 
     <div id="toast" class="toast"></div>
+    <div id="selectionIndicator" class="selection-indicator">
+        <div class="selection-text">Keep: "<span id="selectedText"></span>"</div>
+        <button class="selection-btn" onclick="keepSelectedText()">Keep Selected</button>
+    </div>
 
     <script>
+        let currentSelectionDomain = null;
+        let currentSelectionSubject = null;
         const API_BASE = 'http://localhost:5000';
 
         function toggleSection(header) {{
-            header.nextElementSibling.classList.toggle('active');
+            // header is domain-header, pattern-list is its next sibling
+            const patternList = header.nextElementSibling;
+            if (patternList) {{
+                patternList.classList.toggle('active');
+            }}
         }}
 
         function showToast(message, isError = false) {{
@@ -647,6 +773,126 @@ def generate_interactive_html(email_details, grouped, output_path):
             }});
         }}
 
+        // Domain-level actions
+        function keepAllDomain(btn, domain, subjects) {{
+            btn.disabled = true;
+            btn.textContent = 'Keeping...';
+
+            // Keep each subject pattern
+            const promises = subjects.map(subject =>
+                fetch(API_BASE + '/api/mark-keep', {{
+                    method: 'POST',
+                    headers: {{'Content-Type': 'application/json'}},
+                    body: JSON.stringify({{domain, subject_pattern: subject, category: 'BULK'}})
+                }}).then(r => r.json())
+            );
+
+            Promise.all(promises).then(results => {{
+                const successCount = results.filter(r => r.success).length;
+                btn.classList.add('done');
+                btn.textContent = '✓ Kept All';
+                showToast(`Kept ${{successCount}} patterns from ${{domain}}`);
+            }}).catch(e => {{
+                btn.disabled = false;
+                btn.textContent = 'Keep All';
+                showToast('Error keeping patterns', true);
+            }});
+        }}
+
+        function deleteAllDomain(btn, domain) {{
+            fetch(API_BASE + '/api/add-criteria', {{
+                method: 'POST',
+                headers: {{'Content-Type': 'application/json'}},
+                body: JSON.stringify({{domain, subject_pattern: ''}})  // Empty = all from domain
+            }})
+            .then(r => r.json())
+            .then(data => {{
+                if (data.success) {{
+                    btn.classList.add('done');
+                    btn.textContent = '✓ Added';
+                    btn.disabled = true;
+                    showToast(`Added ${{domain}} to delete criteria`);
+                }} else {{
+                    showToast(data.error || 'Error', true);
+                }}
+            }})
+            .catch(e => showToast('Server error', true));
+        }}
+
+        function deleteAllDomain1d(btn, domain) {{
+            fetch(API_BASE + '/api/add-criteria-1d', {{
+                method: 'POST',
+                headers: {{'Content-Type': 'application/json'}},
+                body: JSON.stringify({{domain, subject_pattern: ''}})  // Empty = all from domain
+            }})
+            .then(r => r.json())
+            .then(data => {{
+                if (data.success) {{
+                    btn.classList.add('done');
+                    btn.textContent = '✓ Added';
+                    btn.disabled = true;
+                    showToast(`Added ${{domain}} to 1-day delete criteria`);
+                }} else {{
+                    showToast(data.error || 'Error', true);
+                }}
+            }})
+            .catch(e => showToast('Server error', true));
+        }}
+
+        // Text selection handling
+        document.addEventListener('mouseup', function(e) {{
+            const selection = window.getSelection().toString().trim();
+            const indicator = document.getElementById('selectionIndicator');
+
+            if (selection.length > 3) {{
+                // Find which pattern-item this selection is in
+                const patternItem = e.target.closest('.pattern-item');
+                if (patternItem) {{
+                    const domain = patternItem.closest('.domain-section').dataset.domain;
+                    currentSelectionDomain = domain;
+                    currentSelectionSubject = selection;
+
+                    document.getElementById('selectedText').textContent =
+                        selection.length > 40 ? selection.substring(0, 40) + '...' : selection;
+                    indicator.classList.add('show');
+                }}
+            }} else {{
+                indicator.classList.remove('show');
+            }}
+        }});
+
+        // Hide selection indicator when clicking elsewhere
+        document.addEventListener('mousedown', function(e) {{
+            if (!e.target.closest('.selection-indicator') && !e.target.closest('.pattern-subject')) {{
+                document.getElementById('selectionIndicator').classList.remove('show');
+            }}
+        }});
+
+        function keepSelectedText() {{
+            if (!currentSelectionDomain || !currentSelectionSubject) return;
+
+            fetch(API_BASE + '/api/mark-keep', {{
+                method: 'POST',
+                headers: {{'Content-Type': 'application/json'}},
+                body: JSON.stringify({{
+                    domain: currentSelectionDomain,
+                    subject_pattern: currentSelectionSubject,
+                    category: 'SELECTED'
+                }})
+            }})
+            .then(r => r.json())
+            .then(data => {{
+                if (data.success) {{
+                    showToast(`Kept pattern: "${{currentSelectionSubject.substring(0, 30)}}..."`);
+                    document.getElementById('selectionIndicator').classList.remove('show');
+                    window.getSelection().removeAllRanges();
+                }} else {{
+                    showToast(data.error || 'Error', true);
+                }}
+            }})
+            .catch(e => showToast('Server error', true));
+        }}
+
         // Expand first few domains by default
         document.querySelectorAll('.pattern-list').forEach((el, i) => {{
             if (i < 5) el.classList.add('active');
@@ -734,6 +980,13 @@ def main():
         for email in email_details:
             category_counts[email.get('category', 'UNKNOWN')] += 1
         logger.info(f"Category breakdown: {dict(category_counts)}")
+
+        # Auto-add PROMO/NEWSLETTER patterns to delete criteria
+        promo_count = category_counts.get('PROMO', 0) + category_counts.get('NEWSLETTER', 0)
+        if promo_count > 0:
+            added = auto_add_promo_to_criteria(logger, grouped)
+            if added > 0:
+                logger.info(f"PROMO emails will be deleted unless you click 'Keep' to override.")
 
         # Generate interactive HTML report
         html_path = f"logs/email_report_{time.strftime('%Y%m%d_%H%M%S')}.html"
