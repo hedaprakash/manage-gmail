@@ -12,10 +12,12 @@ import os
 import sys
 import time
 import json
+import glob
 import logging
+import argparse
 import webbrowser
 import threading
-from datetime import datetime
+from datetime import datetime, timedelta
 from collections import defaultdict
 from google.auth.transport.requests import Request
 from google.oauth2.credentials import Credentials
@@ -302,6 +304,98 @@ def auto_add_promo_to_criteria(logger, grouped):
         logger.info(f"Auto-added {added_count} PROMO/NEWSLETTER patterns to criteria.json")
 
     return added_count
+
+
+def find_cached_json():
+    """
+    Find the most recent cached JSON file and check its age.
+
+    Returns:
+        tuple: (filepath, age_hours) or (None, None) if no cache exists
+    """
+    cache_files = glob.glob('logs/emails_categorized_*.json')
+    if not cache_files:
+        return None, None
+
+    # Sort by modification time (most recent first)
+    cache_files.sort(key=os.path.getmtime, reverse=True)
+    most_recent = cache_files[0]
+
+    # Calculate age in hours
+    file_mtime = os.path.getmtime(most_recent)
+    age_seconds = time.time() - file_mtime
+    age_hours = age_seconds / 3600
+
+    return most_recent, age_hours
+
+
+def load_cached_emails(logger, cache_path):
+    """Load emails from cached JSON file."""
+    logger.info(f"Loading cached data from {cache_path}")
+    with open(cache_path, 'r', encoding='utf-8') as f:
+        return json.load(f)
+
+
+def load_existing_criteria():
+    """Load existing criteria.json and keep_criteria.json for filtering."""
+    criteria = []
+    keep_criteria = []
+
+    if os.path.exists('criteria.json'):
+        with open('criteria.json', 'r', encoding='utf-8') as f:
+            criteria = json.load(f)
+
+    if os.path.exists('keep_criteria.json'):
+        with open('keep_criteria.json', 'r', encoding='utf-8') as f:
+            keep_criteria = json.load(f)
+
+    return criteria, keep_criteria
+
+
+def matches_any_criteria(domain, subject, criteria_list):
+    """Check if domain/subject matches any criteria in the list."""
+    domain_lower = domain.lower() if domain else ''
+    subject_lower = subject.lower() if subject else ''
+
+    for c in criteria_list:
+        c_domain = c.get('primaryDomain', '').lower()
+        c_subject = c.get('subject', '').lower()
+
+        if c_domain and c_domain in domain_lower:
+            # Domain matches
+            if not c_subject:
+                # No subject filter = matches all from domain
+                return True
+            if c_subject in subject_lower:
+                # Subject also matches
+                return True
+
+    return False
+
+
+def filter_decided_emails(grouped, criteria, keep_criteria):
+    """
+    Remove patterns that already have a decision (in criteria or keep_criteria).
+
+    Returns filtered grouped dict and count of removed patterns.
+    """
+    filtered = defaultdict(dict)
+    removed_count = 0
+
+    for domain, patterns in grouped.items():
+        for pattern_key, pattern_data in patterns.items():
+            subject = pattern_data.get('subject_sample', '')
+
+            # Check if this pattern is already decided
+            in_delete = matches_any_criteria(domain, subject, criteria)
+            in_keep = matches_any_criteria(domain, subject, keep_criteria)
+
+            if in_delete or in_keep:
+                removed_count += pattern_data.get('count', 1)
+            else:
+                filtered[domain][pattern_key] = pattern_data
+
+    return dict(filtered), removed_count
 
 
 def generate_interactive_html(email_details, grouped, output_path):
@@ -778,28 +872,41 @@ def generate_interactive_html(email_details, grouped, output_path):
             btn.disabled = true;
             btn.textContent = 'Keeping...';
 
-            // Keep each subject pattern
-            const promises = subjects.map(subject =>
-                fetch(API_BASE + '/api/mark-keep', {{
-                    method: 'POST',
-                    headers: {{'Content-Type': 'application/json'}},
-                    body: JSON.stringify({{domain, subject_pattern: subject, category: 'BULK'}})
-                }}).then(r => r.json())
-            );
-
-            Promise.all(promises).then(results => {{
-                const successCount = results.filter(r => r.success).length;
-                btn.classList.add('done');
-                btn.textContent = '✓ Kept All';
-                showToast(`Kept ${{successCount}} patterns from ${{domain}}`);
-            }}).catch(e => {{
+            // Add single domain-only entry (protects ALL from this domain)
+            fetch(API_BASE + '/api/mark-keep', {{
+                method: 'POST',
+                headers: {{'Content-Type': 'application/json'}},
+                body: JSON.stringify({{domain, subject_pattern: '', category: 'DOMAIN'}})
+            }})
+            .then(r => r.json())
+            .then(data => {{
+                if (data.success) {{
+                    btn.classList.add('done');
+                    btn.textContent = '✓ Kept All';
+                    showToast(`Protected all emails from ${{domain}}`);
+                    // Hide this domain section since it's now decided
+                    const section = btn.closest('.domain-section');
+                    if (section) {{
+                        section.style.opacity = '0.5';
+                        section.querySelectorAll('.action-btn').forEach(b => b.disabled = true);
+                    }}
+                }} else {{
+                    btn.disabled = false;
+                    btn.textContent = 'Keep All';
+                    showToast(data.error || 'Error', true);
+                }}
+            }})
+            .catch(e => {{
                 btn.disabled = false;
                 btn.textContent = 'Keep All';
-                showToast('Error keeping patterns', true);
+                showToast('Server error', true);
             }});
         }}
 
         function deleteAllDomain(btn, domain) {{
+            btn.disabled = true;
+            btn.textContent = 'Adding...';
+
             fetch(API_BASE + '/api/add-criteria', {{
                 method: 'POST',
                 headers: {{'Content-Type': 'application/json'}},
@@ -809,17 +916,31 @@ def generate_interactive_html(email_details, grouped, output_path):
             .then(data => {{
                 if (data.success) {{
                     btn.classList.add('done');
-                    btn.textContent = '✓ Added';
-                    btn.disabled = true;
+                    btn.textContent = '✓ Del All';
                     showToast(`Added ${{domain}} to delete criteria`);
+                    // Dim section since it's decided
+                    const section = btn.closest('.domain-section');
+                    if (section) {{
+                        section.style.opacity = '0.5';
+                        section.querySelectorAll('.action-btn').forEach(b => b.disabled = true);
+                    }}
                 }} else {{
+                    btn.disabled = false;
+                    btn.textContent = 'Del All';
                     showToast(data.error || 'Error', true);
                 }}
             }})
-            .catch(e => showToast('Server error', true));
+            .catch(e => {{
+                btn.disabled = false;
+                btn.textContent = 'Del All';
+                showToast('Server error', true);
+            }});
         }}
 
         function deleteAllDomain1d(btn, domain) {{
+            btn.disabled = true;
+            btn.textContent = 'Adding...';
+
             fetch(API_BASE + '/api/add-criteria-1d', {{
                 method: 'POST',
                 headers: {{'Content-Type': 'application/json'}},
@@ -829,14 +950,25 @@ def generate_interactive_html(email_details, grouped, output_path):
             .then(data => {{
                 if (data.success) {{
                     btn.classList.add('done');
-                    btn.textContent = '✓ Added';
-                    btn.disabled = true;
+                    btn.textContent = '✓ Del 1d';
                     showToast(`Added ${{domain}} to 1-day delete criteria`);
+                    // Dim section since it's decided
+                    const section = btn.closest('.domain-section');
+                    if (section) {{
+                        section.style.opacity = '0.5';
+                        section.querySelectorAll('.action-btn').forEach(b => b.disabled = true);
+                    }}
                 }} else {{
+                    btn.disabled = false;
+                    btn.textContent = 'Del 1d All';
                     showToast(data.error || 'Error', true);
                 }}
             }})
-            .catch(e => showToast('Server error', true));
+            .catch(e => {{
+                btn.disabled = false;
+                btn.textContent = 'Del 1d All';
+                showToast('Server error', true);
+            }});
         }}
 
         // Text selection handling
@@ -927,6 +1059,12 @@ def start_server_background():
 
 def main():
     """Main function to run the email categorization script."""
+    # Parse arguments
+    parser = argparse.ArgumentParser(description='Categorize and review Gmail emails.')
+    parser.add_argument('--refresh', action='store_true',
+                        help='Force refresh from Gmail API (ignore cache)')
+    args = parser.parse_args()
+
     # Setup logging - all output goes to logs folder
     if not os.path.exists('logs'):
         os.makedirs('logs')
@@ -953,23 +1091,41 @@ def main():
     logger.info("Starting email categorization with classification...")
 
     try:
-        # Authenticate
-        creds = get_credentials()
-        gmail_service = build('gmail', 'v1', credentials=creds)
-        logger.info("Gmail authentication successful.")
+        # Check for cached data first (unless --refresh is specified)
+        cache_path, cache_age = find_cached_json()
+        use_cache = False
 
-        # Fetch ALL unread emails (with pagination)
-        email_details = fetch_all_unread_emails(logger, gmail_service)
+        if args.refresh:
+            logger.info("--refresh flag specified, fetching from Gmail API...")
+        elif cache_path is None:
+            logger.info("No cached data found, fetching from Gmail API...")
+        elif cache_age > 5:
+            logger.info(f"Cache is {cache_age:.1f} hours old (>5h), refreshing from Gmail API...")
+        else:
+            use_cache = True
+            logger.info(f"Using cached data from {os.path.basename(cache_path)} ({cache_age:.1f} hours old)")
 
-        if not email_details:
-            logger.info("No unread emails found.")
-            return
+        if use_cache:
+            # Load from cache
+            email_details = load_cached_emails(logger, cache_path)
+            logger.info(f"Loaded {len(email_details)} emails from cache.")
+        else:
+            # Fetch from Gmail API
+            creds = get_credentials()
+            gmail_service = build('gmail', 'v1', credentials=creds)
+            logger.info("Gmail authentication successful.")
 
-        # Save raw JSON data to logs folder
-        json_path = f"logs/emails_categorized_{time.strftime('%Y%m%d_%H%M%S')}.json"
-        with open(json_path, 'w', encoding='utf-8') as f:
-            json.dump(email_details, f, indent=2, ensure_ascii=False)
-        logger.info(f"Saved raw data to {json_path}")
+            email_details = fetch_all_unread_emails(logger, gmail_service)
+
+            if not email_details:
+                logger.info("No unread emails found.")
+                return
+
+            # Save raw JSON data to logs folder
+            json_path = f"logs/emails_categorized_{time.strftime('%Y%m%d_%H%M%S')}.json"
+            with open(json_path, 'w', encoding='utf-8') as f:
+                json.dump(email_details, f, indent=2, ensure_ascii=False)
+            logger.info(f"Saved raw data to {json_path}")
 
         # Group emails by domain and subject pattern
         grouped = group_emails_by_pattern(email_details)
@@ -987,6 +1143,24 @@ def main():
             added = auto_add_promo_to_criteria(logger, grouped)
             if added > 0:
                 logger.info(f"PROMO emails will be deleted unless you click 'Keep' to override.")
+
+        # Filter out already-decided emails (in criteria.json or keep_criteria.json)
+        criteria, keep_criteria = load_existing_criteria()
+        grouped, removed_count = filter_decided_emails(grouped, criteria, keep_criteria)
+
+        if removed_count > 0:
+            logger.info(f"Filtered out {removed_count} emails with existing decisions.")
+
+        # Count remaining undecided emails
+        remaining_emails = sum(
+            sum(p['count'] for p in patterns.values())
+            for patterns in grouped.values()
+        )
+        logger.info(f"Showing {remaining_emails} undecided emails in {len(grouped)} domains.")
+
+        if not grouped:
+            logger.info("All emails have been categorized! No undecided emails remaining.")
+            return
 
         # Generate interactive HTML report
         html_path = f"logs/email_report_{time.strftime('%Y%m%d_%H%M%S')}.html"
