@@ -29,14 +29,14 @@
 ### In Progress
 | Task | Status |
 |------|--------|
-| Review page component | 🔄 hooks created, need page |
-| Copy criteria JSON files | ⏳ pending |
+| E2E tests with Playwright | ⏳ pending |
 
-### Pending
-- Stats page
-- CriteriaManager page
-- Execute page
-- E2E tests with Playwright
+### Completed Since Last Update
+- ✅ Review page with domain sections
+- ✅ Stats page with statistics cards
+- ✅ CriteriaManager page with CRUD table
+- ✅ Execute page with preview/delete controls
+- ✅ All servers running (Vite:3000, Express:5000)
 
 ### Files Created in gmail-dashboard/
 ```
