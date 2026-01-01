@@ -13,9 +13,9 @@ import {
   removeFromCriteria,
   CRITERIA_FILE,
   CRITERIA_1DAY_FILE,
-  KEEP_CRITERIA_FILE,
-  KEEP_LIST_FILE
+  KEEP_CRITERIA_FILE
 } from '../services/criteria.js';
+import { logKeep, logDelete, logDelete1d, logUndo } from '../services/actionLogger.js';
 import type { CriteriaEntry } from '../types/index.js';
 
 const router = Router();
@@ -49,6 +49,9 @@ router.post('/add-criteria', (req: Request, res: Response) => {
 
     criteria.push(newEntry);
     saveJsonFile(CRITERIA_FILE, criteria);
+
+    // Log the action
+    logDelete(domain, subject_pattern || '');
 
     console.log(`Added criteria: ${domain} (subject: ${subject_pattern || '(all)'})`);
 
@@ -96,6 +99,9 @@ router.post('/add-criteria-1d', (req: Request, res: Response) => {
 
     criteria.push(newEntry);
     saveJsonFile(CRITERIA_1DAY_FILE, criteria);
+
+    // Log the action
+    logDelete1d(domain, subject_pattern || '');
 
     console.log(`Added 1-day criteria: ${domain} (subject: ${subject_pattern || '(all)'})`);
 
@@ -145,17 +151,8 @@ router.post('/mark-keep', (req: Request, res: Response) => {
       console.log(`Added to safe list: ${domain} (subject: ${subject_pattern || '(all)'})`);
     }
 
-    // 3. Log to keep_list.json for reference with timestamp
-    const keepList = loadJsonFile<any>(KEEP_LIST_FILE);
-    const logEntry = {
-      domain,
-      subject_pattern: subject_pattern || '',
-      category: category || 'UNKNOWN',
-      marked_at: new Date().toISOString(),
-      removed_from_delete: removedCount
-    };
-    keepList.push(logEntry);
-    saveJsonFile(KEEP_LIST_FILE, keepList);
+    // Log the action to actions.log
+    logKeep(domain, subject_pattern || '', category, removedCount);
 
     // Build response message
     const messageParts: string[] = [];
@@ -205,6 +202,11 @@ router.post('/undo-last', (req: Request, res: Response) => {
 
     const removed = criteria.pop();
     saveJsonFile(filepath, criteria);
+
+    // Log the undo action
+    if (removed) {
+      logUndo(removed.primaryDomain, removed.subject, file_type || 'criteria');
+    }
 
     console.log(`Undid last criteria: ${JSON.stringify(removed)}`);
 

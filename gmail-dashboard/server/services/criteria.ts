@@ -10,12 +10,10 @@ import type { CriteriaEntry, EmailData } from '../types/index.js';
 
 // Resolve paths relative to the gmail project root (parent of gmail-dashboard)
 const PROJECT_ROOT = path.resolve(process.cwd(), '..');
-const DATA_DIR = path.resolve(process.cwd(), 'data');
 
 export const CRITERIA_FILE = path.join(PROJECT_ROOT, 'criteria.json');
 export const CRITERIA_1DAY_FILE = path.join(PROJECT_ROOT, 'criteria_1day_old.json');
 export const KEEP_CRITERIA_FILE = path.join(PROJECT_ROOT, 'keep_criteria.json');
-export const KEEP_LIST_FILE = path.join(DATA_DIR, 'keep_list.json');
 
 /**
  * Load a JSON file, return empty array if not exists.
