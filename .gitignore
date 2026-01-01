@@ -15,4 +15,8 @@ __pycache__/
 .vscode/
 *.swp
 *.swo
+
+# Logs and output files
 logs/
+output/
+nul

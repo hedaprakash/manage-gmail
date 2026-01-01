@@ -3,6 +3,7 @@ import json
 import re
 import argparse
 import time
+import html
 from datetime import datetime
 from google.auth.transport.requests import Request
 from google.oauth2.credentials import Credentials
@@ -85,8 +86,8 @@ def get_unsubscribe_info(gmail_service, message_id):
     return None
 
 
-def extract_unsubscribe_links(gmail_service, criteria, max_per_sender=5):
-    """Extract unsubscribe links from emails matching the criteria."""
+def extract_unsubscribe_links(gmail_service, criteria, max_per_sender=5, days_back=7):
+    """Extract unsubscribe links from recent emails matching the criteria."""
     unsubscribe_data = {}
 
     for i, criterion in enumerate(criteria):
@@ -111,6 +112,8 @@ def extract_unsubscribe_links(gmail_service, criteria, max_per_sender=5):
         if sender_id in unsubscribe_data:
             continue
 
+        # Only get emails from the last N days to ensure links haven't expired
+        query_parts.append(f"newer_than:{days_back}d")
         query = " ".join(query_parts)
 
         try:
@@ -170,7 +173,7 @@ def generate_html_report(unsubscribe_data, output_file):
             elif link['type'] == 'mailto':
                 mailto_links.append({**entry, 'url': link['url']})
 
-    html = f"""<!DOCTYPE html>
+    content = f"""<!DOCTYPE html>
 <html>
 <head>
     <title>Unsubscribe Links Report</title>
@@ -215,7 +218,7 @@ def generate_html_report(unsubscribe_data, output_file):
 """
 
     if one_click:
-        html += """
+        content += """
     <h2>One-Click Unsubscribe (Safest)</h2>
     <p>These support RFC 8058 one-click unsubscribe - can be automated safely.</p>
     <table>
@@ -223,16 +226,19 @@ def generate_html_report(unsubscribe_data, output_file):
 """
         for entry in one_click:
             http_url = next((l['url'] for l in entry['links'] if l['type'] == 'http'), '#')
-            html += f"""        <tr>
-            <td class="sender">{entry['sender_id']}</td>
-            <td class="from">{entry['from'][:60]}...</td>
-            <td><a href="{http_url}" target="_blank" class="btn btn-success">Unsubscribe</a></td>
+            escaped_url = html.escape(http_url)
+            escaped_sender = html.escape(entry['sender_id'])
+            escaped_from = html.escape(entry['from'][:60])
+            content += f"""        <tr>
+            <td class="sender">{escaped_sender}</td>
+            <td class="from">{escaped_from}...</td>
+            <td><a href="{escaped_url}" target="_blank" class="btn btn-success">Unsubscribe</a></td>
         </tr>
 """
-        html += "    </table>\n"
+        content += "    </table>\n"
 
     if http_links:
-        html += """
+        content += """
     <h2>HTTP Unsubscribe Links</h2>
     <p>Click to open unsubscribe page in browser.</p>
     <table>
@@ -243,16 +249,19 @@ def generate_html_report(unsubscribe_data, output_file):
             if entry['sender_id'] in seen:
                 continue
             seen.add(entry['sender_id'])
-            html += f"""        <tr>
-            <td class="sender">{entry['sender_id']}</td>
-            <td class="from">{entry['from'][:60]}...</td>
-            <td><a href="{entry['url']}" target="_blank" class="btn">Unsubscribe</a></td>
+            escaped_url = html.escape(entry['url'])
+            escaped_sender = html.escape(entry['sender_id'])
+            escaped_from = html.escape(entry['from'][:60])
+            content += f"""        <tr>
+            <td class="sender">{escaped_sender}</td>
+            <td class="from">{escaped_from}...</td>
+            <td><a href="{escaped_url}" target="_blank" class="btn">Unsubscribe</a></td>
         </tr>
 """
-        html += "    </table>\n"
+        content += "    </table>\n"
 
     if mailto_links:
-        html += """
+        content += """
     <h2>Mailto Unsubscribe Links</h2>
     <p>These require sending an email to unsubscribe.</p>
     <table>
@@ -263,21 +272,24 @@ def generate_html_report(unsubscribe_data, output_file):
             if entry['sender_id'] in seen:
                 continue
             seen.add(entry['sender_id'])
-            html += f"""        <tr>
-            <td class="sender">{entry['sender_id']}</td>
-            <td class="from">{entry['from'][:60]}...</td>
-            <td><a href="{entry['url']}" class="btn btn-warning">Send Unsubscribe Email</a></td>
+            escaped_url = html.escape(entry['url'])
+            escaped_sender = html.escape(entry['sender_id'])
+            escaped_from = html.escape(entry['from'][:60])
+            content += f"""        <tr>
+            <td class="sender">{escaped_sender}</td>
+            <td class="from">{escaped_from}...</td>
+            <td><a href="{escaped_url}" class="btn btn-warning">Send Unsubscribe Email</a></td>
         </tr>
 """
-        html += "    </table>\n"
+        content += "    </table>\n"
 
-    html += """
+    content += """
 </body>
 </html>
 """
 
     with open(output_file, 'w', encoding='utf-8') as f:
-        f.write(html)
+        f.write(content)
 
     return len(unsubscribe_data)
 
@@ -285,6 +297,7 @@ def generate_html_report(unsubscribe_data, output_file):
 def main():
     parser = argparse.ArgumentParser(description='Extract unsubscribe links from emails.')
     parser.add_argument('--max-per-sender', type=int, default=3, help='Max emails to check per sender')
+    parser.add_argument('--days', type=int, default=7, help='Only check emails from the last N days (default: 7)')
     args = parser.parse_args()
 
     print("Starting unsubscribe link extraction...")
@@ -307,10 +320,10 @@ def main():
             criteria = json.load(f)
 
         print(f"Loaded {len(criteria)} criteria from criteria.json")
-        print("Extracting unsubscribe links (this may take a few minutes)...\n")
+        print(f"Extracting unsubscribe links from emails in the last {args.days} days...\n")
 
-        # Extract unsubscribe links
-        unsubscribe_data = extract_unsubscribe_links(gmail_service, criteria, args.max_per_sender)
+        # Extract unsubscribe links from recent emails only
+        unsubscribe_data = extract_unsubscribe_links(gmail_service, criteria, args.max_per_sender, args.days)
 
         if not unsubscribe_data:
             print("\nNo unsubscribe links found.")

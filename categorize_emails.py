@@ -435,12 +435,9 @@ def generate_html_report(email_details, categorized, output_path):
 
 def main():
     """Main function to run the email categorization script."""
-    # Setup logging
+    # Setup logging - all output goes to logs folder
     if not os.path.exists('logs'):
         os.makedirs('logs')
-
-    if not os.path.exists('output'):
-        os.makedirs('output')
 
     log_filename = f"logs/categorize_emails_{time.strftime('%Y-%m-%d_%H-%M-%S')}.log"
 
@@ -473,8 +470,8 @@ def main():
             logger.info("No unread emails found.")
             return
 
-        # Save raw JSON data
-        json_path = f"output/emails_categorized_{time.strftime('%Y%m%d_%H%M%S')}.json"
+        # Save raw JSON data to logs folder
+        json_path = f"logs/emails_categorized_{time.strftime('%Y%m%d_%H%M%S')}.json"
         with open(json_path, 'w', encoding='utf-8') as f:
             json.dump(email_details, f, indent=2)
         logger.info(f"Saved raw data to {json_path}")
@@ -483,8 +480,8 @@ def main():
         categorized = categorize_by_domain(email_details)
         logger.info(f"Categorized emails into {len(categorized)} domains.")
 
-        # Generate HTML report
-        html_path = f"output/email_report_{time.strftime('%Y%m%d_%H%M%S')}.html"
+        # Generate HTML report in logs folder
+        html_path = f"logs/email_report_{time.strftime('%Y%m%d_%H%M%S')}.html"
         generate_html_report(email_details, categorized, html_path)
         logger.info(f"Generated HTML report: {html_path}")
 
