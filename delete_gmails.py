@@ -3,6 +3,7 @@ import argparse
 import time
 import json
 import logging
+from datetime import datetime, timedelta
 from google.auth.transport.requests import Request
 from google.oauth2.credentials import Credentials
 from google_auth_oauthlib.flow import InstalledAppFlow
@@ -37,16 +38,25 @@ def get_credentials():
             token.write(creds.to_json())
     return creds
 
-def get_local_criteria():
-    """Fetches the deletion criteria from the local criteria.json file."""
-    if not os.path.exists('criteria.json'):
-        raise FileNotFoundError("criteria.json not found. Please run download_sheet.py first.")
-    with open('criteria.json', 'r') as f:
+def get_local_criteria(criteria_file='criteria.json'):
+    """Fetches the deletion criteria from the specified criteria file."""
+    if not os.path.exists(criteria_file):
+        raise FileNotFoundError(f"{criteria_file} not found. Please create the criteria file first.")
+    with open(criteria_file, 'r') as f:
         return json.load(f)
 
-def build_query(criterion):
-    """Builds a Gmail API search query string from a criterion dictionary."""
+def build_query(criterion, min_age_days=0):
+    """Builds a Gmail API search query string from a criterion dictionary.
+
+    Args:
+        criterion: Dictionary containing filter criteria
+        min_age_days: Minimum age in days - only match emails older than this
+    """
     query_parts = ['is:unread'] # Always search unread as per original script
+
+    # Add age filter if specified (older_than:Xd)
+    if min_age_days > 0:
+        query_parts.append(f"older_than:{min_age_days}d")
 
     if criterion.get('email'):
         query_parts.append(f"from:{criterion['email']}")
@@ -61,20 +71,31 @@ def build_query(criterion):
     if criterion.get('ccEmails'):
         query_parts.append(f"cc:(\"{criterion['ccEmails']}\")") # CC exact match
     if criterion.get('excludeSubject'):
-        query_parts.append(f"-subject:(\"{criterion['excludeSubject']}\")") # Exclude subject exact match
-    
+        # Support multiple exclusions separated by comma
+        exclusions = [e.strip() for e in criterion['excludeSubject'].split(',')]
+        for exclusion in exclusions:
+            if exclusion:
+                query_parts.append(f"-subject:(\"{exclusion}\")")
+
     return " ".join(query_parts).strip()
 
 
-def delete_emails_by_criteria(logger, gmail_service, criteria, dry_run):
+def delete_emails_by_criteria(logger, gmail_service, criteria, dry_run, min_age_days=0):
     """
     Searches for and deletes (or dry-runs deletion of) emails based on the provided criteria.
     Logs the results.
+
+    Args:
+        min_age_days: Only delete emails older than this many days (0 = no age filter)
     """
     for i, criterion in enumerate(criteria):
-        query = build_query(criterion)
-        if not query or query.strip() == 'is:unread': # If query is only 'is:unread' or empty, skip.
-            logger.warning(f"Skipping criterion {i+1} due to invalid query.")
+        query = build_query(criterion, min_age_days)
+        # Skip if query has no actual criteria (only base filters like is:unread and older_than)
+        base_only = query.replace('is:unread', '').strip()
+        if min_age_days > 0:
+            base_only = base_only.replace(f'older_than:{min_age_days}d', '').strip()
+        if not base_only:
+            logger.warning(f"Skipping criterion {i+1} due to invalid query (no sender/subject criteria).")
             continue
         
         current_retries = 0
@@ -164,6 +185,11 @@ def main():
     parser = argparse.ArgumentParser(description='Deletes Gmail messages based on criteria in a local JSON file.')
     parser.add_argument('--dry-run', action='store_true', help='Perform a dry run without deleting any emails.')
     parser.add_argument('--filter', type=str, help='Only process criteria containing this text in the sender columns.')
+    parser.add_argument('--criteria-file', type=str, default='criteria.json',
+                        help='Path to the criteria JSON file (default: criteria.json)')
+    parser.add_argument('--min-age', type=int, default=0,
+                        help='Only delete emails older than this many days (default: 0 = no age filter). '
+                             'Use this to avoid deleting recent OTPs/verification codes.')
     args = parser.parse_args()
 
     logger.info("Starting email deletion script...")
@@ -173,9 +199,12 @@ def main():
         gmail_service = build('gmail', 'v1', credentials=creds)
         logger.info("Gmail authentication successful.")
 
-        logger.info("Fetching deletion criteria from local criteria.json file...")
-        criteria = get_local_criteria()
+        logger.info(f"Fetching deletion criteria from {args.criteria_file}...")
+        criteria = get_local_criteria(args.criteria_file)
         logger.info(f"Found {len(criteria)} total criteria.")
+
+        if args.min_age > 0:
+            logger.info(f"Age filter active: Only deleting emails older than {args.min_age} day(s).")
 
         # Filter criteria if the --filter argument is used
         if args.filter:
@@ -199,7 +228,7 @@ def main():
             return
 
         logger.info("Dry run mode active." if args.dry_run else "Live mode: Emails will be moved to trash.")
-        delete_emails_by_criteria(logger, gmail_service, criteria, args.dry_run)
+        delete_emails_by_criteria(logger, gmail_service, criteria, args.dry_run, args.min_age)
         
         logger.info("\nGmail processing complete.")
         logger.info("Script finished.")
