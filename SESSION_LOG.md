@@ -29,7 +29,7 @@
 ### In Progress
 | Task | Status |
 |------|--------|
-| E2E tests with Playwright | ⏳ pending |
+| E2E tests with Playwright | ✅ Done (22 tests passing) |
 
 ### Completed Since Last Update
 - ✅ Review page with domain sections
@@ -37,22 +37,28 @@
 - ✅ CriteriaManager page with CRUD table
 - ✅ Execute page with preview/delete controls
 - ✅ All servers running (Vite:3000, Express:5000)
+- ✅ Bug fix: `excludeSubject` field now properly checked in criteria matching
+- ✅ Playwright E2E tests (22 tests covering navigation, pages, API integration)
 
 ### Files Created in gmail-dashboard/
 ```
 ├── package.json, tsconfig.json, vite.config.ts
 ├── tailwind.config.js, postcss.config.js
+├── playwright.config.ts
 ├── index.html
 ├── server/
 │   ├── index.ts (Express server)
 │   ├── types/index.ts
 │   ├── services/ (classification, criteria, gmail, cache)
 │   └── routes/ (emails, criteria, actions, execute)
-└── src/
-    ├── main.tsx, App.tsx
-    ├── styles/globals.css
-    ├── hooks/useEmails.ts
-    └── components/Layout/ (Layout, Sidebar, Header, BottomNav)
+├── src/
+│   ├── main.tsx, App.tsx
+│   ├── styles/globals.css
+│   ├── hooks/useEmails.ts, useCriteria.ts
+│   ├── pages/ (Review, Stats, CriteriaManager, Execute)
+│   └── components/ (Layout, Email, Stats)
+└── tests/
+    └── e2e.spec.ts (22 Playwright tests)
 ```
 
 ### Design Decisions (User Confirmed)
