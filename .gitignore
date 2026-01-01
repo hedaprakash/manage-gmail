@@ -10,6 +10,12 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+# Node.js
+node_modules/
+dist/
+.npm
+*.tsbuildinfo
+
 # IDE
 .idea/
 .vscode/
@@ -20,3 +26,17 @@ __pycache__/
 logs/
 output/
 nul
+
+# Build artifacts
+*.log
+.cache/
+
+# Test artifacts
+coverage/
+.nyc_output/
+playwright-report/
+test-results/
+
+# OS files
+.DS_Store
+Thumbs.db
