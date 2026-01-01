@@ -716,9 +716,8 @@ def generate_interactive_html(email_details, grouped, output_path):
             </div>
 '''
 
-        # Collect all subject patterns for this domain (for domain-level keep)
-        all_subjects = [p['subject_sample'] for p in patterns.values()]
-        subjects_json = json.dumps(all_subjects).replace("'", "\\'")
+        # Escape domain for use in JavaScript (handle quotes)
+        domain_escaped = domain.replace("\\", "\\\\").replace("'", "\\'")
 
         html += f'''
         <div class="domain-section" data-domain="{domain}">
@@ -728,9 +727,9 @@ def generate_interactive_html(email_details, grouped, output_path):
                     <span class="domain-count">{domain_count} emails</span>
                 </div>
                 <div class="domain-actions">
-                    <button class="action-btn btn-keep" onclick="event.stopPropagation(); keepAllDomain(this, '{domain}', {subjects_json})">Keep All</button>
-                    <button class="action-btn btn-delete" onclick="event.stopPropagation(); deleteAllDomain(this, '{domain}')">Del All</button>
-                    <button class="action-btn btn-delete-1d" onclick="event.stopPropagation(); deleteAllDomain1d(this, '{domain}')">Del 1d All</button>
+                    <button class="action-btn btn-keep" onclick="event.stopPropagation(); keepAllDomain(this, '{domain_escaped}')">Keep All</button>
+                    <button class="action-btn btn-delete" onclick="event.stopPropagation(); deleteAllDomain(this, '{domain_escaped}')">Del All</button>
+                    <button class="action-btn btn-delete-1d" onclick="event.stopPropagation(); deleteAllDomain1d(this, '{domain_escaped}')">Del 1d All</button>
                 </div>
             </div>
             <div class="pattern-list">
@@ -868,7 +867,7 @@ def generate_interactive_html(email_details, grouped, output_path):
         }}
 
         // Domain-level actions
-        function keepAllDomain(btn, domain, subjects) {{
+        function keepAllDomain(btn, domain) {{
             btn.disabled = true;
             btn.textContent = 'Keeping...';
 

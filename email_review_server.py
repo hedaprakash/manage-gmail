@@ -83,19 +83,30 @@ def matches_criteria_pattern(entry, domain, subject_pattern):
 
 
 def remove_from_criteria(domain, subject_pattern):
-    """Remove matching entries from criteria.json. Returns count of removed entries."""
+    """Remove matching entries from BOTH criteria.json and criteria_1day_old.json. Returns total count of removed entries."""
+    total_removed = 0
+
+    # Remove from criteria.json
     criteria = load_json_file(CRITERIA_FILE)
     original_count = len(criteria)
-
-    # Filter out matching entries
     criteria = [c for c in criteria if not matches_criteria_pattern(c, domain, subject_pattern)]
-
     removed_count = original_count - len(criteria)
     if removed_count > 0:
         save_json_file(CRITERIA_FILE, criteria)
         logger.info(f"Removed {removed_count} entries from criteria.json for {domain}")
+    total_removed += removed_count
 
-    return removed_count
+    # Also remove from criteria_1day_old.json
+    criteria_1d = load_json_file(CRITERIA_1DAY_FILE)
+    original_count_1d = len(criteria_1d)
+    criteria_1d = [c for c in criteria_1d if not matches_criteria_pattern(c, domain, subject_pattern)]
+    removed_count_1d = original_count_1d - len(criteria_1d)
+    if removed_count_1d > 0:
+        save_json_file(CRITERIA_1DAY_FILE, criteria_1d)
+        logger.info(f"Removed {removed_count_1d} entries from criteria_1day_old.json for {domain}")
+    total_removed += removed_count_1d
+
+    return total_removed
 
 
 @app.route('/')

@@ -170,3 +170,24 @@ These are important nuances that must be preserved:
 - Check if Flask server is running (localhost:5000)
 - Check browser console for errors
 - Verify criteria.json is valid JSON
+
+## Skills
+
+### /test-email-api
+Test all Email Review API endpoints. Runs 7 automated tests:
+1. Delete button (add to criteria.json)
+2. Keep button (removes from delete, adds to keep)
+3. Del All (domain-level delete)
+4. Del 1d (add to criteria_1day_old.json)
+5. Keep after Del 1d (cross-file removal)
+6. Keep All (domain-level protection)
+7. Del 1d All (domain-level 1-day delete)
+
+Usage: Just ask "run /test-email-api" or "test the email API"
+
+The skill automatically:
+- Starts Flask server if needed
+- Runs all tests with `test-skill-` prefixed domains
+- Verifies file changes
+- Cleans up test data
+- Reports pass/fail for each test

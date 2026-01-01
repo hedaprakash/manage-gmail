@@ -436,15 +436,14 @@ Options:
                                 │
                                 ▼
 ┌─────────────────────────────────────────────────────────────────┐
-│  Step 1: Remove from criteria.json (if present)                 │
+│  Step 1: Remove from BOTH delete criteria files (if present)    │
 │                                                                 │
-│  - Load criteria.json                                           │
-│  - Find entries matching domain + subject_pattern               │
-│  - Remove matching entries                                      │
-│  - Save criteria.json                                           │
+│  - Load criteria.json, remove matching entries, save            │
+│  - Load criteria_1day_old.json, remove matching entries, save   │
 │  - Log: "Removed X entries from criteria.json"                  │
+│  - Log: "Removed X entries from criteria_1day_old.json"         │
 │                                                                 │
-│  Purpose: UNDO auto-add for PROMO emails                        │
+│  Purpose: UNDO any previous Delete/Del 1d actions               │
 └─────────────────────────────────────────────────────────────────┘
                                 │
                                 ▼
@@ -468,6 +467,55 @@ Options:
 │                                                                 │
 │  Purpose: Track when and why patterns were kept                 │
 └─────────────────────────────────────────────────────────────────┘
+```
+
+### Complete Button Workflow Reference
+
+| Button | Location | API Endpoint | Request Body | Files Modified |
+|--------|----------|--------------|--------------|----------------|
+| **Keep** | Per-pattern | `/api/mark-keep` | `{domain, subject_pattern, category}` | Removes from `criteria.json` + `criteria_1day_old.json`, adds to `keep_criteria.json` |
+| **Keep All** | Domain header | `/api/mark-keep` | `{domain, subject_pattern: "", category: "DOMAIN"}` | Same as Keep but with empty subject (protects ALL from domain) |
+| **Keep Selected** | Text selection popup | `/api/mark-keep` | `{domain, subject_pattern: "selected text", category: "SELECTED"}` | Same as Keep but uses selected text as pattern |
+| **Delete** | Per-pattern | `/api/add-criteria` | `{domain, subject_pattern}` | Adds to `criteria.json` |
+| **Del All** | Domain header | `/api/add-criteria` | `{domain, subject_pattern: ""}` | Adds domain-only entry to `criteria.json` (deletes ALL from domain) |
+| **Del 1d** | Per-pattern | `/api/add-criteria-1d` | `{domain, subject_pattern}` | Adds to `criteria_1day_old.json` |
+| **Del 1d All** | Domain header | `/api/add-criteria-1d` | `{domain, subject_pattern: ""}` | Adds domain-only entry to `criteria_1day_old.json` |
+
+### API Test Results (Verified 2026-01-01)
+
+```
+TEST 1: Delete button
+  curl -X POST /api/add-criteria -d '{"domain":"test.com","subject_pattern":"Newsletter"}'
+  ✓ Added to criteria.json
+  ✓ Response: {"success":true,"message":"Added to criteria.json","total_criteria":437}
+
+TEST 2: Keep after Delete (UNDO scenario)
+  curl -X POST /api/mark-keep -d '{"domain":"test.com","subject_pattern":"Newsletter"}'
+  ✓ REMOVED from criteria.json
+  ✓ Added to keep_criteria.json
+  ✓ Response: {"removed_from_delete":1,"message":"Removed 1 from delete criteria | Added to safe list"}
+
+TEST 3: Del All (domain-level)
+  curl -X POST /api/add-criteria -d '{"domain":"test.com","subject_pattern":""}'
+  ✓ Added domain-only entry to criteria.json (subject:"")
+  ✓ This will delete ALL emails from test.com
+
+TEST 4: Del 1d (single pattern)
+  curl -X POST /api/add-criteria-1d -d '{"domain":"test.com","subject_pattern":"Daily Digest"}'
+  ✓ Added to criteria_1day_old.json
+  ✓ Emails will only be deleted after 1 day (protects recent OTPs)
+
+TEST 5: Keep after Del 1d (cross-file removal)
+  curl -X POST /api/add-criteria-1d -d '{"domain":"test.com","subject_pattern":"Promo"}'
+  curl -X POST /api/mark-keep -d '{"domain":"test.com","subject_pattern":"Promo"}'
+  ✓ REMOVED from criteria_1day_old.json
+  ✓ Added to keep_criteria.json
+  ✓ Response: {"removed_from_delete":1,"message":"Removed 1 from delete criteria | ..."}
+
+TEST 6: Keep All (domain-level protection)
+  curl -X POST /api/mark-keep -d '{"domain":"test.com","subject_pattern":"","category":"DOMAIN"}'
+  ✓ Added domain-only entry to keep_criteria.json (subject:"")
+  ✓ This protects ALL emails from test.com (current and future)
 ```
 
 ---
