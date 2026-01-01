@@ -17,12 +17,7 @@ interface CriteriaResponse {
   keep: CriteriaEntry[];
 }
 
-interface CriteriaTypeResponse {
-  success: boolean;
-  type: string;
-  count: number;
-  entries: CriteriaEntry[];
-}
+type CriteriaType = 'delete' | 'delete1d' | 'keep';
 
 async function fetchAllCriteria(): Promise<CriteriaResponse> {
   const res = await fetch('/api/criteria');
@@ -30,27 +25,17 @@ async function fetchAllCriteria(): Promise<CriteriaResponse> {
   return res.json();
 }
 
-async function fetchCriteriaByType(type: string): Promise<CriteriaTypeResponse> {
-  const res = await fetch(`/api/criteria/${type}`);
-  if (!res.ok) throw new Error('Failed to fetch criteria');
-  return res.json();
-}
-
-async function addCriteriaEntry(type: string, entry: Partial<CriteriaEntry>) {
+async function addCriteria(type: CriteriaType, domain: string, subject?: string) {
   const res = await fetch(`/api/criteria/${type}`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      domain: entry.primaryDomain,
-      subject: entry.subject,
-      excludeSubject: entry.excludeSubject
-    })
+    body: JSON.stringify({ domain, subject })
   });
   if (!res.ok) throw new Error('Failed to add criteria');
   return res.json();
 }
 
-async function deleteCriteriaEntry(type: string, index: number) {
+async function deleteCriteria(type: CriteriaType, index: number) {
   const res = await fetch(`/api/criteria/${type}/${index}`, {
     method: 'DELETE'
   });
@@ -58,7 +43,7 @@ async function deleteCriteriaEntry(type: string, index: number) {
   return res.json();
 }
 
-async function moveCriteriaEntry(fromType: string, toType: string, index: number) {
+async function moveCriteria(fromType: CriteriaType, toType: CriteriaType, index: number) {
   const res = await fetch('/api/criteria/move', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -68,26 +53,19 @@ async function moveCriteriaEntry(fromType: string, toType: string, index: number
   return res.json();
 }
 
-export function useAllCriteria() {
+export function useCriteria() {
   return useQuery({
-    queryKey: ['criteria', 'all'],
+    queryKey: ['criteria'],
     queryFn: fetchAllCriteria
   });
 }
 
-export function useCriteriaByType(type: string) {
-  return useQuery({
-    queryKey: ['criteria', type],
-    queryFn: () => fetchCriteriaByType(type)
-  });
-}
-
-export function useAddCriteriaEntry() {
+export function useAddCriteria() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({ type, entry }: { type: string; entry: Partial<CriteriaEntry> }) =>
-      addCriteriaEntry(type, entry),
+    mutationFn: ({ type, domain, subject }: { type: CriteriaType; domain: string; subject?: string }) =>
+      addCriteria(type, domain, subject),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['criteria'] });
       queryClient.invalidateQueries({ queryKey: ['emails'] });
@@ -96,12 +74,12 @@ export function useAddCriteriaEntry() {
   });
 }
 
-export function useDeleteCriteriaEntry() {
+export function useDeleteCriteria() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({ type, index }: { type: string; index: number }) =>
-      deleteCriteriaEntry(type, index),
+    mutationFn: ({ type, index }: { type: CriteriaType; index: number }) =>
+      deleteCriteria(type, index),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['criteria'] });
       queryClient.invalidateQueries({ queryKey: ['emails'] });
@@ -110,16 +88,14 @@ export function useDeleteCriteriaEntry() {
   });
 }
 
-export function useMoveCriteriaEntry() {
+export function useMoveCriteria() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({ fromType, toType, index }: { fromType: string; toType: string; index: number }) =>
-      moveCriteriaEntry(fromType, toType, index),
+    mutationFn: ({ fromType, toType, index }: { fromType: CriteriaType; toType: CriteriaType; index: number }) =>
+      moveCriteria(fromType, toType, index),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['criteria'] });
-      queryClient.invalidateQueries({ queryKey: ['emails'] });
-      queryClient.invalidateQueries({ queryKey: ['stats'] });
     }
   });
 }
