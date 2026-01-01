@@ -4,77 +4,169 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-Gmail automation tools for managing unread emails - bulk deletion based on sender criteria and email categorization/reporting.
+**Two-phase Gmail cleanup system:**
+1. **Phase 1:** Bulk delete emails matching criteria (delete_gmails.py)
+2. **Phase 2:** Categorize remaining emails + interactive review dashboard (categorize_emails.py)
 
-## Setup
+**Key files for understanding the system:**
+- `SPEC.md` - Complete functional specification with flowcharts and decision matrices
+- `SESSION_LOG.md` - Ongoing work tracker (read this first when resuming)
+
+## Quick Start
 
 ```bash
 # Activate virtual environment (Windows)
 source venv/Scripts/activate
 
-# Install dependencies
-pip install -r requirements.txt
+# Phase 1: Delete emails matching criteria
+python delete_gmails.py
+
+# Phase 2: Review remaining emails (opens browser dashboard)
+python categorize_emails.py
 ```
 
-**Required files:**
-- `credentials.json` - Google Cloud OAuth credentials (get from Google Cloud Console)
-- `token.json` - Auto-generated after first authentication
-- `criteria.json` - Deletion criteria (array of sender filters)
+## File Structure
+
+```
+gmail/
+├── credentials.json          # Google OAuth2 (user provides)
+├── token.json                # OAuth2 token (auto-generated)
+├── criteria.json             # Delete immediately
+├── criteria_1day_old.json    # Delete after 1 day (protects OTPs)
+├── keep_criteria.json        # Safe list (NEVER delete)
+├── delete_gmails.py          # Phase 1: Bulk delete
+├── categorize_emails.py      # Phase 2: Categorize + review UI
+├── email_classification.py   # Keyword classification rules
+├── email_review_server.py    # Flask API for button handlers
+├── SPEC.md                   # Full specification document
+├── SESSION_LOG.md            # Ongoing work tracker
+└── logs/                     # All output (git-ignored)
+    ├── emails_categorized_*.json   # Cached email data
+    ├── current_report.html         # Served by Flask
+    └── *.log                       # Execution logs
+```
 
 ## Commands
 
-### Delete emails by criteria
+### Delete Emails (Phase 1)
 ```bash
-# Dry run (preview what would be deleted)
-python delete_gmails.py --dry-run
-
-# Live deletion (moves to trash)
-python delete_gmails.py
-
-# Filter to specific sender
-python delete_gmails.py --filter linkedin.com
-
-# Only delete emails older than N days
-python delete_gmails.py --min-age 2
-
-# Use alternate criteria file
+python delete_gmails.py                    # Live deletion
+python delete_gmails.py --dry-run          # Preview only
+python delete_gmails.py --min-age 1        # Only emails >1 day old
+python delete_gmails.py --filter domain.com  # Specific domain
 python delete_gmails.py --criteria-file criteria_1day_old.json
 ```
 
-### Search/count emails
+### Categorize & Review (Phase 2)
 ```bash
-python search_gmail.py example.com           # Count by sender
-python search_gmail.py --promotions          # Count promo emails
-python search_gmail.py --social              # Count social emails
+python categorize_emails.py          # Uses cache (fast, <5 seconds)
+python categorize_emails.py --refresh  # Force re-fetch from Gmail API
 ```
 
-### Categorize unread emails
+### Search/Count (Utility)
 ```bash
-python categorize_emails.py    # Generates HTML report in logs/
+python search_gmail.py example.com    # Count by sender
+python search_gmail.py --promotions   # Count promo emails
 ```
 
-## Architecture
+## Key Design Decisions
 
-**Core scripts:**
-- `delete_gmails.py` - Bulk email deletion with rate limiting, retry logic, dry-run mode
-- `search_gmail.py` - Quick email counting by sender or Gmail category
-- `categorize_emails.py` - Fetches unread emails, groups by domain, generates interactive HTML report
+These are important nuances that must be preserved:
 
-**Criteria format** (`criteria.json`):
+### 1. Caching Strategy
+- **Default:** Always use cached JSON file (never fetch from Gmail by default)
+- **Auto-refresh:** Only if cache is >5 hours old
+- **Manual refresh:** `--refresh` flag forces Gmail API fetch
+- **Rationale:** Gmail fetch takes 2+ minutes for 1000+ emails
+
+### 2. PROMO Auto-Add
+- PROMO/NEWSLETTER emails are automatically added to criteria.json
+- User can override with "Keep" button (removes from criteria + adds to keep)
+- Keep button does TWO things: removes from delete AND adds to safe list
+
+### 3. Keep All Button Behavior
+- Adds SINGLE domain-only entry (empty subject field)
+- This protects ALL emails from that domain (current and future)
+- Does NOT loop through patterns
+
+### 4. Filtering Decided Emails
+- Emails matching criteria.json or keep_criteria.json are HIDDEN from report
+- Not collapsed, not strikethrough - completely removed from view
+- Only undecided emails appear in the dashboard
+
+### 5. Text Selection for Keep
+- User can highlight text in subject line
+- "Keep Selected" uses highlighted text as the pattern
+- More precise than using full subject
+
+### 6. Safe List Priority
+- keep_criteria.json ALWAYS takes precedence over criteria.json
+- Even if email matches both, it is KEPT (not deleted)
+
+### 7. 1-Day Delay
+- criteria_1day_old.json for patterns that should wait 1 day
+- Protects recent OTPs, verification codes
+- Use with: `python delete_gmails.py --criteria-file criteria_1day_old.json --min-age 1`
+
+## Criteria File Format
+
 ```json
 [
-  {"email": "alerts@example.com"},
-  {"primaryDomain": "newsletter.com"},
-  {"subdomain": "mail.company.com", "excludeSubject": "Order,Receipt"}
+  {
+    "email": "",
+    "subdomain": "",
+    "primaryDomain": "example.com",
+    "subject": "Newsletter",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": "Important,Urgent"
+  }
 ]
 ```
 
-**Logging:** All scripts log to `logs/` directory. Console shows only matches; file logs include all queries (DEBUG level).
+- Empty string = ignored (not used in matching)
+- All non-empty fields must match
+- `excludeSubject`: comma-separated list of terms that PREVENT deletion
 
-## Gmail API Query Building
+## Flask API Endpoints
 
-Queries use Gmail search syntax. Key patterns in `build_query()`:
-- `is:unread` - Always included
-- `from:email` / `from:*@subdomain` / `from:domain`
-- `older_than:Nd` - Age filter
-- `-subject:("text")` - Exclusions (comma-separated in criteria)
+| Endpoint | Method | Purpose |
+|----------|--------|---------|
+| `/` | GET | Serve HTML dashboard |
+| `/api/add-criteria` | POST | Add to criteria.json |
+| `/api/add-criteria-1d` | POST | Add to criteria_1day_old.json |
+| `/api/mark-keep` | POST | Remove from delete + add to keep |
+| `/api/stats` | GET | Get criteria counts |
+
+## Email Categories
+
+| Category | Color | Action |
+|----------|-------|--------|
+| PROMO | Green | Auto-added to delete (can override) |
+| NEWSLETTER | Teal | Auto-added to delete (can override) |
+| ALERT, SECURITY | Red | Keep (important) |
+| STATEMENT, RECEIPT | Blue | Keep (financial) |
+| ORDER | Cyan | Keep (purchases) |
+| UNKNOWN | Yellow | Needs manual review |
+
+## When Resuming Work
+
+1. **Read SESSION_LOG.md first** - Contains current status and pending tasks
+2. **Check git status** - See what files have been modified
+3. **Read SPEC.md** - Full system documentation if needed
+
+## Common Issues
+
+### Unicode errors on Windows console
+- Already handled with UTF-8 reconfigure in logging setup
+- If errors appear, they're logged but don't stop execution
+
+### Slow script on first run
+- First run fetches from Gmail API (2+ minutes for 1000+ emails)
+- Subsequent runs use cache (instant)
+- Use `--refresh` only when needed
+
+### Button not working in dashboard
+- Check if Flask server is running (localhost:5000)
+- Check browser console for errors
+- Verify criteria.json is valid JSON

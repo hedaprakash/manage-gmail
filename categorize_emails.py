@@ -1081,9 +1081,16 @@ def main():
     file_handler.setLevel(logging.DEBUG)
     file_handler.setFormatter(logging.Formatter('%(asctime)s - %(levelname)s - %(message)s'))
 
-    console_handler = logging.StreamHandler()
+    # Use UTF-8 encoding for console to handle emojis in email subjects
+    console_handler = logging.StreamHandler(stream=sys.stdout)
     console_handler.setLevel(logging.INFO)
     console_handler.setFormatter(logging.Formatter('%(asctime)s - %(levelname)s - %(message)s'))
+    # Set encoding to handle Unicode (Windows fix)
+    if hasattr(sys.stdout, 'reconfigure'):
+        try:
+            sys.stdout.reconfigure(encoding='utf-8', errors='replace')
+        except Exception:
+            pass  # Ignore if reconfigure fails
 
     logger.addHandler(file_handler)
     logger.addHandler(console_handler)
