@@ -1,15 +1,64 @@
+import { useRef, useState, useCallback } from 'react';
 import type { EmailPattern } from '../../hooks/useEmails';
 import { formatDateRange } from '../../hooks/useEmails';
 
 interface PatternItemProps {
   pattern: EmailPattern;
-  onKeep: () => void;
-  onDelete: () => void;
-  onDelete1d: () => void;
+  onKeep: (selectedText?: string) => void;
+  onDelete: (selectedText?: string) => void;
+  onDelete1d: (selectedText?: string) => void;
 }
 
 export default function PatternItem({ pattern, onKeep, onDelete, onDelete1d }: PatternItemProps) {
   const dateDisplay = formatDateRange(pattern.minDate, pattern.maxDate, pattern.count);
+  const subjectRef = useRef<HTMLSpanElement>(null);
+  const [hasSelection, setHasSelection] = useState(false);
+
+  // Get selected text within the subject element
+  const getSelectedText = useCallback((): string | undefined => {
+    const selection = window.getSelection();
+    if (!selection || selection.isCollapsed) return undefined;
+
+    const selectedText = selection.toString().trim();
+    if (!selectedText) return undefined;
+
+    // Verify selection is within our subject element
+    if (subjectRef.current) {
+      const range = selection.getRangeAt(0);
+      if (subjectRef.current.contains(range.commonAncestorContainer)) {
+        return selectedText;
+      }
+    }
+    return undefined;
+  }, []);
+
+  // Handle selection change
+  const handleSelectionChange = useCallback(() => {
+    const selected = getSelectedText();
+    setHasSelection(!!selected);
+  }, [getSelectedText]);
+
+  // Handle button clicks - use selected text if available
+  const handleKeep = () => {
+    const selected = getSelectedText();
+    onKeep(selected);
+    window.getSelection()?.removeAllRanges();
+    setHasSelection(false);
+  };
+
+  const handleDelete = () => {
+    const selected = getSelectedText();
+    onDelete(selected);
+    window.getSelection()?.removeAllRanges();
+    setHasSelection(false);
+  };
+
+  const handleDelete1d = () => {
+    const selected = getSelectedText();
+    onDelete1d(selected);
+    window.getSelection()?.removeAllRanges();
+    setHasSelection(false);
+  };
 
   return (
     <div className="flex items-center gap-4 px-4 py-3 hover:bg-gray-50 pattern-item">
@@ -22,11 +71,22 @@ export default function PatternItem({ pattern, onKeep, onDelete, onDelete1d }: P
         <span className="text-xs font-medium">{pattern.category.slice(0, 4)}</span>
       </div>
 
-      {/* Subject */}
+      {/* Subject - selectable */}
       <div className="flex-1 min-w-0">
-        <div className="text-sm text-gray-900 truncate" title={pattern.subject}>
+        <span
+          ref={subjectRef}
+          className={`text-sm text-gray-900 select-text cursor-text inline-block max-w-full ${hasSelection ? 'bg-yellow-100' : ''}`}
+          title={`${pattern.subject}\n\nTip: Select text to use partial match`}
+          onMouseUp={handleSelectionChange}
+          onKeyUp={handleSelectionChange}
+        >
           {pattern.subject || '(all emails from domain)'}
-        </div>
+        </span>
+        {hasSelection && (
+          <span className="ml-2 text-xs text-yellow-600 font-medium">
+            (using selection)
+          </span>
+        )}
       </div>
 
       {/* Count & Date */}
@@ -45,23 +105,23 @@ export default function PatternItem({ pattern, onKeep, onDelete, onDelete1d }: P
       {/* Action Buttons */}
       <div className="flex gap-1">
         <button
-          onClick={onKeep}
+          onClick={handleKeep}
           className="btn btn-keep"
-          title="Keep"
+          title={hasSelection ? "Keep (selected text)" : "Keep (full subject)"}
         >
           K
         </button>
         <button
-          onClick={onDelete}
+          onClick={handleDelete}
           className="btn btn-delete"
-          title="Delete"
+          title={hasSelection ? "Delete (selected text)" : "Delete (full subject)"}
         >
           D
         </button>
         <button
-          onClick={onDelete1d}
+          onClick={handleDelete1d}
           className="btn btn-delete-1d"
-          title="Delete after 1 day"
+          title={hasSelection ? "Delete 1d (selected text)" : "Delete after 1 day (full subject)"}
         >
           1d
         </button>

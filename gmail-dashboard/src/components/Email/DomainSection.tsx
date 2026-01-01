@@ -74,9 +74,9 @@ export default function DomainSection({ domain, onKeep, onDelete, onDelete1d }: 
             <PatternItem
               key={`${pattern.subject}-${idx}`}
               pattern={pattern}
-              onKeep={() => onKeep(pattern.domain, pattern.subject, pattern.category)}
-              onDelete={() => onDelete(pattern.domain, pattern.subject)}
-              onDelete1d={() => onDelete1d(pattern.domain, pattern.subject)}
+              onKeep={(selectedText) => onKeep(pattern.domain, selectedText ?? pattern.subject, pattern.category)}
+              onDelete={(selectedText) => onDelete(pattern.domain, selectedText ?? pattern.subject)}
+              onDelete1d={(selectedText) => onDelete1d(pattern.domain, selectedText ?? pattern.subject)}
             />
           ))}
         </div>

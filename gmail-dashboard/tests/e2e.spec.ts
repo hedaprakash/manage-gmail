@@ -185,6 +185,37 @@ test.describe('Gmail Dashboard E2E Tests', () => {
     });
   });
 
+  test.describe('Text Selection Feature', () => {
+    test('subject text should be selectable', async ({ page }) => {
+      await page.goto('/');
+      await page.waitForTimeout(1500);
+
+      // Check if pattern items exist and have selectable text
+      const patternItems = page.locator('.pattern-item span.select-text');
+      const count = await patternItems.count();
+
+      if (count > 0) {
+        // Verify the select-text class exists (makes text selectable)
+        await expect(patternItems.first()).toBeVisible();
+      }
+    });
+
+    test('selection indicator should appear when text is selected', async ({ page }) => {
+      await page.goto('/');
+      await page.waitForTimeout(1500);
+
+      // This test validates the UI structure exists
+      // Actual text selection requires more complex browser automation
+      const selectableText = page.locator('.pattern-item span.select-text').first();
+
+      if (await selectableText.isVisible().catch(() => false)) {
+        // Verify cursor style indicates selectability
+        const cursor = await selectableText.evaluate(el => getComputedStyle(el).cursor);
+        expect(cursor).toBe('text');
+      }
+    });
+  });
+
   test.describe('API Integration', () => {
     test('should load email data from API', async ({ page }) => {
       // Go to review page

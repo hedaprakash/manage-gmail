@@ -199,6 +199,67 @@ The skill automatically:
 - Cleans up test data
 - Reports pass/fail for each test
 
+### /test-dashboard
+**Trigger phrases:** "run dashboard tests", "test the dashboard", "run /test-dashboard", "run playwright tests", "e2e tests"
+
+**Action:** Immediately run Playwright E2E tests for the Node.js dashboard. Do NOT ask any questions - just execute and show results.
+
+Test the Gmail Dashboard UI (Node.js/React version). Runs 24 automated tests:
+
+**Navigation (4 tests):**
+- Default page loads
+- Stats page navigation
+- Criteria Manager navigation
+- Execute page navigation
+
+**Review Page (3 tests):**
+- Refresh button visible
+- Content area loads
+- Category filters work
+
+**Stats Page (2 tests):**
+- Stats cards display
+- Criteria rules section
+
+**Criteria Manager (5 tests):**
+- Tabs for delete/keep types
+- Search input
+- Table display
+- Tab switching
+- Search filtering
+
+**Execute Page (5 tests):**
+- Criteria file options
+- Minimum age input
+- Dry run checkbox
+- Preview/Execute buttons
+- Preview results display
+
+**Text Selection (2 tests):**
+- Subject text is selectable
+- Cursor style indicates selectability
+
+**Mobile & API (3 tests):**
+- Mobile navigation
+- Email data from API
+- Criteria from API
+
+**Usage:**
+```bash
+cd gmail-dashboard && npx playwright test --reporter=list
+```
+
+The skill automatically:
+- Runs all 24 E2E tests in parallel
+- Tests against running dev servers (Vite:3000, Express:5000)
+- Reports pass/fail for each test
+- Generates HTML report in playwright-report/
+
+**Prerequisites:** Servers must be running:
+```bash
+cd gmail-dashboard && npm run dev
+```
+
 ### New API Endpoint: `/api/load-emails`
 Returns filtering statistics for all cached emails:
 ```json
