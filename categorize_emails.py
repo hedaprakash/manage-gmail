@@ -1,8 +1,20 @@
+"""
+Email Categorization Script with Interactive Review
+
+This script:
+1. Fetches ALL unread emails from Gmail (with pagination)
+2. Classifies each by subject using keyword rules
+3. Generates an interactive HTML report with action buttons
+4. Starts a local server for button functionality
+"""
+
 import os
+import sys
 import time
 import json
 import logging
 import webbrowser
+import threading
 from datetime import datetime
 from collections import defaultdict
 from google.auth.transport.requests import Request
@@ -11,13 +23,15 @@ from google_auth_oauthlib.flow import InstalledAppFlow
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 
+from email_classification import classify_email, get_all_categories, CATEGORIES
+
 # If modifying these scopes, delete the file token.json.
 SCOPES = ['https://mail.google.com/']
 USER_ID = 'me'
 
 # Processing constants
-BATCH_SIZE = 100
-MAX_RESULTS = 500
+BATCH_SIZE = 100  # Messages to fetch per API call (max 500)
+
 
 def get_credentials():
     """Gets valid user credentials from storage or initiates the authorization flow."""
@@ -69,72 +83,109 @@ def get_header_value(headers, name):
     return ""
 
 
-def fetch_unread_emails(logger, gmail_service):
-    """Fetches unread emails and extracts their details."""
+def fetch_all_unread_emails(logger, gmail_service, max_emails=None):
+    """
+    Fetches ALL unread emails using pagination.
+
+    Args:
+        logger: Logger instance
+        gmail_service: Gmail API service
+        max_emails: Optional limit (None = fetch all)
+
+    Returns:
+        List of email details
+    """
     email_details = []
+    page_token = None
+    total_fetched = 0
 
     try:
-        logger.info("Searching for unread emails...")
-        response = gmail_service.users().messages().list(
-            userId=USER_ID,
-            q='is:unread',
-            maxResults=MAX_RESULTS
-        ).execute()
+        logger.info("Searching for ALL unread emails (with pagination)...")
 
-        messages = response.get('messages', [])
-        total_messages = len(messages)
-        logger.info(f"Found {total_messages} unread emails to process.")
+        while True:
+            # Fetch a batch of message IDs
+            request_params = {
+                'userId': USER_ID,
+                'q': 'is:unread',
+                'maxResults': BATCH_SIZE
+            }
+            if page_token:
+                request_params['pageToken'] = page_token
 
-        if not messages:
-            return email_details
+            response = gmail_service.users().messages().list(**request_params).execute()
 
-        # Process messages in batches
-        for i, msg_info in enumerate(messages):
-            try:
-                # Get full message details
-                message = gmail_service.users().messages().get(
-                    userId=USER_ID,
-                    id=msg_info['id'],
-                    format='metadata',
-                    metadataHeaders=['From', 'To', 'Cc', 'Subject', 'Date']
-                ).execute()
+            messages = response.get('messages', [])
+            if not messages:
+                break
 
-                headers = message.get('payload', {}).get('headers', [])
+            logger.info(f"Fetched batch of {len(messages)} message IDs...")
 
-                from_header = get_header_value(headers, 'From')
-                email = extract_email_address(from_header)
-                subdomain, primary_domain = extract_domain_info(email)
+            # Process each message
+            for msg_info in messages:
+                if max_emails and total_fetched >= max_emails:
+                    logger.info(f"Reached max limit of {max_emails} emails.")
+                    return email_details
 
-                to_header = get_header_value(headers, 'To')
-                to_emails = ', '.join([extract_email_address(e.strip()) for e in to_header.split(',')]) if to_header else ""
+                try:
+                    # Get message metadata
+                    message = gmail_service.users().messages().get(
+                        userId=USER_ID,
+                        id=msg_info['id'],
+                        format='metadata',
+                        metadataHeaders=['From', 'To', 'Cc', 'Subject', 'Date']
+                    ).execute()
 
-                cc_header = get_header_value(headers, 'Cc')
-                cc_emails = ', '.join([extract_email_address(e.strip()) for e in cc_header.split(',')]) if cc_header else ""
+                    headers = message.get('payload', {}).get('headers', [])
 
-                subject = get_header_value(headers, 'Subject')
-                date = get_header_value(headers, 'Date')
+                    from_header = get_header_value(headers, 'From')
+                    email = extract_email_address(from_header)
+                    subdomain, primary_domain = extract_domain_info(email)
 
-                email_details.append({
-                    'id': msg_info['id'],
-                    'email': email,
-                    'from': from_header,
-                    'subdomain': subdomain,
-                    'primaryDomain': primary_domain,
-                    'subject': subject,
-                    'toEmails': to_emails,
-                    'ccEmails': cc_emails,
-                    'date': date
-                })
+                    to_header = get_header_value(headers, 'To')
+                    to_emails = ', '.join([extract_email_address(e.strip()) for e in to_header.split(',')]) if to_header else ""
 
-                if (i + 1) % 50 == 0:
-                    logger.info(f"Processed {i + 1}/{total_messages} emails...")
+                    cc_header = get_header_value(headers, 'Cc')
+                    cc_emails = ', '.join([extract_email_address(e.strip()) for e in cc_header.split(',')]) if cc_header else ""
 
-            except HttpError as e:
-                logger.warning(f"Error fetching message {msg_info['id']}: {e}")
-                continue
-            except Exception as e:
-                logger.warning(f"Unexpected error processing message: {e}")
-                continue
+                    subject = get_header_value(headers, 'Subject')
+                    date = get_header_value(headers, 'Date')
+
+                    # Classify the email by subject
+                    classification = classify_email(subject)
+
+                    email_details.append({
+                        'id': msg_info['id'],
+                        'email': email,
+                        'from': from_header,
+                        'subdomain': subdomain,
+                        'primaryDomain': primary_domain,
+                        'subject': subject,
+                        'toEmails': to_emails,
+                        'ccEmails': cc_emails,
+                        'date': date,
+                        'category': classification['category'],
+                        'category_icon': classification['icon'],
+                        'category_color': classification['color'],
+                        'category_bg': classification['bg_color'],
+                        'matched_keyword': classification['matched_keyword']
+                    })
+
+                    total_fetched += 1
+
+                    if total_fetched % 100 == 0:
+                        logger.info(f"Processed {total_fetched} emails...")
+
+                except HttpError as e:
+                    logger.warning(f"Error fetching message {msg_info['id']}: {e}")
+                    continue
+                except Exception as e:
+                    logger.warning(f"Unexpected error processing message: {e}")
+                    continue
+
+            # Check for next page
+            page_token = response.get('nextPageToken')
+            if not page_token:
+                break
 
         logger.info(f"Successfully extracted details for {len(email_details)} emails.")
         return email_details
@@ -147,79 +198,124 @@ def fetch_unread_emails(logger, gmail_service):
         raise
 
 
-def categorize_by_domain(email_details):
-    """Categorizes emails by primary domain."""
-    categorized = defaultdict(list)
+def group_emails_by_pattern(email_details):
+    """
+    Groups emails by domain and subject pattern.
+
+    Returns a structure like:
+    {
+        'domain.com': {
+            'pattern_key': {
+                'subject_sample': 'First 50 chars...',
+                'category': 'PROMO',
+                'count': 5,
+                'emails': [...]
+            }
+        }
+    }
+    """
+    grouped = defaultdict(lambda: defaultdict(lambda: {
+        'subject_sample': '',
+        'category': 'UNKNOWN',
+        'category_icon': '🟡',
+        'category_color': '#ffc107',
+        'category_bg': '#fff3cd',
+        'count': 0,
+        'emails': []
+    }))
+
     for email in email_details:
         domain = email.get('primaryDomain', 'unknown')
-        categorized[domain].append(email)
-    return dict(categorized)
+        subject = email.get('subject', '')[:50]  # First 50 chars as pattern key
+        category = email.get('category', 'UNKNOWN')
+
+        # Create a unique key based on subject pattern
+        pattern_key = f"{category}:{subject}"
+
+        group = grouped[domain][pattern_key]
+        group['subject_sample'] = subject if not group['subject_sample'] else group['subject_sample']
+        group['category'] = category
+        group['category_icon'] = email.get('category_icon', '🟡')
+        group['category_color'] = email.get('category_color', '#ffc107')
+        group['category_bg'] = email.get('category_bg', '#fff3cd')
+        group['count'] += 1
+        group['emails'].append(email)
+
+    return grouped
 
 
-def generate_html_report(email_details, categorized, output_path):
-    """Generates an HTML report of categorized emails."""
+def generate_interactive_html(email_details, grouped, output_path):
+    """Generates an interactive HTML report with action buttons."""
 
-    # Sort domains by email count (descending)
-    sorted_domains = sorted(categorized.items(), key=lambda x: len(x[1]), reverse=True)
+    # Calculate stats
+    total_emails = len(email_details)
+    total_domains = len(grouped)
+
+    # Count by category
+    category_counts = defaultdict(int)
+    for email in email_details:
+        category_counts[email.get('category', 'UNKNOWN')] += 1
+
+    # Sort domains by email count
+    sorted_domains = sorted(grouped.items(), key=lambda x: sum(p['count'] for p in x[1].values()), reverse=True)
 
     html = f'''<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Email Categorization Report</title>
+    <title>Email Review Dashboard</title>
     <style>
-        * {{
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }}
+        * {{ box-sizing: border-box; margin: 0; padding: 0; }}
         body {{
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
-            background: #f5f5f5;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f0f2f5;
             padding: 20px;
             color: #333;
         }}
-        .container {{
-            max-width: 1200px;
-            margin: 0 auto;
-        }}
-        h1 {{
-            text-align: center;
-            margin-bottom: 10px;
-            color: #1a73e8;
-        }}
-        .summary {{
-            text-align: center;
-            margin-bottom: 30px;
-            color: #666;
-        }}
+        .container {{ max-width: 1400px; margin: 0 auto; }}
+        h1 {{ text-align: center; margin-bottom: 10px; color: #1a73e8; }}
+        .subtitle {{ text-align: center; color: #666; margin-bottom: 20px; }}
+
         .stats {{
             display: flex;
             justify-content: center;
-            gap: 30px;
-            margin-bottom: 30px;
+            gap: 15px;
+            margin-bottom: 20px;
             flex-wrap: wrap;
         }}
         .stat-card {{
             background: white;
-            padding: 20px 30px;
+            padding: 15px 25px;
             border-radius: 10px;
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
             text-align: center;
         }}
-        .stat-number {{
-            font-size: 2em;
-            font-weight: bold;
-            color: #1a73e8;
+        .stat-number {{ font-size: 1.8em; font-weight: bold; color: #1a73e8; }}
+        .stat-label {{ color: #666; font-size: 0.9em; }}
+
+        .filters {{
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
         }}
-        .stat-label {{
-            color: #666;
-            margin-top: 5px;
+        .filter-btn {{
+            padding: 8px 16px;
+            border: 2px solid #ddd;
+            border-radius: 20px;
+            background: white;
+            cursor: pointer;
+            font-size: 0.9em;
+            transition: all 0.2s;
         }}
+        .filter-btn:hover {{ border-color: #1a73e8; }}
+        .filter-btn.active {{ background: #1a73e8; color: white; border-color: #1a73e8; }}
+
         .domain-section {{
             background: white;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
             border-radius: 10px;
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
             overflow: hidden;
@@ -227,93 +323,110 @@ def generate_html_report(email_details, categorized, output_path):
         .domain-header {{
             background: #1a73e8;
             color: white;
-            padding: 15px 20px;
+            padding: 12px 20px;
             cursor: pointer;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }}
-        .domain-header:hover {{
-            background: #1557b0;
-        }}
-        .domain-name {{
-            font-weight: bold;
-            font-size: 1.1em;
-        }}
+        .domain-header:hover {{ background: #1557b0; }}
+        .domain-name {{ font-weight: bold; font-size: 1.1em; }}
         .domain-count {{
             background: rgba(255,255,255,0.2);
-            padding: 5px 15px;
-            border-radius: 20px;
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-size: 0.9em;
         }}
-        .email-list {{
-            display: none;
-            padding: 0;
-        }}
-        .email-list.active {{
-            display: block;
-        }}
-        .email-item {{
-            padding: 15px 20px;
+
+        .pattern-list {{ display: none; }}
+        .pattern-list.active {{ display: block; }}
+
+        .pattern-item {{
+            padding: 12px 20px;
             border-bottom: 1px solid #eee;
-        }}
-        .email-item:last-child {{
-            border-bottom: none;
-        }}
-        .email-item:hover {{
-            background: #f9f9f9;
-        }}
-        .email-from {{
-            font-weight: 500;
-            color: #1a73e8;
-            margin-bottom: 5px;
-        }}
-        .email-subject {{
-            color: #333;
-            margin-bottom: 5px;
-        }}
-        .email-meta {{
-            font-size: 0.85em;
-            color: #999;
-        }}
-        .checkbox-col {{
-            margin-right: 15px;
-        }}
-        .email-row {{
             display: flex;
-            align-items: flex-start;
+            align-items: center;
+            gap: 15px;
         }}
-        .email-content {{
-            flex: 1;
+        .pattern-item:last-child {{ border-bottom: none; }}
+
+        .category-badge {{
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.8em;
+            font-weight: 500;
+            white-space: nowrap;
         }}
-        .actions {{
-            text-align: center;
-            margin: 30px 0;
+
+        .pattern-info {{ flex: 1; min-width: 0; }}
+        .pattern-subject {{
+            font-size: 0.95em;
+            color: #333;
+            margin-bottom: 3px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
         }}
-        .btn {{
-            background: #1a73e8;
-            color: white;
+        .pattern-count {{ font-size: 0.85em; color: #666; }}
+
+        .action-buttons {{ display: flex; gap: 8px; flex-shrink: 0; }}
+        .action-btn {{
+            padding: 6px 12px;
             border: none;
-            padding: 12px 30px;
             border-radius: 5px;
             cursor: pointer;
-            font-size: 1em;
-            margin: 0 10px;
+            font-size: 0.85em;
+            transition: all 0.2s;
         }}
-        .btn:hover {{
-            background: #1557b0;
+        .btn-keep {{ background: #6c757d; color: white; }}
+        .btn-keep:hover {{ background: #5a6268; }}
+        .btn-delete {{ background: #dc3545; color: white; }}
+        .btn-delete:hover {{ background: #c82333; }}
+        .btn-delete-1d {{ background: #fd7e14; color: white; }}
+        .btn-delete-1d:hover {{ background: #e96b02; }}
+
+        .action-btn:disabled {{
+            opacity: 0.5;
+            cursor: not-allowed;
         }}
-        .btn-danger {{
-            background: #dc3545;
+        .action-btn.done {{
+            background: #28a745 !important;
         }}
-        .btn-danger:hover {{
-            background: #c82333;
+
+        .legend {{
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
         }}
-        .btn-success {{
-            background: #28a745;
+        .legend-item {{
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 0.9em;
         }}
-        .btn-success:hover {{
-            background: #218838;
+        .legend-dot {{
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
         }}
+
+        .toast {{
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #333;
+            color: white;
+            padding: 15px 25px;
+            border-radius: 8px;
+            display: none;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }}
+        .toast.show {{ display: block; animation: fadeIn 0.3s; }}
+        @keyframes fadeIn {{ from {{ opacity: 0; }} to {{ opacity: 1; }} }}
+
         .timestamp {{
             text-align: center;
             color: #999;
@@ -324,61 +437,94 @@ def generate_html_report(email_details, categorized, output_path):
 </head>
 <body>
     <div class="container">
-        <h1>Email Categorization Report</h1>
-        <p class="summary">Unread emails categorized by sender domain</p>
+        <h1>Email Review Dashboard</h1>
+        <p class="subtitle">Interactive email categorization with action buttons</p>
 
         <div class="stats">
             <div class="stat-card">
-                <div class="stat-number">{len(email_details)}</div>
-                <div class="stat-label">Total Emails</div>
+                <div class="stat-number">{total_emails}</div>
+                <div class="stat-label">Total Unread</div>
             </div>
             <div class="stat-card">
-                <div class="stat-number">{len(categorized)}</div>
-                <div class="stat-label">Unique Domains</div>
+                <div class="stat-number">{total_domains}</div>
+                <div class="stat-label">Domains</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">{category_counts.get('PROMO', 0) + category_counts.get('NEWSLETTER', 0)}</div>
+                <div class="stat-label">Safe to Delete</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">{category_counts.get('UNKNOWN', 0)}</div>
+                <div class="stat-label">Need Review</div>
             </div>
         </div>
 
-        <div class="actions">
-            <button class="btn" onclick="expandAll()">Expand All</button>
-            <button class="btn" onclick="collapseAll()">Collapse All</button>
-            <button class="btn btn-success" onclick="exportSelected()">Export Selected to JSON</button>
+        <div class="legend">
+            <div class="legend-item"><span class="legend-dot" style="background:#28a745"></span> PROMO - Safe to delete</div>
+            <div class="legend-item"><span class="legend-dot" style="background:#17a2b8"></span> NEWSLETTER - Usually safe</div>
+            <div class="legend-item"><span class="legend-dot" style="background:#dc3545"></span> IMPORTANT - Keep</div>
+            <div class="legend-item"><span class="legend-dot" style="background:#ffc107"></span> UNKNOWN - Review</div>
+        </div>
+
+        <div class="filters">
+            <button class="filter-btn active" onclick="filterCategory('all')">All</button>
+            <button class="filter-btn" onclick="filterCategory('PROMO')">🟢 PROMO</button>
+            <button class="filter-btn" onclick="filterCategory('NEWSLETTER')">📰 NEWSLETTER</button>
+            <button class="filter-btn" onclick="filterCategory('UNKNOWN')">🟡 UNKNOWN</button>
+            <button class="filter-btn" onclick="filterCategory('important')">🔴 IMPORTANT</button>
         </div>
 
         <div id="domains">
 '''
 
-    for domain, emails in sorted_domains:
-        email_items = ""
-        for email in emails:
-            subject = email.get('subject', '(No Subject)')
-            # Escape HTML
-            subject = subject.replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;')
-            from_addr = email.get('from', '').replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;')
-            date = email.get('date', '')
+    for domain, patterns in sorted_domains:
+        domain_count = sum(p['count'] for p in patterns.values())
 
-            email_items += f'''
-            <div class="email-item">
-                <div class="email-row">
-                    <div class="checkbox-col">
-                        <input type="checkbox" class="email-checkbox" data-domain="{domain}" data-email='{json.dumps(email).replace("'", "&#39;")}'>
-                    </div>
-                    <div class="email-content">
-                        <div class="email-from">{from_addr}</div>
-                        <div class="email-subject">{subject}</div>
-                        <div class="email-meta">{date}</div>
-                    </div>
+        # Sort patterns by category priority (PROMO first, then UNKNOWN, then others)
+        sorted_patterns = sorted(patterns.items(), key=lambda x: (
+            0 if x[1]['category'] == 'PROMO' else
+            1 if x[1]['category'] == 'NEWSLETTER' else
+            2 if x[1]['category'] == 'UNKNOWN' else 3,
+            -x[1]['count']
+        ))
+
+        pattern_items = ""
+        for pattern_key, pattern in sorted_patterns:
+            subject = pattern['subject_sample'] or '(No Subject)'
+            # Escape HTML
+            subject_escaped = subject.replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;').replace('"', '&quot;').replace("'", "&#39;")
+            category = pattern['category']
+            icon = pattern['category_icon']
+            bg_color = pattern['category_bg']
+            count = pattern['count']
+
+            # Determine if this is an "important" category
+            important_cats = ['ALERT', 'RECEIPT', 'STATEMENT', 'SECURITY', 'MEDICAL', 'ORDER', 'TRAVEL', 'MORTGAGE']
+            data_important = 'true' if category in important_cats else 'false'
+
+            pattern_items += f'''
+            <div class="pattern-item" data-category="{category}" data-important="{data_important}">
+                <span class="category-badge" style="background:{bg_color}; color:#333;">{icon} {category}</span>
+                <div class="pattern-info">
+                    <div class="pattern-subject" title="{subject_escaped}">{subject_escaped}</div>
+                    <div class="pattern-count">{count} email{"s" if count > 1 else ""}</div>
+                </div>
+                <div class="action-buttons">
+                    <button class="action-btn btn-keep" onclick="markKeep(this, '{domain}', '{subject_escaped}', '{category}')">Keep</button>
+                    <button class="action-btn btn-delete" onclick="addCriteria(this, '{domain}', '{subject_escaped}')">Delete</button>
+                    <button class="action-btn btn-delete-1d" onclick="addCriteria1d(this, '{domain}', '{subject_escaped}')">Del 1d</button>
                 </div>
             </div>
 '''
 
         html += f'''
-        <div class="domain-section">
+        <div class="domain-section" data-domain="{domain}">
             <div class="domain-header" onclick="toggleSection(this)">
                 <span class="domain-name">{domain}</span>
-                <span class="domain-count">{len(emails)} emails</span>
+                <span class="domain-count">{domain_count} emails</span>
             </div>
-            <div class="email-list">
-                {email_items}
+            <div class="pattern-list">
+                {pattern_items}
             </div>
         </div>
 '''
@@ -389,39 +535,122 @@ def generate_html_report(email_details, categorized, output_path):
         <p class="timestamp">Generated on {datetime.now().strftime("%Y-%m-%d %H:%M:%S")}</p>
     </div>
 
+    <div id="toast" class="toast"></div>
+
     <script>
+        const API_BASE = 'http://localhost:5000';
+
         function toggleSection(header) {{
-            const emailList = header.nextElementSibling;
-            emailList.classList.toggle('active');
+            header.nextElementSibling.classList.toggle('active');
         }}
 
-        function expandAll() {{
-            document.querySelectorAll('.email-list').forEach(el => el.classList.add('active'));
+        function showToast(message, isError = false) {{
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.style.background = isError ? '#dc3545' : '#28a745';
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 3000);
         }}
 
-        function collapseAll() {{
-            document.querySelectorAll('.email-list').forEach(el => el.classList.remove('active'));
+        function markKeep(btn, domain, subject, category) {{
+            fetch(API_BASE + '/api/mark-keep', {{
+                method: 'POST',
+                headers: {{'Content-Type': 'application/json'}},
+                body: JSON.stringify({{domain, subject_pattern: subject, category}})
+            }})
+            .then(r => r.json())
+            .then(data => {{
+                if (data.success) {{
+                    btn.classList.add('done');
+                    btn.textContent = '✓ Kept';
+                    btn.disabled = true;
+                    showToast('Marked as keep');
+                }} else {{
+                    showToast(data.error || 'Error', true);
+                }}
+            }})
+            .catch(e => showToast('Server error - is the server running?', true));
         }}
 
-        function exportSelected() {{
-            const selected = [];
-            document.querySelectorAll('.email-checkbox:checked').forEach(cb => {{
-                selected.push(JSON.parse(cb.dataset.email));
+        function addCriteria(btn, domain, subject) {{
+            const subjectPattern = extractPattern(subject);
+            fetch(API_BASE + '/api/add-criteria', {{
+                method: 'POST',
+                headers: {{'Content-Type': 'application/json'}},
+                body: JSON.stringify({{domain, subject_pattern: subjectPattern}})
+            }})
+            .then(r => r.json())
+            .then(data => {{
+                if (data.success) {{
+                    btn.classList.add('done');
+                    btn.textContent = '✓ Added';
+                    btn.disabled = true;
+                    showToast('Added to criteria.json');
+                }} else {{
+                    showToast(data.error || 'Error', true);
+                }}
+            }})
+            .catch(e => showToast('Server error - is the server running?', true));
+        }}
+
+        function addCriteria1d(btn, domain, subject) {{
+            const subjectPattern = extractPattern(subject);
+            fetch(API_BASE + '/api/add-criteria-1d', {{
+                method: 'POST',
+                headers: {{'Content-Type': 'application/json'}},
+                body: JSON.stringify({{domain, subject_pattern: subjectPattern}})
+            }})
+            .then(r => r.json())
+            .then(data => {{
+                if (data.success) {{
+                    btn.classList.add('done');
+                    btn.textContent = '✓ Added';
+                    btn.disabled = true;
+                    showToast('Added to criteria_1day_old.json');
+                }} else {{
+                    showToast(data.error || 'Error', true);
+                }}
+            }})
+            .catch(e => showToast('Server error - is the server running?', true));
+        }}
+
+        function extractPattern(subject) {{
+            // Extract the first few significant words as a pattern
+            // Remove numbers that look like order numbers, dates, etc.
+            let pattern = subject.replace(/\\d{{5,}}/g, '').replace(/\\s+/g, ' ').trim();
+            // Take first 30 chars as pattern
+            return pattern.substring(0, 30).trim();
+        }}
+
+        function filterCategory(category) {{
+            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+            event.target.classList.add('active');
+
+            document.querySelectorAll('.pattern-item').forEach(item => {{
+                const itemCat = item.dataset.category;
+                const isImportant = item.dataset.important === 'true';
+
+                if (category === 'all') {{
+                    item.style.display = 'flex';
+                }} else if (category === 'important') {{
+                    item.style.display = isImportant ? 'flex' : 'none';
+                }} else {{
+                    item.style.display = itemCat === category ? 'flex' : 'none';
+                }}
             }});
 
-            if (selected.length === 0) {{
-                alert('No emails selected. Please select emails to export.');
-                return;
-            }}
-
-            const blob = new Blob([JSON.stringify(selected, null, 2)], {{type: 'application/json'}});
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = 'selected_emails.json';
-            a.click();
-            URL.revokeObjectURL(url);
+            // Hide empty domain sections
+            document.querySelectorAll('.domain-section').forEach(section => {{
+                const visibleItems = section.querySelectorAll('.pattern-item[style*="flex"]').length;
+                const hiddenItems = section.querySelectorAll('.pattern-item[style*="none"]').length;
+                section.style.display = (visibleItems === 0 && hiddenItems > 0) ? 'none' : 'block';
+            }});
         }}
+
+        // Expand first few domains by default
+        document.querySelectorAll('.pattern-list').forEach((el, i) => {{
+            if (i < 5) el.classList.add('active');
+        }});
     </script>
 </body>
 </html>
@@ -430,7 +659,24 @@ def generate_html_report(email_details, categorized, output_path):
     with open(output_path, 'w', encoding='utf-8') as f:
         f.write(html)
 
+    # Also save to current_report.html for the server
+    with open('logs/current_report.html', 'w', encoding='utf-8') as f:
+        f.write(html)
+
     return output_path
+
+
+def start_server_background():
+    """Start the Flask server in a background thread."""
+    try:
+        from email_review_server import run_server
+        server_thread = threading.Thread(target=run_server, daemon=True)
+        server_thread.start()
+        time.sleep(1)  # Give server time to start
+        return True
+    except Exception as e:
+        print(f"Warning: Could not start server: {e}")
+        return False
 
 
 def main():
@@ -444,6 +690,9 @@ def main():
     logger = logging.getLogger()
     logger.setLevel(logging.DEBUG)
 
+    # Clear existing handlers
+    logger.handlers = []
+
     file_handler = logging.FileHandler(log_filename)
     file_handler.setLevel(logging.DEBUG)
     file_handler.setFormatter(logging.Formatter('%(asctime)s - %(levelname)s - %(message)s'))
@@ -455,7 +704,7 @@ def main():
     logger.addHandler(file_handler)
     logger.addHandler(console_handler)
 
-    logger.info("Starting email categorization...")
+    logger.info("Starting email categorization with classification...")
 
     try:
         # Authenticate
@@ -463,8 +712,8 @@ def main():
         gmail_service = build('gmail', 'v1', credentials=creds)
         logger.info("Gmail authentication successful.")
 
-        # Fetch and extract email details
-        email_details = fetch_unread_emails(logger, gmail_service)
+        # Fetch ALL unread emails (with pagination)
+        email_details = fetch_all_unread_emails(logger, gmail_service)
 
         if not email_details:
             logger.info("No unread emails found.")
@@ -473,22 +722,45 @@ def main():
         # Save raw JSON data to logs folder
         json_path = f"logs/emails_categorized_{time.strftime('%Y%m%d_%H%M%S')}.json"
         with open(json_path, 'w', encoding='utf-8') as f:
-            json.dump(email_details, f, indent=2)
+            json.dump(email_details, f, indent=2, ensure_ascii=False)
         logger.info(f"Saved raw data to {json_path}")
 
-        # Categorize by domain
-        categorized = categorize_by_domain(email_details)
-        logger.info(f"Categorized emails into {len(categorized)} domains.")
+        # Group emails by domain and subject pattern
+        grouped = group_emails_by_pattern(email_details)
+        logger.info(f"Grouped emails into {len(grouped)} domains.")
 
-        # Generate HTML report in logs folder
+        # Log category breakdown
+        category_counts = defaultdict(int)
+        for email in email_details:
+            category_counts[email.get('category', 'UNKNOWN')] += 1
+        logger.info(f"Category breakdown: {dict(category_counts)}")
+
+        # Generate interactive HTML report
         html_path = f"logs/email_report_{time.strftime('%Y%m%d_%H%M%S')}.html"
-        generate_html_report(email_details, categorized, html_path)
-        logger.info(f"Generated HTML report: {html_path}")
+        generate_interactive_html(email_details, grouped, html_path)
+        logger.info(f"Generated interactive HTML report: {html_path}")
 
-        # Open HTML in browser
-        abs_path = os.path.abspath(html_path)
-        logger.info(f"Opening report in browser...")
-        webbrowser.open(f'file://{abs_path}')
+        # Start the Flask server in background
+        logger.info("Starting review server...")
+        server_started = start_server_background()
+
+        # Open in browser
+        if server_started:
+            logger.info("Opening http://localhost:5000 in browser...")
+            webbrowser.open('http://localhost:5000')
+            logger.info("Server running. Press Ctrl+C to stop.")
+
+            # Keep the main thread alive
+            try:
+                while True:
+                    time.sleep(1)
+            except KeyboardInterrupt:
+                logger.info("Server stopped.")
+        else:
+            # Fallback to static HTML
+            abs_path = os.path.abspath(html_path)
+            logger.info(f"Opening static report in browser...")
+            webbrowser.open(f'file://{abs_path}')
 
         logger.info("Email categorization complete!")
 
