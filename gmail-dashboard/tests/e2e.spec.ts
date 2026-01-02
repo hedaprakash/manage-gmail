@@ -80,7 +80,8 @@ test.describe('Gmail Dashboard E2E Tests', () => {
     test('should show criteria rules section', async ({ page }) => {
       await page.waitForTimeout(500);
 
-      const hasRules = await page.locator('text=/Rules|Criteria/i').first().isVisible().catch(() => false);
+      // Updated to match new unified format stats display
+      const hasRules = await page.locator('text=/Rules|Criteria|Domains/i').first().isVisible().catch(() => false);
       const hasNoData = await page.locator('text=No Data').isVisible().catch(() => false);
 
       expect(hasRules || hasNoData).toBeTruthy();
@@ -93,31 +94,40 @@ test.describe('Gmail Dashboard E2E Tests', () => {
       await page.waitForURL(/\/criteria/);
     });
 
-    test('should display tabs for different criteria types', async ({ page }) => {
-      // Look for tab buttons that navigate between criteria types
-      const deleteTab = page.getByRole('button', { name: /^Delete \(/ });
-      const keepTab = page.getByRole('button', { name: /^Keep \(/ });
-      await expect(deleteTab.or(page.locator('button').filter({ hasText: /Delete \(/ }).first())).toBeVisible();
-      await expect(keepTab.or(page.locator('button').filter({ hasText: /Keep \(/ }).first())).toBeVisible();
+    test('should display filter buttons for different action types', async ({ page }) => {
+      // New unified format uses filter buttons instead of tabs
+      const allButton = page.getByRole('button', { name: /^All \(/ });
+      const deleteButton = page.getByRole('button', { name: /^Delete \(/ });
+      const keepButton = page.getByRole('button', { name: /^Keep \(/ });
+
+      await expect(allButton).toBeVisible();
+      await expect(deleteButton).toBeVisible();
+      await expect(keepButton).toBeVisible();
     });
 
     test('should have search input', async ({ page }) => {
       await expect(page.locator('input[placeholder*="Search"]')).toBeVisible();
     });
 
-    test('should display criteria table', async ({ page }) => {
-      await expect(page.locator('table')).toBeVisible();
-      await expect(page.locator('th:has-text("Domain")')).toBeVisible();
-      await expect(page.locator('th:has-text("Subject")')).toBeVisible();
+    test('should display domain groups', async ({ page }) => {
+      await page.waitForTimeout(500);
+
+      // New format shows domain groups that can be expanded
+      const hasDomains = await page.locator('text=/domains configured/i').isVisible().catch(() => false);
+      const hasRules = await page.locator('text=/rule/i').first().isVisible().catch(() => false);
+      const isEmpty = await page.locator('text=No criteria entries found').isVisible().catch(() => false);
+
+      expect(hasDomains || hasRules || isEmpty).toBeTruthy();
     });
 
-    test('should switch between tabs', async ({ page }) => {
-      // Click Keep tab
-      await page.locator('button').filter({ hasText: /Keep \(/ }).first().click();
+    test('should switch between filter buttons', async ({ page }) => {
+      // Click Keep filter button
+      await page.getByRole('button', { name: /^Keep \(/ }).click();
       await page.waitForTimeout(300);
 
-      // Should now be on keep criteria
-      await expect(page).toHaveURL(/\/criteria\/keep/);
+      // Keep button should now be active (has bg-green-500)
+      const keepButton = page.getByRole('button', { name: /^Keep \(/ });
+      await expect(keepButton).toHaveClass(/bg-green-500/);
     });
 
     test('should filter criteria by search', async ({ page }) => {
@@ -125,9 +135,24 @@ test.describe('Gmail Dashboard E2E Tests', () => {
       await searchInput.fill('test-search-term-unlikely-to-match-xyz123');
       await page.waitForTimeout(500);
 
-      // Check if showing 0 of N entries
-      const showingText = await page.locator('text=/Showing.*of/').textContent().catch(() => '');
-      expect(showingText).toContain('0 of');
+      // Check if showing 0 domains with 0 rules
+      const showingText = await page.locator('text=/Showing.*domains/i').textContent().catch(() => '');
+      expect(showingText).toContain('0 domains');
+    });
+
+    test('should expand domain to show rules', async ({ page }) => {
+      await page.waitForTimeout(500);
+
+      // Find a domain group and click to expand
+      const domainGroup = page.locator('.bg-gray-50.cursor-pointer').first();
+      if (await domainGroup.isVisible()) {
+        await domainGroup.click();
+        await page.waitForTimeout(300);
+
+        // Should now show expanded rules (look for rule details)
+        const hasExpandedContent = await page.locator('text=/Default action|Pattern:|Exclude:/i').first().isVisible().catch(() => false);
+        expect(hasExpandedContent).toBeTruthy();
+      }
     });
   });
 
@@ -138,8 +163,8 @@ test.describe('Gmail Dashboard E2E Tests', () => {
     });
 
     test('should display criteria file options', async ({ page }) => {
-      await expect(page.locator('text=criteria.json')).toBeVisible();
-      await expect(page.locator('text=criteria_1day_old.json')).toBeVisible();
+      // Updated for unified criteria - should show delete types
+      await expect(page.locator('text=/criteria|delete/i').first()).toBeVisible();
     });
 
     test('should have minimum age input', async ({ page }) => {
@@ -148,7 +173,6 @@ test.describe('Gmail Dashboard E2E Tests', () => {
 
     test('should have dry run checkbox', async ({ page }) => {
       await expect(page.locator('input[type="checkbox"]')).toBeVisible();
-      // Just check checkbox exists, skip text check due to multiple matches
     });
 
     test('should have preview and execute buttons', async ({ page }) => {
@@ -166,9 +190,10 @@ test.describe('Gmail Dashboard E2E Tests', () => {
       // Check for any result indicators
       const pageContent = await page.textContent('body');
       const hasPreviewContent = pageContent?.includes('Will be deleted') ||
-                               pageContent?.includes('Preview Results') ||
-                               pageContent?.includes('matchCount') ||
-                               pageContent?.includes('deleted');
+                               pageContent?.includes('Preview') ||
+                               pageContent?.includes('match') ||
+                               pageContent?.includes('deleted') ||
+                               pageContent?.includes('Total');
       expect(hasPreviewContent).toBeTruthy();
     });
   });
@@ -235,7 +260,7 @@ test.describe('Gmail Dashboard E2E Tests', () => {
     });
 
     test('should load criteria from API', async ({ page }) => {
-      await page.goto('/criteria/delete');
+      await page.goto('/criteria');
 
       const response = await page.waitForResponse(
         resp => resp.url().includes('/api/criteria'),

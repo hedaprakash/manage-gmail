@@ -7,8 +7,7 @@
 import fs from 'fs';
 import path from 'path';
 import type { EmailData, DomainGroup, SubdomainGroup, EmailPattern } from '../types/index.js';
-import { matchesAnyCriteria, isExcludedByCriteria, loadJsonFile, CRITERIA_FILE, CRITERIA_1DAY_FILE, KEEP_CRITERIA_FILE } from './criteria.js';
-import type { CriteriaEntry } from '../types/index.js';
+import { matchEmail } from './criteria.js';
 
 const PROJECT_ROOT = path.resolve(process.cwd(), '..');
 const LOGS_DIR = path.join(PROJECT_ROOT, 'logs');
@@ -235,22 +234,19 @@ export function groupEmailsByPattern(emailDetails: EmailData[]): DomainGroup[] {
  * Filter out emails that already have a decision:
  * - Matches delete criteria (will be deleted)
  * - Matches keep criteria (will be kept)
- * - Explicitly excluded by criteria (decision: don't delete this pattern)
+ * - Any action assigned by the unified criteria
  */
 export function filterDecidedEmails(
-  emails: EmailData[],
-  criteria: CriteriaEntry[],
-  keep: CriteriaEntry[]
+  emails: EmailData[]
 ): { filtered: EmailData[]; removedCount: number } {
   const filtered: EmailData[] = [];
   let removedCount = 0;
 
   for (const email of emails) {
-    const inDelete = matchesAnyCriteria(email, criteria);
-    const inKeep = matchesAnyCriteria(email, keep);
-    const isExcluded = isExcludedByCriteria(email, criteria);
+    const result = matchEmail(email);
 
-    if (inDelete || inKeep || isExcluded) {
+    // If matchEmail returns an action, the email has a decision
+    if (result.action !== null) {
       removedCount++;
     } else {
       filtered.push(email);

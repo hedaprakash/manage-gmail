@@ -14,8 +14,8 @@ import {
   getCacheStats
 } from '../services/cache.js';
 import { fetchAllUnreadEmails, getGmailUrl } from '../services/gmail.js';
-import { loadJsonFile, CRITERIA_FILE, CRITERIA_1DAY_FILE, KEEP_CRITERIA_FILE, matchesAnyCriteria } from '../services/criteria.js';
-import type { CriteriaEntry, EmailData } from '../types/index.js';
+import { matchEmail, getCriteriaStats } from '../services/criteria.js';
+import type { EmailData } from '../types/index.js';
 
 const router = Router();
 
@@ -38,16 +38,8 @@ router.get('/', async (_req: Request, res: Response) => {
     // Load emails from cache
     const emails = loadCachedEmails(cache.filepath);
 
-    // Load criteria
-    const criteria = loadJsonFile<CriteriaEntry>(CRITERIA_FILE);
-    const criteria1d = loadJsonFile<CriteriaEntry>(CRITERIA_1DAY_FILE);
-    const keep = loadJsonFile<CriteriaEntry>(KEEP_CRITERIA_FILE);
-
-    // Combine delete criteria for filtering
-    const allDeleteCriteria = [...criteria, ...criteria1d];
-
-    // Filter out decided emails
-    const { filtered, removedCount } = filterDecidedEmails(emails, allDeleteCriteria, keep);
+    // Filter out decided emails (uses unified criteria internally)
+    const { filtered, removedCount } = filterDecidedEmails(emails);
 
     // Group by domain and pattern
     const grouped = groupEmailsByPattern(filtered);
@@ -131,36 +123,38 @@ router.get('/stats', async (_req: Request, res: Response) => {
     // Load emails for detailed stats
     const emails = loadCachedEmails(cacheStats.filepath!);
 
-    // Load criteria
-    const criteria = loadJsonFile<CriteriaEntry>(CRITERIA_FILE);
-    const criteria1d = loadJsonFile<CriteriaEntry>(CRITERIA_1DAY_FILE);
-    const keep = loadJsonFile<CriteriaEntry>(KEEP_CRITERIA_FILE);
+    // Get criteria stats from unified format
+    const criteriaStats = getCriteriaStats();
 
-    // Categorize each email
-    let matchedCriteria = 0;
-    let matchedCriteria1d = 0;
+    // Categorize each email using unified matchEmail
+    let matchedDelete = 0;
+    let matchedDelete1d = 0;
     let matchedKeep = 0;
     let undecided = 0;
 
-    const criteriaDomains: Record<string, number> = {};
-    const criteria1dDomains: Record<string, number> = {};
+    const deleteDomains: Record<string, number> = {};
+    const delete1dDomains: Record<string, number> = {};
     const keepDomains: Record<string, number> = {};
 
     for (const email of emails) {
       const domain = email.primaryDomain || 'unknown';
+      const result = matchEmail(email);
 
-      // Check keep first (highest priority)
-      if (matchesAnyCriteria(email, keep)) {
-        matchedKeep++;
-        keepDomains[domain] = (keepDomains[domain] || 0) + 1;
-      } else if (matchesAnyCriteria(email, criteria)) {
-        matchedCriteria++;
-        criteriaDomains[domain] = (criteriaDomains[domain] || 0) + 1;
-      } else if (matchesAnyCriteria(email, criteria1d)) {
-        matchedCriteria1d++;
-        criteria1dDomains[domain] = (criteria1dDomains[domain] || 0) + 1;
-      } else {
-        undecided++;
+      switch (result.action) {
+        case 'keep':
+          matchedKeep++;
+          keepDomains[domain] = (keepDomains[domain] || 0) + 1;
+          break;
+        case 'delete':
+          matchedDelete++;
+          deleteDomains[domain] = (deleteDomains[domain] || 0) + 1;
+          break;
+        case 'delete_1d':
+          matchedDelete1d++;
+          delete1dDomains[domain] = (delete1dDomains[domain] || 0) + 1;
+          break;
+        default:
+          undecided++;
       }
     }
 
@@ -178,17 +172,15 @@ router.get('/stats', async (_req: Request, res: Response) => {
       cacheAgeHours: Math.round((cacheStats.ageHours || 0) * 100) / 100,
       stats: {
         total: emails.length,
-        matchedCriteria,
-        matchedCriteria1d,
+        matchedDelete,
+        matchedDelete1d,
         matchedKeep,
         undecided,
-        criteriaDomains: sortAndLimit(criteriaDomains),
-        criteria1dDomains: sortAndLimit(criteria1dDomains),
+        deleteDomains: sortAndLimit(deleteDomains),
+        delete1dDomains: sortAndLimit(delete1dDomains),
         keepDomains: sortAndLimit(keepDomains)
       },
-      criteriaRules: criteria.length,
-      criteria1dRules: criteria1d.length,
-      keepRules: keep.length
+      criteriaStats
     });
   } catch (error) {
     console.error('Error getting stats:', error);

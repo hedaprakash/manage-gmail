@@ -2,35 +2,8 @@
   {
     "email": "",
     "subdomain": "",
-    "primaryDomain": "costco.com",
-    "subject": "",
-    "toEmails": "",
-    "ccEmails": "",
-    "excludeSubject": "Order"
-  },
-  {
-    "email": "",
-    "subdomain": "",
     "primaryDomain": "care.com",
     "subject": "",
-    "toEmails": "",
-    "ccEmails": "",
-    "excludeSubject": ""
-  },
-  {
-    "email": "",
-    "subdomain": "",
-    "primaryDomain": "instagram.com",
-    "subject": "",
-    "toEmails": "",
-    "ccEmails": "",
-    "excludeSubject": ""
-  },
-  {
-    "email": "",
-    "subdomain": "",
-    "primaryDomain": "interactivebrokers.com",
-    "subject": "Newsletter",
     "toEmails": "",
     "ccEmails": "",
     "excludeSubject": ""
@@ -83,33 +56,6 @@
   {
     "email": "",
     "subdomain": "",
-    "primaryDomain": "ring.com",
-    "subject": "",
-    "toEmails": "",
-    "ccEmails": "",
-    "excludeSubject": "Battery, Order"
-  },
-  {
-    "email": "",
-    "subdomain": "",
-    "primaryDomain": "google.com",
-    "subject": "Gemini",
-    "toEmails": "",
-    "ccEmails": "",
-    "excludeSubject": ""
-  },
-  {
-    "email": "",
-    "subdomain": "",
-    "primaryDomain": "crexi.com",
-    "subject": "",
-    "toEmails": "",
-    "ccEmails": "",
-    "excludeSubject": ""
-  },
-  {
-    "email": "",
-    "subdomain": "",
     "primaryDomain": "stockunlock.com",
     "subject": "",
     "toEmails": "",
@@ -124,15 +70,6 @@
     "toEmails": "",
     "ccEmails": "",
     "excludeSubject": ""
-  },
-  {
-    "email": "",
-    "subdomain": "",
-    "primaryDomain": "godaddy.com",
-    "subject": "",
-    "toEmails": "",
-    "ccEmails": "",
-    "excludeSubject": "Renewal"
   },
   {
     "email": "",
@@ -156,15 +93,6 @@
     "email": "",
     "subdomain": "",
     "primaryDomain": "willow.tv",
-    "subject": "",
-    "toEmails": "",
-    "ccEmails": "",
-    "excludeSubject": ""
-  },
-  {
-    "email": "",
-    "subdomain": "",
-    "primaryDomain": "ccsend.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -290,15 +218,6 @@
   {
     "email": "",
     "subdomain": "",
-    "primaryDomain": "openai.com",
-    "subject": "",
-    "toEmails": "",
-    "ccEmails": "",
-    "excludeSubject": ""
-  },
-  {
-    "email": "",
-    "subdomain": "",
     "primaryDomain": "augmentcode.com",
     "subject": "",
     "toEmails": "",
@@ -344,123 +263,6 @@
   {
     "email": "",
     "subdomain": "",
-    "primaryDomain": "milesformigraine.org",
-    "subject": "",
-    "toEmails": "",
-    "ccEmails": "",
-    "excludeSubject": ""
-  },
-  {
-    "email": "",
-    "subdomain": "",
-    "primaryDomain": "icicibank.com",
-    "subject": "Request for Funds transfer in",
-    "toEmails": "",
-    "ccEmails": "",
-    "excludeSubject": ""
-  },
-  {
-    "email": "",
-    "subdomain": "",
-    "primaryDomain": "icicibank.com",
-    "subject": "Updation of Non-Resident statu",
-    "toEmails": "",
-    "ccEmails": "",
-    "excludeSubject": ""
-  },
-  {
-    "email": "",
-    "subdomain": "",
-    "primaryDomain": "icicibank.com",
-    "subject": "Payee Add Confirmation for you",
-    "toEmails": "",
-    "ccEmails": "",
-    "excludeSubject": ""
-  },
-  {
-    "email": "",
-    "subdomain": "",
-    "primaryDomain": "icicibank.com",
-    "subject": "Transaction alert for your ICI",
-    "toEmails": "",
-    "ccEmails": "",
-    "excludeSubject": ""
-  },
-  {
-    "email": "",
-    "subdomain": "",
-    "primaryDomain": "icicibank.com",
-    "subject": "Alert for transaction through",
-    "toEmails": "",
-    "ccEmails": "",
-    "excludeSubject": ""
-  },
-  {
-    "email": "",
-    "subdomain": "",
-    "primaryDomain": "icicibank.com",
-    "subject": "Grid Card Authentication (GCA)",
-    "toEmails": "",
-    "ccEmails": "",
-    "excludeSubject": ""
-  },
-  {
-    "email": "",
-    "subdomain": "",
-    "primaryDomain": "icicibank.com",
-    "subject": "OTP confirmation alert for you",
-    "toEmails": "",
-    "ccEmails": "",
-    "excludeSubject": ""
-  },
-  {
-    "email": "",
-    "subdomain": "",
-    "primaryDomain": "icicibank.com",
-    "subject": "OTP to log in to Money2India U",
-    "toEmails": "",
-    "ccEmails": "",
-    "excludeSubject": ""
-  },
-  {
-    "email": "",
-    "subdomain": "",
-    "primaryDomain": "google.com",
-    "subject": "Security alert",
-    "toEmails": "",
-    "ccEmails": "",
-    "excludeSubject": ""
-  },
-  {
-    "email": "",
-    "subdomain": "",
-    "primaryDomain": "google.com",
-    "subject": "Security alert for prakash.hed",
-    "toEmails": "",
-    "ccEmails": "",
-    "excludeSubject": ""
-  },
-  {
-    "email": "",
-    "subdomain": "",
-    "primaryDomain": "google.com",
-    "subject": "Security alert for phedadba@gm",
-    "toEmails": "",
-    "ccEmails": "",
-    "excludeSubject": ""
-  },
-  {
-    "email": "",
-    "subdomain": "",
-    "primaryDomain": "google.com",
-    "subject": "Critical security alert",
-    "toEmails": "",
-    "ccEmails": "",
-    "excludeSubject": ""
-  },
-  {
-    "email": "",
-    "subdomain": "",
     "primaryDomain": "slingemail.com",
     "subject": "",
     "toEmails": "",
@@ -498,15 +300,6 @@
     "email": "",
     "subdomain": "",
     "primaryDomain": "subway.com",
-    "subject": "",
-    "toEmails": "",
-    "ccEmails": "",
-    "excludeSubject": ""
-  },
-  {
-    "email": "",
-    "subdomain": "",
-    "primaryDomain": "cio.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -616,33 +409,6 @@
     "subdomain": "",
     "primaryDomain": "cloudflare.com",
     "subject": "Your login token for the Cloudflare dashboard",
-    "toEmails": "",
-    "ccEmails": "",
-    "excludeSubject": ""
-  },
-  {
-    "email": "",
-    "subdomain": "",
-    "primaryDomain": "hdfcbank.net",
-    "subject": "View: Account update for your HDFC Bank A/c",
-    "toEmails": "",
-    "ccEmails": "",
-    "excludeSubject": ""
-  },
-  {
-    "email": "",
-    "subdomain": "",
-    "primaryDomain": "hdfcbank.net",
-    "subject": "FD booking for NRE accounts just got easier 🌟",
-    "toEmails": "",
-    "ccEmails": "",
-    "excludeSubject": ""
-  },
-  {
-    "email": "",
-    "subdomain": "",
-    "primaryDomain": "hdfcbank.net",
-    "subject": "[No Action Needed]: Kindly Ignore Our Recent Email",
     "toEmails": "",
     "ccEmails": "",
     "excludeSubject": ""

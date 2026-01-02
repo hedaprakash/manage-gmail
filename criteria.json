@@ -46,15 +46,6 @@
   },
   {
     "email": "",
-    "subdomain": "info15.citi.com",
-    "primaryDomain": "citi.com",
-    "subject": "",
-    "toEmails": "",
-    "ccEmails": "",
-    "excludeSubject": ""
-  },
-  {
-    "email": "",
     "subdomain": "",
     "primaryDomain": "magicbricks.com",
     "subject": "",
@@ -1161,15 +1152,6 @@
     "excludeSubject": ""
   },
   {
-    "email": "HomeDepotCustomerCare",
-    "subdomain": "",
-    "primaryDomain": "",
-    "subject": "",
-    "toEmails": "",
-    "ccEmails": "",
-    "excludeSubject": ""
-  },
-  {
     "email": "homesnap.com",
     "subdomain": "",
     "primaryDomain": "homesnap.com",
@@ -1641,15 +1623,6 @@
     "email": "mint.com",
     "subdomain": "",
     "primaryDomain": "mint.com",
-    "subject": "",
-    "toEmails": "",
-    "ccEmails": "",
-    "excludeSubject": ""
-  },
-  {
-    "email": "mint.intuit.com",
-    "subdomain": "",
-    "primaryDomain": "intuit.com",
     "subject": "",
     "toEmails": "",
     "ccEmails": "",
@@ -2142,15 +2115,6 @@
     "excludeSubject": ""
   },
   {
-    "email": "services@custcomm.icicibank.com",
-    "subdomain": "",
-    "primaryDomain": "icicibank.com",
-    "subject": "",
-    "toEmails": "",
-    "ccEmails": "",
-    "excludeSubject": ""
-  },
-  {
     "email": "sfciti.org",
     "subdomain": "",
     "primaryDomain": "sfciti.org",
@@ -2603,78 +2567,6 @@
   {
     "email": "",
     "subdomain": "",
-    "primaryDomain": "icicibank.com",
-    "subject": "Webinar on Real Estate Trends",
-    "toEmails": "",
-    "ccEmails": "",
-    "excludeSubject": ""
-  },
-  {
-    "email": "",
-    "subdomain": "",
-    "primaryDomain": "icicibank.com",
-    "subject": "Nominee updation for your ICIC",
-    "toEmails": "",
-    "ccEmails": "",
-    "excludeSubject": ""
-  },
-  {
-    "email": "",
-    "subdomain": "",
-    "primaryDomain": "icicibank.com",
-    "subject": "Prevent your ICICI Bank NRI Sa",
-    "toEmails": "",
-    "ccEmails": "",
-    "excludeSubject": ""
-  },
-  {
-    "email": "",
-    "subdomain": "",
-    "primaryDomain": "icicibank.com",
-    "subject": "Important: Revision in service",
-    "toEmails": "",
-    "ccEmails": "",
-    "excludeSubject": ""
-  },
-  {
-    "email": "",
-    "subdomain": "",
-    "primaryDomain": "icicibank.com",
-    "subject": "Capital Gains Account Scheme (",
-    "toEmails": "",
-    "ccEmails": "",
-    "excludeSubject": ""
-  },
-  {
-    "email": "",
-    "subdomain": "",
-    "primaryDomain": "icicibank.com",
-    "subject": "Advice for your ICICI Bank Fix",
-    "toEmails": "",
-    "ccEmails": "",
-    "excludeSubject": ""
-  },
-  {
-    "email": "",
-    "subdomain": "",
-    "primaryDomain": "icicibank.com",
-    "subject": "Introduction of continuous Che",
-    "toEmails": "",
-    "ccEmails": "",
-    "excludeSubject": ""
-  },
-  {
-    "email": "",
-    "subdomain": "",
-    "primaryDomain": "google.com",
-    "subject": "Notification: Flight to Delhi",
-    "toEmails": "",
-    "ccEmails": "",
-    "excludeSubject": ""
-  },
-  {
-    "email": "",
-    "subdomain": "",
     "primaryDomain": "zillowrentals.com",
     "subject": "Rental market update for 136 H",
     "toEmails": "",
@@ -2756,78 +2648,6 @@
   {
     "email": "",
     "subdomain": "",
-    "primaryDomain": "icicibank.com",
-    "subject": "Webinar on Real Estate Trends and Opportunities",
-    "toEmails": "",
-    "ccEmails": "",
-    "excludeSubject": ""
-  },
-  {
-    "email": "",
-    "subdomain": "",
-    "primaryDomain": "icicibank.com",
-    "subject": "Prevent your ICICI Bank NRI Savings Account from b",
-    "toEmails": "",
-    "ccEmails": "",
-    "excludeSubject": ""
-  },
-  {
-    "email": "",
-    "subdomain": "",
-    "primaryDomain": "icicibank.com",
-    "subject": "Important: Revision in service charges for NRI Sav",
-    "toEmails": "",
-    "ccEmails": "",
-    "excludeSubject": ""
-  },
-  {
-    "email": "",
-    "subdomain": "",
-    "primaryDomain": "interactivebrokers.com",
-    "subject": "IBKR Traders' Insight Newsletter December 31, 2025",
-    "toEmails": "",
-    "ccEmails": "",
-    "excludeSubject": ""
-  },
-  {
-    "email": "",
-    "subdomain": "",
-    "primaryDomain": "interactivebrokers.com",
-    "subject": "Upcoming Events at IBKR Webinars for December 2025",
-    "toEmails": "",
-    "ccEmails": "",
-    "excludeSubject": ""
-  },
-  {
-    "email": "",
-    "subdomain": "",
-    "primaryDomain": "interactivebrokers.com",
-    "subject": "News at IBKR",
-    "toEmails": "",
-    "ccEmails": "",
-    "excludeSubject": ""
-  },
-  {
-    "email": "",
-    "subdomain": "",
-    "primaryDomain": "interactivebrokers.com",
-    "subject": "Upcoming Events at IBKR Webinars for November 2025",
-    "toEmails": "",
-    "ccEmails": "",
-    "excludeSubject": ""
-  },
-  {
-    "email": "",
-    "subdomain": "",
-    "primaryDomain": "interactivebrokers.com",
-    "subject": "Upcoming Events at IBKR Webinars for October 2025",
-    "toEmails": "",
-    "ccEmails": "",
-    "excludeSubject": ""
-  },
-  {
-    "email": "",
-    "subdomain": "",
     "primaryDomain": "godaddy.com",
     "subject": "Start selling with a free $499 POS device.",
     "toEmails": "",
@@ -2837,89 +2657,8 @@
   {
     "email": "",
     "subdomain": "",
-    "primaryDomain": "chase.com",
-    "subject": "Hi, Prakash: We're treating you to $50 for adding ",
-    "toEmails": "",
-    "ccEmails": "",
-    "excludeSubject": ""
-  },
-  {
-    "email": "",
-    "subdomain": "",
-    "primaryDomain": "chase.com",
-    "subject": "Good news: You may qualify for a credit line incre",
-    "toEmails": "",
-    "ccEmails": "",
-    "excludeSubject": ""
-  },
-  {
-    "email": "",
-    "subdomain": "",
-    "primaryDomain": "chase.com",
-    "subject": "Message for Prakash: Discover long-term interest s",
-    "toEmails": "",
-    "ccEmails": "",
-    "excludeSubject": ""
-  },
-  {
-    "email": "",
-    "subdomain": "",
-    "primaryDomain": "chase.com",
-    "subject": "Prakash, check out your new Chase Offers",
-    "toEmails": "",
-    "ccEmails": "",
-    "excludeSubject": ""
-  },
-  {
-    "email": "",
-    "subdomain": "",
-    "primaryDomain": "chase.com",
-    "subject": "Good news: Prakash, you may qualify for more spend",
-    "toEmails": "",
-    "ccEmails": "",
-    "excludeSubject": ""
-  },
-  {
-    "email": "",
-    "subdomain": "",
-    "primaryDomain": "chase.com",
-    "subject": "Prakash, enjoy 60% off 2 DoorDash orders during Su",
-    "toEmails": "",
-    "ccEmails": "",
-    "excludeSubject": ""
-  },
-  {
-    "email": "",
-    "subdomain": "",
-    "primaryDomain": "google.com",
-    "subject": "Member benefit: Save 25% on Pixel 10 series phones",
-    "toEmails": "",
-    "ccEmails": "",
-    "excludeSubject": ""
-  },
-  {
-    "email": "",
-    "subdomain": "",
     "primaryDomain": "atlassian.com",
     "subject": "Upcoming changes to Free Bitbucket workspaces",
-    "toEmails": "",
-    "ccEmails": "",
-    "excludeSubject": ""
-  },
-  {
-    "email": "",
-    "subdomain": "",
-    "primaryDomain": "gmail.com",
-    "subject": "✨🎉 Save The Date for Diwali Dhoom! 🎉✨",
-    "toEmails": "",
-    "ccEmails": "",
-    "excludeSubject": ""
-  },
-  {
-    "email": "",
-    "subdomain": "",
-    "primaryDomain": "asuswebstorage.com",
-    "subject": "Welcome prakash, open the email to get your member",
     "toEmails": "",
     "ccEmails": "",
     "excludeSubject": ""
@@ -2972,15 +2711,6 @@
   {
     "email": "",
     "subdomain": "",
-    "primaryDomain": "kfintech.com",
-    "subject": "BAJAJ FINANCE LIMITED - CREDIT CONFIRMATION FOR CO",
-    "toEmails": "",
-    "ccEmails": "",
-    "excludeSubject": ""
-  },
-  {
-    "email": "",
-    "subdomain": "",
     "primaryDomain": "venmo.com",
     "subject": "Speed up your study or work routine with a free ye",
     "toEmails": "",
@@ -3008,15 +2738,6 @@
   {
     "email": "",
     "subdomain": "",
-    "primaryDomain": "heygen.com",
-    "subject": "Big news at HeyGen! Video Agent Beta",
-    "toEmails": "",
-    "ccEmails": "",
-    "excludeSubject": ""
-  },
-  {
-    "email": "",
-    "subdomain": "",
     "primaryDomain": "greentoe.com",
     "subject": "Your Greentoe Offer - Status Update",
     "toEmails": "",
@@ -3037,15 +2758,6 @@
     "subdomain": "",
     "primaryDomain": "greentoe.com",
     "subject": "Greentoe Offer Confirmation",
-    "toEmails": "",
-    "ccEmails": "",
-    "excludeSubject": ""
-  },
-  {
-    "email": "",
-    "subdomain": "",
-    "primaryDomain": "grammarly.com",
-    "subject": "✨ Your week of writing + 50% off Pro!",
     "toEmails": "",
     "ccEmails": "",
     "excludeSubject": ""
@@ -3127,24 +2839,6 @@
     "subdomain": "",
     "primaryDomain": "aloft.ai",
     "subject": "NPRM Webinar Reminder",
-    "toEmails": "",
-    "ccEmails": "",
-    "excludeSubject": ""
-  },
-  {
-    "email": "",
-    "subdomain": "",
-    "primaryDomain": "amazon.com",
-    "subject": "Prakash, getting exclusive shopping & shipping ben",
-    "toEmails": "",
-    "ccEmails": "",
-    "excludeSubject": ""
-  },
-  {
-    "email": "",
-    "subdomain": "",
-    "primaryDomain": "amazon.com",
-    "subject": "Thank You for Attending Think Big, Start with Data",
     "toEmails": "",
     "ccEmails": "",
     "excludeSubject": ""
@@ -3251,15 +2945,6 @@
   {
     "email": "",
     "subdomain": "",
-    "primaryDomain": "ring.com",
-    "subject": "Charge Your Outdoor Cam (Stick",
-    "toEmails": "",
-    "ccEmails": "",
-    "excludeSubject": ""
-  },
-  {
-    "email": "",
-    "subdomain": "",
     "primaryDomain": "veritosolutionsinc.com",
     "subject": "",
     "toEmails": "",
@@ -3341,24 +3026,6 @@
   {
     "email": "",
     "subdomain": "",
-    "primaryDomain": "indiatimes-mail.com",
-    "subject": "Top News at a Glance",
-    "toEmails": "",
-    "ccEmails": "",
-    "excludeSubject": ""
-  },
-  {
-    "email": "",
-    "subdomain": "",
-    "primaryDomain": "kw.com",
-    "subject": "News and Views |  The Foreign Footprint on Califor",
-    "toEmails": "",
-    "ccEmails": "",
-    "excludeSubject": ""
-  },
-  {
-    "email": "",
-    "subdomain": "",
     "primaryDomain": "avature.net",
     "subject": "KPMG LLP Follow-Up for the Lead Specialist, Databa",
     "toEmails": "",
@@ -3424,33 +3091,6 @@
     "subdomain": "",
     "primaryDomain": "communications.sbi.co.in",
     "subject": "",
-    "toEmails": "",
-    "ccEmails": "",
-    "excludeSubject": ""
-  },
-  {
-    "email": "",
-    "subdomain": "",
-    "primaryDomain": "hdfcbank.net",
-    "subject": "❗ Weekly Balance Alert: Check your A/c Balance now",
-    "toEmails": "",
-    "ccEmails": "",
-    "excludeSubject": ""
-  },
-  {
-    "email": "",
-    "subdomain": "",
-    "primaryDomain": "hdfcbank.net",
-    "subject": "HDFC Bank Combined Email",
-    "toEmails": "",
-    "ccEmails": "",
-    "excludeSubject": ""
-  },
-  {
-    "email": "",
-    "subdomain": "",
-    "primaryDomain": "hdfcbank.net",
-    "subject": "Dear Prakash,",
     "toEmails": "",
     "ccEmails": "",
     "excludeSubject": ""

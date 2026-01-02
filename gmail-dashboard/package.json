@@ -12,7 +12,9 @@
     "preview": "vite preview",
     "start": "node dist/server/index.js",
     "test": "vitest",
-    "test:e2e": "playwright test"
+    "test:e2e": "playwright test",
+    "test:criteria": "npx tsx server/scripts/test-criteria.ts",
+    "migrate": "npx tsx server/scripts/migrate.ts"
   },
   "keywords": ["gmail", "email", "dashboard", "cleanup"],
   "author": "",

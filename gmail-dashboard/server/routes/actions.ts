@@ -1,30 +1,26 @@
 /**
- * Action Routes
+ * Action Routes - Unified Format
  *
- * Handles Keep/Delete/Delete1d button actions.
+ * Handles Keep/Delete/Delete1d button actions using the unified criteria format.
  */
 
 import { Router, Request, Response } from 'express';
 import {
-  loadJsonFile,
-  saveJsonFile,
-  createCriteriaEntry,
-  isDuplicateCriteria,
-  findExistingEntry,
-  mergeExclusions,
-  removeFromCriteria,
-  CRITERIA_FILE,
-  CRITERIA_1DAY_FILE,
-  KEEP_CRITERIA_FILE
+  addRule,
+  removeRule,
+  loadUnifiedCriteria,
+  saveUnifiedCriteria,
+  getDomainCriteria,
+  addExcludeSubjects,
+  type Action
 } from '../services/criteria.js';
 import { logKeep, logDelete, logDelete1d, logUndo } from '../services/actionLogger.js';
-import type { CriteriaEntry } from '../types/index.js';
 
 const router = Router();
 
 /**
  * POST /api/actions/add-criteria
- * Add an entry to criteria.json (immediate deletion).
+ * Add an entry for immediate deletion.
  */
 router.post('/add-criteria', (req: Request, res: Response) => {
   try {
@@ -38,51 +34,30 @@ router.post('/add-criteria', (req: Request, res: Response) => {
       return;
     }
 
-    const criteria = loadJsonFile<CriteriaEntry>(CRITERIA_FILE);
-
-    // Check if an entry with same domain+subject already exists
-    const existingEntry = findExistingEntry(criteria, domain, subject_pattern || '');
-
-    if (existingEntry) {
-      // Entry exists - try to merge exclusions if provided
-      if (exclude_subject) {
-        const merged = mergeExclusions(existingEntry, exclude_subject);
-        if (merged) {
-          saveJsonFile(CRITERIA_FILE, criteria);
-          console.log(`Merged exclusions for ${domain}: added "${exclude_subject}"`);
-          res.json({
-            success: true,
-            message: `Merged exclusions: ${existingEntry.excludeSubject}`,
-            entry: existingEntry,
-            total_criteria: criteria.length,
-            merged: true
-          });
-          return;
-        }
+    // Handle exclude_subject - add to excludeSubjects list
+    if (exclude_subject) {
+      const terms = exclude_subject.split(',').map((t: string) => t.trim()).filter((t: string) => t);
+      if (terms.length > 0) {
+        addExcludeSubjects(domain, terms);
       }
-      // No new exclusions to add - it's a duplicate
-      res.status(409).json({
-        success: false,
-        error: 'Similar criteria already exists'
-      });
-      return;
     }
 
-    // New entry - add it
-    const newEntry = createCriteriaEntry(domain, subject_pattern, exclude_subject);
-    criteria.push(newEntry);
-    saveJsonFile(CRITERIA_FILE, criteria);
+    // Add the delete rule
+    addRule(domain, 'delete', subject_pattern || undefined);
 
     // Log the action
     logDelete(domain, subject_pattern || '');
 
-    console.log(`Added criteria: ${domain} (subject: ${subject_pattern || '(all)'})`);
+    console.log(`Added delete rule: ${domain} (subject: ${subject_pattern || '(all)'})`);
+
+    const rules = getDomainCriteria(domain);
 
     res.json({
       success: true,
-      message: 'Added to criteria.json',
-      entry: newEntry,
-      total_criteria: criteria.length
+      message: subject_pattern ? `Added delete pattern for ${domain}` : `Set default delete for ${domain}`,
+      domain,
+      subjectPattern: subject_pattern,
+      rules
     });
   } catch (error) {
     console.error('Error adding criteria:', error);
@@ -95,7 +70,7 @@ router.post('/add-criteria', (req: Request, res: Response) => {
 
 /**
  * POST /api/actions/add-criteria-1d
- * Add an entry to criteria_1day_old.json (delete after 1 day).
+ * Add an entry for deletion after 1 day.
  */
 router.post('/add-criteria-1d', (req: Request, res: Response) => {
   try {
@@ -109,51 +84,30 @@ router.post('/add-criteria-1d', (req: Request, res: Response) => {
       return;
     }
 
-    const criteria = loadJsonFile<CriteriaEntry>(CRITERIA_1DAY_FILE);
-
-    // Check if an entry with same domain+subject already exists
-    const existingEntry = findExistingEntry(criteria, domain, subject_pattern || '');
-
-    if (existingEntry) {
-      // Entry exists - try to merge exclusions if provided
-      if (exclude_subject) {
-        const merged = mergeExclusions(existingEntry, exclude_subject);
-        if (merged) {
-          saveJsonFile(CRITERIA_1DAY_FILE, criteria);
-          console.log(`Merged 1d exclusions for ${domain}: added "${exclude_subject}"`);
-          res.json({
-            success: true,
-            message: `Merged exclusions: ${existingEntry.excludeSubject}`,
-            entry: existingEntry,
-            total_criteria: criteria.length,
-            merged: true
-          });
-          return;
-        }
+    // Handle exclude_subject - add to excludeSubjects list
+    if (exclude_subject) {
+      const terms = exclude_subject.split(',').map((t: string) => t.trim()).filter((t: string) => t);
+      if (terms.length > 0) {
+        addExcludeSubjects(domain, terms);
       }
-      // No new exclusions to add - it's a duplicate
-      res.status(409).json({
-        success: false,
-        error: 'Similar criteria already exists'
-      });
-      return;
     }
 
-    // New entry - add it
-    const newEntry = createCriteriaEntry(domain, subject_pattern, exclude_subject);
-    criteria.push(newEntry);
-    saveJsonFile(CRITERIA_1DAY_FILE, criteria);
+    // Add the delete_1d rule
+    addRule(domain, 'delete_1d', subject_pattern || undefined);
 
     // Log the action
     logDelete1d(domain, subject_pattern || '');
 
-    console.log(`Added 1-day criteria: ${domain} (subject: ${subject_pattern || '(all)'})`);
+    console.log(`Added delete_1d rule: ${domain} (subject: ${subject_pattern || '(all)'})`);
+
+    const rules = getDomainCriteria(domain);
 
     res.json({
       success: true,
-      message: 'Added to criteria_1day_old.json',
-      entry: newEntry,
-      total_criteria: criteria.length
+      message: subject_pattern ? `Added delete_1d pattern for ${domain}` : `Set default delete_1d for ${domain}`,
+      domain,
+      subjectPattern: subject_pattern,
+      rules
     });
   } catch (error) {
     console.error('Error adding 1-day criteria:', error);
@@ -166,7 +120,7 @@ router.post('/add-criteria-1d', (req: Request, res: Response) => {
 
 /**
  * POST /api/actions/mark-keep
- * Mark an email pattern as 'keep' - removes from delete criteria AND adds to safe list.
+ * Mark an email pattern as 'keep' - removes from delete criteria AND adds to keep.
  */
 router.post('/mark-keep', (req: Request, res: Response) => {
   try {
@@ -180,40 +134,72 @@ router.post('/mark-keep', (req: Request, res: Response) => {
       return;
     }
 
-    // 1. Remove from criteria.json AND criteria_1day_old.json if present
-    const removedCount = removeFromCriteria(domain, subject_pattern || '');
+    const criteria = loadUnifiedCriteria();
+    const domainLower = domain.toLowerCase();
+    let removedCount = 0;
 
-    // 2. Add to keep_criteria.json (the actual safe list)
-    const keepCriteria = loadJsonFile<CriteriaEntry>(KEEP_CRITERIA_FILE);
-    const keepEntry = createCriteriaEntry(domain, subject_pattern);
+    // 1. Remove from delete/delete_1d if present
+    if (criteria[domainLower]) {
+      const rules = criteria[domainLower];
 
-    let addedToKeep = false;
-    if (!isDuplicateCriteria(keepCriteria, keepEntry)) {
-      keepCriteria.push(keepEntry);
-      saveJsonFile(KEEP_CRITERIA_FILE, keepCriteria);
-      addedToKeep = true;
-      console.log(`Added to safe list: ${domain} (subject: ${subject_pattern || '(all)'})`);
+      if (subject_pattern) {
+        // Remove specific subject pattern from delete lists
+        for (const key of ['delete', 'delete_1d'] as const) {
+          if (rules[key]) {
+            const patternLower = subject_pattern.toLowerCase();
+            const idx = rules[key]!.findIndex(p => p.toLowerCase() === patternLower);
+            if (idx >= 0) {
+              rules[key]!.splice(idx, 1);
+              if (rules[key]!.length === 0) delete rules[key];
+              removedCount++;
+            }
+          }
+        }
+        // If default was delete/delete_1d and we're keeping this pattern, add to keep list
+        if (rules.default === 'delete' || rules.default === 'delete_1d') {
+          // Pattern is now kept, but domain default still deletes
+        }
+      } else {
+        // Domain-level keep - clear delete defaults
+        if (rules.default === 'delete' || rules.default === 'delete_1d') {
+          delete rules.default;
+          removedCount++;
+        }
+        // Clear any delete subject patterns
+        if (rules.delete) {
+          removedCount += rules.delete.length;
+          delete rules.delete;
+        }
+        if (rules.delete_1d) {
+          removedCount += rules.delete_1d.length;
+          delete rules.delete_1d;
+        }
+      }
     }
 
-    // Log the action to actions.log
+    // 2. Add to keep
+    addRule(domain, 'keep', subject_pattern || undefined);
+
+    // 3. Save if we modified the criteria
+    if (removedCount > 0) {
+      saveUnifiedCriteria(criteria);
+    }
+
+    // Log the action
     logKeep(domain, subject_pattern || '', category, removedCount);
 
-    // Build response message
-    const messageParts: string[] = [];
-    if (removedCount > 0) {
-      messageParts.push(`Removed ${removedCount} from delete criteria`);
-    }
-    if (addedToKeep) {
-      messageParts.push(`Added to safe list (${keepCriteria.length} protected)`);
-    } else {
-      messageParts.push('Already in safe list');
-    }
+    console.log(`Marked keep: ${domain} (subject: ${subject_pattern || '(all)'}) - removed ${removedCount} delete rules`);
+
+    const rules = getDomainCriteria(domain);
 
     res.json({
       success: true,
-      message: messageParts.join(' | '),
-      entry: keepEntry,
-      total_protected: keepCriteria.length,
+      message: subject_pattern
+        ? `Added keep pattern for ${domain}`
+        : `Set default keep for ${domain}`,
+      domain,
+      subjectPattern: subject_pattern,
+      rules,
       removed_from_delete: removedCount
     });
   } catch (error) {
@@ -227,41 +213,149 @@ router.post('/mark-keep', (req: Request, res: Response) => {
 
 /**
  * POST /api/actions/undo-last
- * Undo the last added criteria.
+ * Undo the last action is not straightforward with unified format.
+ * This endpoint is deprecated - use specific remove endpoints instead.
  */
 router.post('/undo-last', (req: Request, res: Response) => {
   try {
-    const { file_type } = req.body as { file_type?: 'criteria' | 'criteria_1d' };
+    const { domain, action, subject_pattern } = req.body as {
+      domain?: string;
+      action?: Action;
+      subject_pattern?: string;
+    };
 
-    const filepath = file_type === 'criteria_1d' ? CRITERIA_1DAY_FILE : CRITERIA_FILE;
-    const criteria = loadJsonFile<CriteriaEntry>(filepath);
-
-    if (criteria.length === 0) {
+    if (!domain) {
       res.status(400).json({
         success: false,
-        error: 'No criteria to undo'
+        error: 'Domain is required for undo in unified format'
       });
       return;
     }
 
-    const removed = criteria.pop();
-    saveJsonFile(filepath, criteria);
+    const removed = removeRule(domain, action, subject_pattern);
 
-    // Log the undo action
-    if (removed) {
-      logUndo(removed.primaryDomain, removed.subject, file_type || 'criteria');
+    if (!removed) {
+      res.status(404).json({
+        success: false,
+        error: 'Rule not found'
+      });
+      return;
     }
 
-    console.log(`Undid last criteria: ${JSON.stringify(removed)}`);
+    // Log the undo action
+    logUndo(domain, subject_pattern || '', action || 'unknown');
+
+    console.log(`Undid rule: ${domain} ${action || ''} ${subject_pattern || ''}`);
 
     res.json({
       success: true,
-      message: 'Last criteria removed',
-      removed,
-      remaining: criteria.length
+      message: 'Rule removed',
+      domain,
+      action,
+      subject_pattern
     });
   } catch (error) {
     console.error('Error undoing:', error);
+    res.status(500).json({
+      success: false,
+      error: error instanceof Error ? error.message : 'Unknown error'
+    });
+  }
+});
+
+/**
+ * POST /api/actions/set-default
+ * Set the default action for a domain.
+ */
+router.post('/set-default', (req: Request, res: Response) => {
+  try {
+    const { domain, action } = req.body as {
+      domain: string;
+      action: Action;
+    };
+
+    if (!domain) {
+      res.status(400).json({
+        success: false,
+        error: 'Domain is required'
+      });
+      return;
+    }
+
+    if (!action || !['delete', 'delete_1d', 'keep'].includes(action)) {
+      res.status(400).json({
+        success: false,
+        error: 'Valid action is required (delete, delete_1d, keep)'
+      });
+      return;
+    }
+
+    addRule(domain, action);
+
+    console.log(`Set default ${action} for ${domain}`);
+
+    const rules = getDomainCriteria(domain);
+
+    res.json({
+      success: true,
+      message: `Set default ${action} for ${domain}`,
+      domain,
+      action,
+      rules
+    });
+  } catch (error) {
+    console.error('Error setting default:', error);
+    res.status(500).json({
+      success: false,
+      error: error instanceof Error ? error.message : 'Unknown error'
+    });
+  }
+});
+
+/**
+ * POST /api/actions/add-pattern
+ * Add a subject pattern for a specific action.
+ */
+router.post('/add-pattern', (req: Request, res: Response) => {
+  try {
+    const { domain, action, pattern } = req.body as {
+      domain: string;
+      action: Action;
+      pattern: string;
+    };
+
+    if (!domain || !pattern) {
+      res.status(400).json({
+        success: false,
+        error: 'Domain and pattern are required'
+      });
+      return;
+    }
+
+    if (!action || !['delete', 'delete_1d', 'keep'].includes(action)) {
+      res.status(400).json({
+        success: false,
+        error: 'Valid action is required (delete, delete_1d, keep)'
+      });
+      return;
+    }
+
+    addRule(domain, action, pattern);
+
+    console.log(`Added ${action} pattern for ${domain}: "${pattern}"`);
+
+    const rules = getDomainCriteria(domain);
+
+    res.json({
+      success: true,
+      message: `Added ${action} pattern for ${domain}`,
+      domain,
+      action,
+      pattern,
+      rules
+    });
+  } catch (error) {
+    console.error('Error adding pattern:', error);
     res.status(500).json({
       success: false,
       error: error instanceof Error ? error.message : 'Unknown error'

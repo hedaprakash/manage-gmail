@@ -218,15 +218,6 @@
   {
     "email": "",
     "subdomain": "",
-    "primaryDomain": "camsmgt.com",
-    "subject": "Account Statement",
-    "toEmails": "",
-    "ccEmails": "",
-    "excludeSubject": ""
-  },
-  {
-    "email": "",
-    "subdomain": "",
     "primaryDomain": "hpsmart.com",
     "subject": "",
     "toEmails": "",

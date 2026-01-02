@@ -6,9 +6,9 @@
 
 import { Router, Request, Response } from 'express';
 import { findCachedJson, loadCachedEmails } from '../services/cache.js';
-import { loadJsonFile, matchesAnyCriteria, CRITERIA_FILE, CRITERIA_1DAY_FILE, KEEP_CRITERIA_FILE } from '../services/criteria.js';
+import { matchEmail, getCriteriaStats } from '../services/criteria.js';
 import { trashEmail } from '../services/gmail.js';
-import type { CriteriaEntry, EmailData } from '../types/index.js';
+import type { EmailData } from '../types/index.js';
 
 const router = Router();
 
@@ -47,10 +47,11 @@ router.post('/preview', async (req: Request, res: Response) => {
 
     const emails = loadCachedEmails(cache.filepath);
 
-    // Load criteria
-    const criteriaPath = criteriaFile === 'criteria_1d' ? CRITERIA_1DAY_FILE : CRITERIA_FILE;
-    const criteria = loadJsonFile<CriteriaEntry>(criteriaPath);
-    const keepCriteria = loadJsonFile<CriteriaEntry>(KEEP_CRITERIA_FILE);
+    // Get criteria stats for response
+    const criteriaStats = getCriteriaStats();
+
+    // Determine which action type to target
+    const targetAction = criteriaFile === 'criteria_1d' ? 'delete_1d' : 'delete';
 
     // Find matching emails
     const now = Date.now();
@@ -59,13 +60,10 @@ router.post('/preview', async (req: Request, res: Response) => {
     const skipped: Array<{ id: string; reason: string }> = [];
 
     for (const email of emails) {
-      // Check if protected by keep list
-      if (matchesAnyCriteria(email, keepCriteria)) {
-        continue; // Skip protected emails
-      }
+      const result = matchEmail(email);
 
-      // Check if matches delete criteria
-      if (!matchesAnyCriteria(email, criteria)) {
+      // Only process emails matching the target action
+      if (result.action !== targetAction) {
         continue;
       }
 
@@ -92,7 +90,7 @@ router.post('/preview', async (req: Request, res: Response) => {
     res.json({
       success: true,
       criteriaFile,
-      criteriaCount: criteria.length,
+      criteriaStats,
       totalEmails: emails.length,
       matchCount: matches.length,
       skippedCount: skipped.length,
@@ -130,10 +128,8 @@ router.post('/delete', async (req: Request, res: Response) => {
 
     const emails = loadCachedEmails(cache.filepath);
 
-    // Load criteria
-    const criteriaPath = criteriaFile === 'criteria_1d' ? CRITERIA_1DAY_FILE : CRITERIA_FILE;
-    const criteria = loadJsonFile<CriteriaEntry>(criteriaPath);
-    const keepCriteria = loadJsonFile<CriteriaEntry>(KEEP_CRITERIA_FILE);
+    // Determine which action type to target
+    const targetAction = criteriaFile === 'criteria_1d' ? 'delete_1d' : 'delete';
 
     // Execute deletion
     const now = Date.now();
@@ -151,13 +147,10 @@ router.post('/delete', async (req: Request, res: Response) => {
     const toDelete: EmailData[] = [];
 
     for (const email of emails) {
-      // Check if protected by keep list
-      if (matchesAnyCriteria(email, keepCriteria)) {
-        continue;
-      }
+      const result = matchEmail(email);
 
-      // Check if matches delete criteria
-      if (!matchesAnyCriteria(email, criteria)) {
+      // Only process emails matching the target action
+      if (result.action !== targetAction) {
         continue;
       }
 

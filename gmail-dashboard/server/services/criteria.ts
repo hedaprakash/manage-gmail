@@ -1,276 +1,473 @@
 /**
- * Criteria Service
+ * Criteria Service - Unified Format
  *
- * Handles loading, saving, and matching criteria files.
+ * Handles loading, saving, and matching criteria using the new unified format.
+ * Single file with domain-grouped rules supporting:
+ * - default action (delete, delete_1d, keep)
+ * - subject patterns for each action
+ * - excludeSubjects for default action
+ * - subdomain overrides
  */
 
 import fs from 'fs';
 import path from 'path';
-import type { CriteriaEntry, EmailData } from '../types/index.js';
+import type { EmailData } from '../types/index.js';
+
+// Types for the unified format
+export type Action = 'delete' | 'delete_1d' | 'keep';
+
+export interface DomainRules {
+  default?: Action | null;
+  excludeSubjects?: string[];
+  keep?: string[];
+  delete?: string[];
+  delete_1d?: string[];
+  subdomains?: { [subdomain: string]: DomainRules };
+}
+
+export interface UnifiedCriteria {
+  [primaryDomain: string]: DomainRules;
+}
+
+// Result of matching an email against criteria
+export interface MatchResult {
+  action: Action | null;
+  matchedDomain: string;
+  matchedSubdomain?: string;
+  matchedPattern?: string;
+  reason: string;
+}
 
 // Resolve paths relative to the gmail project root (parent of gmail-dashboard)
 const PROJECT_ROOT = path.resolve(process.cwd(), '..');
+export const UNIFIED_CRITERIA_FILE = path.join(PROJECT_ROOT, 'criteria_unified.json');
 
+// Legacy file paths (for backwards compatibility during transition)
 export const CRITERIA_FILE = path.join(PROJECT_ROOT, 'criteria.json');
 export const CRITERIA_1DAY_FILE = path.join(PROJECT_ROOT, 'criteria_1day_old.json');
 export const KEEP_CRITERIA_FILE = path.join(PROJECT_ROOT, 'keep_criteria.json');
 
+// Cache for the unified criteria
+let criteriaCache: UnifiedCriteria | null = null;
+let criteriaCacheTime: number = 0;
+const CACHE_TTL = 5000; // 5 seconds
+
 /**
- * Load a JSON file, return empty array if not exists.
+ * Load the unified criteria file.
  */
-export function loadJsonFile<T>(filepath: string): T[] {
+export function loadUnifiedCriteria(): UnifiedCriteria {
+  const now = Date.now();
+  if (criteriaCache && (now - criteriaCacheTime) < CACHE_TTL) {
+    return criteriaCache;
+  }
+
   try {
-    if (fs.existsSync(filepath)) {
-      const content = fs.readFileSync(filepath, 'utf-8');
-      return JSON.parse(content) as T[];
+    if (fs.existsSync(UNIFIED_CRITERIA_FILE)) {
+      const content = fs.readFileSync(UNIFIED_CRITERIA_FILE, 'utf-8');
+      criteriaCache = JSON.parse(content) as UnifiedCriteria;
+      criteriaCacheTime = now;
+      return criteriaCache;
     }
   } catch (error) {
-    console.error(`Error loading ${filepath}:`, error);
+    console.error(`Error loading ${UNIFIED_CRITERIA_FILE}:`, error);
   }
-  return [];
+  return {};
 }
 
 /**
- * Save data to a JSON file.
+ * Save the unified criteria file.
  */
-export function saveJsonFile<T>(filepath: string, data: T[]): void {
-  const dir = path.dirname(filepath);
-  if (dir && !fs.existsSync(dir)) {
-    fs.mkdirSync(dir, { recursive: true });
+export function saveUnifiedCriteria(criteria: UnifiedCriteria): void {
+  // Sort domains alphabetically
+  const sorted: UnifiedCriteria = {};
+  for (const domain of Object.keys(criteria).sort()) {
+    sorted[domain] = criteria[domain];
   }
-  fs.writeFileSync(filepath, JSON.stringify(data, null, 2), 'utf-8');
+
+  fs.writeFileSync(UNIFIED_CRITERIA_FILE, JSON.stringify(sorted, null, 2), 'utf-8');
+  criteriaCache = sorted;
+  criteriaCacheTime = Date.now();
 }
 
 /**
- * Create a criteria entry in the expected format.
+ * Invalidate the criteria cache.
  */
-export function createCriteriaEntry(
-  domain: string,
-  subjectPattern?: string,
-  excludeSubject?: string
-): CriteriaEntry {
-  return {
-    email: '',
-    subdomain: '',
-    primaryDomain: domain,
-    subject: subjectPattern ?? '',
-    toEmails: '',
-    ccEmails: '',
-    excludeSubject: excludeSubject ?? ''
-  };
+export function invalidateCache(): void {
+  criteriaCache = null;
+  criteriaCacheTime = 0;
 }
 
 /**
- * Check if a similar criteria already exists.
+ * Check if a subject matches any pattern in a list (case-insensitive contains).
  */
-export function isDuplicateCriteria(criteriaList: CriteriaEntry[], newEntry: CriteriaEntry): boolean {
-  return criteriaList.some(
-    entry =>
-      entry.primaryDomain.toLowerCase() === newEntry.primaryDomain.toLowerCase() &&
-      entry.subject.toLowerCase() === newEntry.subject.toLowerCase()
-  );
-}
-
-/**
- * Find an existing entry with matching domain and subject.
- */
-export function findExistingEntry(
-  criteriaList: CriteriaEntry[],
-  domain: string,
-  subject: string
-): CriteriaEntry | undefined {
-  const domainLower = domain.toLowerCase();
+function matchesSubjectPattern(subject: string, patterns: string[]): string | null {
   const subjectLower = subject.toLowerCase();
-  return criteriaList.find(
-    entry =>
-      entry.primaryDomain.toLowerCase() === domainLower &&
-      entry.subject.toLowerCase() === subjectLower
-  );
-}
-
-/**
- * Merge exclusion terms into an existing entry.
- * Returns true if exclusions were added, false if already present.
- */
-export function mergeExclusions(entry: CriteriaEntry, newExclusions: string): boolean {
-  if (!newExclusions) return false;
-
-  const existingTerms = entry.excludeSubject
-    ? entry.excludeSubject.split(',').map(t => t.trim().toLowerCase()).filter(t => t)
-    : [];
-
-  const newTerms = newExclusions.split(',').map(t => t.trim()).filter(t => t);
-  const newTermsLower = newTerms.map(t => t.toLowerCase());
-
-  // Find terms that don't already exist
-  const termsToAdd = newTerms.filter((_, i) => !existingTerms.includes(newTermsLower[i]));
-
-  if (termsToAdd.length === 0) {
-    return false; // All terms already exist
-  }
-
-  // Merge: keep existing + add new
-  const merged = entry.excludeSubject
-    ? `${entry.excludeSubject},${termsToAdd.join(',')}`
-    : termsToAdd.join(',');
-
-  entry.excludeSubject = merged;
-  return true;
-}
-
-/**
- * Check if a criteria entry matches the given domain and subject pattern.
- */
-export function matchesCriteriaPattern(
-  entry: CriteriaEntry,
-  domain: string,
-  subjectPattern: string
-): boolean {
-  const entryDomain = entry.primaryDomain.toLowerCase();
-  const entrySubject = entry.subject.toLowerCase();
-  const domainLower = domain?.toLowerCase() ?? '';
-  const subjectLower = subjectPattern?.toLowerCase() ?? '';
-
-  // Match if domain matches AND (subject matches OR either subject is empty)
-  if (entryDomain === domainLower) {
-    if (!entrySubject || !subjectLower) {
-      return true;
-    }
-    if (entrySubject.includes(subjectLower) || subjectLower.includes(entrySubject)) {
-      return true;
+  for (const pattern of patterns) {
+    if (subjectLower.includes(pattern.toLowerCase())) {
+      return pattern;
     }
   }
-  return false;
+  return null;
 }
 
 /**
- * Remove matching entries from BOTH criteria.json and criteria_1day_old.json.
- * Returns total count of removed entries.
+ * Check if subject contains any excluded term.
  */
-export function removeFromCriteria(domain: string, subjectPattern: string): number {
-  let totalRemoved = 0;
-
-  // Remove from criteria.json
-  const criteria = loadJsonFile<CriteriaEntry>(CRITERIA_FILE);
-  const originalCount = criteria.length;
-  const filteredCriteria = criteria.filter(
-    c => !matchesCriteriaPattern(c, domain, subjectPattern)
-  );
-  const removedCount = originalCount - filteredCriteria.length;
-  if (removedCount > 0) {
-    saveJsonFile(CRITERIA_FILE, filteredCriteria);
-    console.log(`Removed ${removedCount} entries from criteria.json for ${domain}`);
-  }
-  totalRemoved += removedCount;
-
-  // Also remove from criteria_1day_old.json
-  const criteria1d = loadJsonFile<CriteriaEntry>(CRITERIA_1DAY_FILE);
-  const originalCount1d = criteria1d.length;
-  const filteredCriteria1d = criteria1d.filter(
-    c => !matchesCriteriaPattern(c, domain, subjectPattern)
-  );
-  const removedCount1d = originalCount1d - filteredCriteria1d.length;
-  if (removedCount1d > 0) {
-    saveJsonFile(CRITERIA_1DAY_FILE, filteredCriteria1d);
-    console.log(`Removed ${removedCount1d} entries from criteria_1day_old.json for ${domain}`);
-  }
-  totalRemoved += removedCount1d;
-
-  return totalRemoved;
+function isExcludedSubject(subject: string, excludeSubjects: string[]): boolean {
+  const subjectLower = subject.toLowerCase();
+  return excludeSubjects.some(term => subjectLower.includes(term.toLowerCase()));
 }
 
 /**
- * Check if an email is explicitly excluded by any criteria.
- * Returns true if the email's domain matches a criteria AND the subject is in excludeSubject.
- * This means a decision was made: "don't delete emails with this subject from this domain".
+ * Get the action for an email based on domain rules.
+ * Priority: subject patterns (keep > delete > delete_1d) > excludeSubjects check > default
  */
-export function isExcludedByCriteria(emailData: EmailData, criteriaList: CriteriaEntry[]): boolean {
-  const domain = emailData.primaryDomain.toLowerCase();
-  const subdomain = emailData.subdomain?.toLowerCase() ?? '';
-  const subject = emailData.subject.toLowerCase();
-
-  for (const c of criteriaList) {
-    const cDomain = c.primaryDomain.toLowerCase();
-    const excludeSubject = c.excludeSubject?.toLowerCase() ?? '';
-
-    if (!excludeSubject) continue; // No exclusions on this entry
-
-    // Check if domain matches
-    const domainMatches = cDomain && (
-      domain.includes(cDomain) ||
-      subdomain.includes(cDomain) ||
-      subdomain === cDomain
-    );
-
-    if (domainMatches) {
-      // Check if subject matches any excluded term
-      const excludeTerms = excludeSubject.split(',').map(t => t.trim()).filter(t => t);
-      const hasExcludedTerm = excludeTerms.some(term => subject.includes(term));
-      if (hasExcludedTerm) {
-        return true; // This email is explicitly excluded
-      }
+function getActionFromRules(rules: DomainRules, subject: string): { action: Action | null; pattern?: string; reason: string } {
+  // 1. Check explicit subject patterns (keep has highest priority)
+  if (rules.keep?.length) {
+    const matched = matchesSubjectPattern(subject, rules.keep);
+    if (matched) {
+      return { action: 'keep', pattern: matched, reason: 'subject matches keep pattern' };
     }
   }
-  return false;
-}
 
-/**
- * Check if an email matches any criteria in the list.
- * Also respects excludeSubject - if the subject contains any excluded term, it won't match.
- * Supports matching against both primaryDomain and subdomain (full domain like alerts.sbi.co.in).
- */
-export function matchesAnyCriteria(emailData: EmailData, criteriaList: CriteriaEntry[]): boolean {
-  const domain = emailData.primaryDomain.toLowerCase();
-  const subdomain = emailData.subdomain?.toLowerCase() ?? '';
-  const subject = emailData.subject.toLowerCase();
-
-  for (const c of criteriaList) {
-    const cDomain = c.primaryDomain.toLowerCase();
-    const cSubject = c.subject.toLowerCase();
-    const excludeSubject = c.excludeSubject?.toLowerCase() ?? '';
-
-    // Match if criteria domain matches either primaryDomain or subdomain
-    const domainMatches = cDomain && (
-      domain.includes(cDomain) ||
-      subdomain.includes(cDomain) ||
-      subdomain === cDomain
-    );
-
-    if (domainMatches) {
-      // Check excludeSubject first - if any excluded term matches, skip this criteria
-      if (excludeSubject) {
-        const excludeTerms = excludeSubject.split(',').map(t => t.trim()).filter(t => t);
-        const hasExcludedTerm = excludeTerms.some(term => subject.includes(term));
-        if (hasExcludedTerm) {
-          continue; // Skip this criteria, email subject contains excluded term
-        }
-      }
-
-      // Domain matches and no excluded terms found
-      if (!cSubject) {
-        // No subject filter = matches all from domain
-        return true;
-      }
-      if (subject.includes(cSubject)) {
-        // Subject also matches
-        return true;
-      }
+  if (rules.delete?.length) {
+    const matched = matchesSubjectPattern(subject, rules.delete);
+    if (matched) {
+      return { action: 'delete', pattern: matched, reason: 'subject matches delete pattern' };
     }
   }
-  return false;
+
+  if (rules.delete_1d?.length) {
+    const matched = matchesSubjectPattern(subject, rules.delete_1d);
+    if (matched) {
+      return { action: 'delete_1d', pattern: matched, reason: 'subject matches delete_1d pattern' };
+    }
+  }
+
+  // 2. Apply default action (if set)
+  if (rules.default) {
+    // Check excludeSubjects first (only applies to default action)
+    if (rules.excludeSubjects?.length && isExcludedSubject(subject, rules.excludeSubjects)) {
+      return { action: null, reason: 'subject excluded from default action' };
+    }
+    return { action: rules.default, reason: 'default action' };
+  }
+
+  // 3. No match
+  return { action: null, reason: 'no matching rule' };
 }
 
 /**
- * Get all criteria from all three files.
+ * Match an email against the unified criteria.
+ * Returns the action to take and details about the match.
  */
-export function getAllCriteria(): {
-  criteria: CriteriaEntry[];
-  criteria1d: CriteriaEntry[];
-  keep: CriteriaEntry[];
-} {
+export function matchEmail(emailData: EmailData): MatchResult {
+  const criteria = loadUnifiedCriteria();
+  const primaryDomain = emailData.primaryDomain.toLowerCase();
+  const subdomain = emailData.subdomain?.toLowerCase() || '';
+  const subject = emailData.subject || '';
+
+  // Look up the primary domain
+  const domainRules = criteria[primaryDomain];
+  if (!domainRules) {
+    return { action: null, matchedDomain: primaryDomain, reason: 'domain not in criteria' };
+  }
+
+  // Check if there's a subdomain-specific rule
+  if (subdomain && domainRules.subdomains) {
+    const subdomainRules = domainRules.subdomains[subdomain];
+    if (subdomainRules) {
+      // Use subdomain rules (completely overrides parent)
+      const result = getActionFromRules(subdomainRules, subject);
+      return {
+        action: result.action,
+        matchedDomain: primaryDomain,
+        matchedSubdomain: subdomain,
+        matchedPattern: result.pattern,
+        reason: result.reason
+      };
+    }
+  }
+
+  // Use domain-level rules
+  const result = getActionFromRules(domainRules, subject);
   return {
-    criteria: loadJsonFile<CriteriaEntry>(CRITERIA_FILE),
-    criteria1d: loadJsonFile<CriteriaEntry>(CRITERIA_1DAY_FILE),
-    keep: loadJsonFile<CriteriaEntry>(KEEP_CRITERIA_FILE)
+    action: result.action,
+    matchedDomain: primaryDomain,
+    matchedPattern: result.pattern,
+    reason: result.reason
   };
+}
+
+/**
+ * Check if email matches criteria for a specific action type.
+ */
+export function matchesAction(emailData: EmailData, action: Action): boolean {
+  const result = matchEmail(emailData);
+  return result.action === action;
+}
+
+/**
+ * Legacy compatibility: Check if email matches any "delete" criteria.
+ */
+export function matchesDeleteCriteria(emailData: EmailData): boolean {
+  return matchesAction(emailData, 'delete');
+}
+
+/**
+ * Legacy compatibility: Check if email matches any "delete_1d" criteria.
+ */
+export function matchesDelete1dCriteria(emailData: EmailData): boolean {
+  return matchesAction(emailData, 'delete_1d');
+}
+
+/**
+ * Legacy compatibility: Check if email matches any "keep" criteria.
+ */
+export function matchesKeepCriteria(emailData: EmailData): boolean {
+  return matchesAction(emailData, 'keep');
+}
+
+/**
+ * Add a rule to the criteria.
+ */
+export function addRule(
+  domain: string,
+  action: Action,
+  subjectPattern?: string,
+  subdomain?: string
+): void {
+  const criteria = loadUnifiedCriteria();
+  const domainLower = domain.toLowerCase();
+
+  // Ensure domain exists
+  if (!criteria[domainLower]) {
+    criteria[domainLower] = {};
+  }
+
+  let targetRules = criteria[domainLower];
+
+  // Handle subdomain
+  if (subdomain) {
+    const subdomainLower = subdomain.toLowerCase();
+    if (!targetRules.subdomains) {
+      targetRules.subdomains = {};
+    }
+    if (!targetRules.subdomains[subdomainLower]) {
+      targetRules.subdomains[subdomainLower] = {};
+    }
+    targetRules = targetRules.subdomains[subdomainLower];
+  }
+
+  if (subjectPattern) {
+    // Add to subject pattern list
+    const key = action as 'keep' | 'delete' | 'delete_1d';
+    if (!targetRules[key]) {
+      targetRules[key] = [];
+    }
+    const patternLower = subjectPattern.toLowerCase();
+    if (!targetRules[key]!.some(p => p.toLowerCase() === patternLower)) {
+      targetRules[key]!.push(subjectPattern);
+    }
+  } else {
+    // Set as default action
+    targetRules.default = action;
+  }
+
+  saveUnifiedCriteria(criteria);
+}
+
+/**
+ * Remove a rule from the criteria.
+ * If removing the last rule for a domain, removes the domain entirely.
+ */
+export function removeRule(
+  domain: string,
+  action?: Action,
+  subjectPattern?: string,
+  subdomain?: string
+): boolean {
+  const criteria = loadUnifiedCriteria();
+  const domainLower = domain.toLowerCase();
+
+  if (!criteria[domainLower]) {
+    return false;
+  }
+
+  let targetRules = criteria[domainLower];
+  let parentRules = criteria[domainLower];
+
+  // Handle subdomain
+  if (subdomain) {
+    const subdomainLower = subdomain.toLowerCase();
+    if (!targetRules.subdomains?.[subdomainLower]) {
+      return false;
+    }
+    targetRules = targetRules.subdomains[subdomainLower];
+  }
+
+  let removed = false;
+
+  if (subjectPattern && action) {
+    // Remove specific subject pattern
+    const key = action as 'keep' | 'delete' | 'delete_1d';
+    if (targetRules[key]) {
+      const patternLower = subjectPattern.toLowerCase();
+      const idx = targetRules[key]!.findIndex(p => p.toLowerCase() === patternLower);
+      if (idx >= 0) {
+        targetRules[key]!.splice(idx, 1);
+        if (targetRules[key]!.length === 0) {
+          delete targetRules[key];
+        }
+        removed = true;
+      }
+    }
+  } else if (action) {
+    // Remove all patterns for an action or clear default
+    const key = action as 'keep' | 'delete' | 'delete_1d';
+    if (targetRules[key]) {
+      delete targetRules[key];
+      removed = true;
+    }
+    if (targetRules.default === action) {
+      delete targetRules.default;
+      removed = true;
+    }
+  } else {
+    // Remove entire domain or subdomain
+    if (subdomain) {
+      const subdomainLower = subdomain.toLowerCase();
+      delete parentRules.subdomains![subdomainLower];
+      if (Object.keys(parentRules.subdomains!).length === 0) {
+        delete parentRules.subdomains;
+      }
+    } else {
+      delete criteria[domainLower];
+    }
+    removed = true;
+  }
+
+  // Clean up empty domain entries
+  if (criteria[domainLower]) {
+    const rules = criteria[domainLower];
+    const isEmpty = !rules.default &&
+      !rules.keep?.length &&
+      !rules.delete?.length &&
+      !rules.delete_1d?.length &&
+      !rules.excludeSubjects?.length &&
+      !rules.subdomains;
+    if (isEmpty) {
+      delete criteria[domainLower];
+    }
+  }
+
+  if (removed) {
+    saveUnifiedCriteria(criteria);
+  }
+  return removed;
+}
+
+/**
+ * Add exclude subjects to a domain.
+ */
+export function addExcludeSubjects(domain: string, terms: string[]): void {
+  const criteria = loadUnifiedCriteria();
+  const domainLower = domain.toLowerCase();
+
+  if (!criteria[domainLower]) {
+    criteria[domainLower] = {};
+  }
+
+  if (!criteria[domainLower].excludeSubjects) {
+    criteria[domainLower].excludeSubjects = [];
+  }
+
+  for (const term of terms) {
+    const termLower = term.toLowerCase();
+    if (!criteria[domainLower].excludeSubjects!.some(t => t.toLowerCase() === termLower)) {
+      criteria[domainLower].excludeSubjects!.push(term);
+    }
+  }
+
+  saveUnifiedCriteria(criteria);
+}
+
+/**
+ * Get all criteria (returns the unified criteria object).
+ */
+export function getAllCriteria(): UnifiedCriteria {
+  return loadUnifiedCriteria();
+}
+
+/**
+ * Get criteria for a specific domain.
+ */
+export function getDomainCriteria(domain: string): DomainRules | null {
+  const criteria = loadUnifiedCriteria();
+  return criteria[domain.toLowerCase()] || null;
+}
+
+/**
+ * Get statistics about the criteria.
+ */
+export function getCriteriaStats(): {
+  totalDomains: number;
+  withDefault: { delete: number; delete_1d: number; keep: number };
+  withSubjectPatterns: number;
+  withSubdomains: number;
+  withExcludeSubjects: number;
+} {
+  const criteria = loadUnifiedCriteria();
+  const stats = {
+    totalDomains: 0,
+    withDefault: { delete: 0, delete_1d: 0, keep: 0 },
+    withSubjectPatterns: 0,
+    withSubdomains: 0,
+    withExcludeSubjects: 0
+  };
+
+  for (const rules of Object.values(criteria)) {
+    stats.totalDomains++;
+    if (rules.default === 'delete') stats.withDefault.delete++;
+    if (rules.default === 'delete_1d') stats.withDefault.delete_1d++;
+    if (rules.default === 'keep') stats.withDefault.keep++;
+    if (rules.keep?.length || rules.delete?.length || rules.delete_1d?.length) {
+      stats.withSubjectPatterns++;
+    }
+    if (rules.subdomains && Object.keys(rules.subdomains).length > 0) {
+      stats.withSubdomains++;
+    }
+    if (rules.excludeSubjects?.length) {
+      stats.withExcludeSubjects++;
+    }
+  }
+
+  return stats;
+}
+
+// Legacy exports for backwards compatibility
+export type CriteriaEntry = {
+  email: string;
+  subdomain: string;
+  primaryDomain: string;
+  subject: string;
+  toEmails: string;
+  ccEmails: string;
+  excludeSubject: string;
+};
+
+/**
+ * Legacy: Check if email matches any criteria (for delete or delete_1d).
+ */
+export function matchesAnyCriteria(emailData: EmailData, _criteriaList?: CriteriaEntry[]): boolean {
+  const result = matchEmail(emailData);
+  return result.action === 'delete' || result.action === 'delete_1d';
+}
+
+/**
+ * Legacy: Check if email is in keep criteria.
+ */
+export function matchesKeepList(emailData: EmailData): boolean {
+  return matchesKeepCriteria(emailData);
 }

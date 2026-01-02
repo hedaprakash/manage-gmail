@@ -8,21 +8,14 @@ const navItems = [
   {
     section: 'Dashboard',
     items: [
-      { path: '/', label: 'Review', icon: '📊' },
-      { path: '/stats', label: 'Stats', icon: '📈' },
+      { path: '/', label: 'Review', icon: '📧' },
+      { path: '/stats', label: 'Stats', icon: '📊' },
     ]
   },
   {
-    section: 'Criteria',
+    section: 'Manage',
     items: [
-      { path: '/criteria/delete', label: 'Delete', icon: '🗑️' },
-      { path: '/criteria/delete1d', label: 'Delete 1-Day', icon: '⏱️' },
-      { path: '/criteria/keep', label: 'Keep', icon: '🛡️' },
-    ]
-  },
-  {
-    section: 'Actions',
-    items: [
+      { path: '/criteria', label: 'Criteria', icon: '📋' },
       { path: '/execute', label: 'Execute', icon: '▶️' },
     ]
   }

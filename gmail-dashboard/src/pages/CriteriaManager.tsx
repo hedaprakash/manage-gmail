@@ -1,52 +1,101 @@
-import { useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import { useCriteria, useDeleteCriteria, useMoveCriteria, type CriteriaEntry } from '../hooks/useCriteria';
+import { useState, useMemo } from 'react';
+import {
+  useCriteria,
+  useDeleteRule,
+  useDeleteDomain,
+  flattenCriteria,
+  type Action,
+  type FlattenedRule
+} from '../hooks/useCriteria';
 
-type CriteriaType = 'delete' | 'delete1d' | 'keep';
+type FilterType = 'all' | 'delete' | 'delete_1d' | 'keep';
 
-const tabs: { type: CriteriaType; label: string; color: string }[] = [
-  { type: 'delete', label: 'Delete', color: 'red' },
-  { type: 'delete1d', label: 'Delete 1-Day', color: 'orange' },
-  { type: 'keep', label: 'Keep', color: 'green' }
-];
+const actionColors: Record<string, { bg: string; text: string; label: string }> = {
+  delete: { bg: 'bg-red-100', text: 'text-red-700', label: 'Delete' },
+  delete_1d: { bg: 'bg-orange-100', text: 'text-orange-700', label: 'Delete 1-Day' },
+  keep: { bg: 'bg-green-100', text: 'text-green-700', label: 'Keep' },
+  default: { bg: 'bg-gray-100', text: 'text-gray-700', label: 'Exclude' }
+};
 
 export default function CriteriaManager() {
-  const { type = 'delete' } = useParams<{ type: CriteriaType }>();
-  const navigate = useNavigate();
   const [search, setSearch] = useState('');
+  const [filter, setFilter] = useState<FilterType>('all');
+  const [expandedDomains, setExpandedDomains] = useState<Set<string>>(new Set());
 
   const { data, isLoading } = useCriteria();
-  const deleteMutation = useDeleteCriteria();
-  const moveMutation = useMoveCriteria();
+  const deleteRuleMutation = useDeleteRule();
+  const deleteDomainMutation = useDeleteDomain();
 
-  const activeType = type as CriteriaType;
+  // Flatten criteria for table display
+  const flatRules = useMemo(() => {
+    if (!data?.criteria) return [];
+    return flattenCriteria(data.criteria);
+  }, [data?.criteria]);
 
-  const getCriteriaList = (): CriteriaEntry[] => {
-    if (!data) return [];
-    switch (activeType) {
-      case 'delete': return data.delete;
-      case 'delete1d': return data.delete1d;
-      case 'keep': return data.keep;
-      default: return [];
+  // Filter rules
+  const filteredRules = useMemo(() => {
+    let rules = flatRules;
+
+    // Apply action filter
+    if (filter !== 'all') {
+      rules = rules.filter(r => r.action === filter);
+    }
+
+    // Apply search filter
+    if (search) {
+      const searchLower = search.toLowerCase();
+      rules = rules.filter(r =>
+        r.domain.toLowerCase().includes(searchLower) ||
+        r.value.toLowerCase().includes(searchLower) ||
+        (r.subdomain?.toLowerCase().includes(searchLower))
+      );
+    }
+
+    return rules;
+  }, [flatRules, filter, search]);
+
+  // Group by domain for collapsed view
+  const groupedByDomain = useMemo(() => {
+    const groups: Record<string, FlattenedRule[]> = {};
+    for (const rule of filteredRules) {
+      if (!groups[rule.domain]) {
+        groups[rule.domain] = [];
+      }
+      groups[rule.domain].push(rule);
+    }
+    return groups;
+  }, [filteredRules]);
+
+  const toggleDomain = (domain: string) => {
+    setExpandedDomains(prev => {
+      const next = new Set(prev);
+      if (next.has(domain)) {
+        next.delete(domain);
+      } else {
+        next.add(domain);
+      }
+      return next;
+    });
+  };
+
+  const handleDeleteRule = (rule: FlattenedRule) => {
+    const action = rule.action === 'default' ? undefined : rule.action as Action;
+    const pattern = rule.type === 'pattern' ? rule.value : undefined;
+
+    if (confirm(`Delete this rule for ${rule.domain}?`)) {
+      deleteRuleMutation.mutate({
+        domain: rule.domain,
+        action,
+        subjectPattern: pattern,
+        subdomain: rule.subdomain
+      });
     }
   };
 
-  const criteria = getCriteriaList();
-  const filtered = search
-    ? criteria.filter(c =>
-        c.primaryDomain.toLowerCase().includes(search.toLowerCase()) ||
-        c.subject.toLowerCase().includes(search.toLowerCase())
-      )
-    : criteria;
-
-  const handleDelete = (index: number) => {
-    if (confirm('Delete this criteria entry?')) {
-      deleteMutation.mutate({ type: activeType, index });
+  const handleDeleteDomain = (domain: string) => {
+    if (confirm(`Delete ALL rules for ${domain}? This cannot be undone.`)) {
+      deleteDomainMutation.mutate(domain);
     }
-  };
-
-  const handleMove = (index: number, toType: CriteriaType) => {
-    moveMutation.mutate({ fromType: activeType, toType, index });
   };
 
   if (isLoading) {
@@ -57,110 +106,169 @@ export default function CriteriaManager() {
     );
   }
 
+  const stats = data?.stats;
+
   return (
     <div className="space-y-6">
-      <h1 className="text-2xl font-bold text-gray-800">Criteria Manager</h1>
+      <div className="flex items-center justify-between">
+        <h1 className="text-2xl font-bold text-gray-800">Criteria Manager</h1>
+        <div className="text-sm text-gray-500">
+          {stats?.totalDomains || 0} domains configured
+        </div>
+      </div>
 
-      {/* Tabs */}
-      <div className="flex gap-2">
-        {tabs.map(tab => (
-          <button
-            key={tab.type}
-            onClick={() => navigate(`/criteria/${tab.type}`)}
-            className={`px-4 py-2 rounded-lg font-medium transition-colors ${
-              activeType === tab.type
-                ? `bg-${tab.color}-500 text-white`
-                : 'bg-white text-gray-700 border border-gray-300 hover:bg-gray-50'
-            }`}
-            style={activeType === tab.type ? {
-              backgroundColor: tab.color === 'red' ? '#ef4444' :
-                               tab.color === 'orange' ? '#f97316' : '#22c55e'
-            } : {}}
-          >
-            {tab.label} ({
-              tab.type === 'delete' ? data?.delete.length :
-              tab.type === 'delete1d' ? data?.delete1d.length :
-              data?.keep.length
-            })
-          </button>
-        ))}
+      {/* Filter Tabs */}
+      <div className="flex flex-wrap gap-2">
+        <button
+          onClick={() => setFilter('all')}
+          className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+            filter === 'all'
+              ? 'bg-blue-500 text-white'
+              : 'bg-white text-gray-700 border border-gray-300 hover:bg-gray-50'
+          }`}
+        >
+          All ({flatRules.length})
+        </button>
+        <button
+          onClick={() => setFilter('delete')}
+          className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+            filter === 'delete'
+              ? 'bg-red-500 text-white'
+              : 'bg-white text-gray-700 border border-gray-300 hover:bg-gray-50'
+          }`}
+        >
+          Delete ({flatRules.filter(r => r.action === 'delete').length})
+        </button>
+        <button
+          onClick={() => setFilter('delete_1d')}
+          className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+            filter === 'delete_1d'
+              ? 'bg-orange-500 text-white'
+              : 'bg-white text-gray-700 border border-gray-300 hover:bg-gray-50'
+          }`}
+        >
+          Delete 1-Day ({flatRules.filter(r => r.action === 'delete_1d').length})
+        </button>
+        <button
+          onClick={() => setFilter('keep')}
+          className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+            filter === 'keep'
+              ? 'bg-green-500 text-white'
+              : 'bg-white text-gray-700 border border-gray-300 hover:bg-gray-50'
+          }`}
+        >
+          Keep ({flatRules.filter(r => r.action === 'keep').length})
+        </button>
       </div>
 
       {/* Search */}
       <div className="flex gap-4">
         <input
           type="text"
-          placeholder="Search domain or subject..."
+          placeholder="Search domain or pattern..."
           value={search}
           onChange={e => setSearch(e.target.value)}
           className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
         />
+        {search && (
+          <button
+            onClick={() => setSearch('')}
+            className="px-4 py-2 text-gray-500 hover:text-gray-700"
+          >
+            Clear
+          </button>
+        )}
       </div>
 
-      {/* Table */}
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
-        <table className="w-full">
-          <thead className="bg-gray-50">
-            <tr>
-              <th className="px-4 py-3 text-left text-sm font-medium text-gray-700">Domain</th>
-              <th className="px-4 py-3 text-left text-sm font-medium text-gray-700">Subject</th>
-              <th className="px-4 py-3 text-left text-sm font-medium text-gray-700">Exclude</th>
-              <th className="px-4 py-3 text-right text-sm font-medium text-gray-700">Actions</th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-gray-100">
-            {filtered.length === 0 ? (
-              <tr>
-                <td colSpan={4} className="px-4 py-8 text-center text-gray-500">
-                  No criteria entries found.
-                </td>
-              </tr>
-            ) : (
-              filtered.map((entry, idx) => (
-                <tr key={idx} className="hover:bg-gray-50">
-                  <td className="px-4 py-3 text-sm text-gray-900">{entry.primaryDomain}</td>
-                  <td className="px-4 py-3 text-sm text-gray-700">
-                    {entry.subject || <span className="text-gray-400">(all)</span>}
-                  </td>
-                  <td className="px-4 py-3 text-sm text-gray-500">
-                    {entry.excludeSubject || '-'}
-                  </td>
-                  <td className="px-4 py-3 text-right">
-                    <div className="flex justify-end gap-2">
-                      {/* Move dropdown */}
-                      <select
-                        onChange={e => {
-                          if (e.target.value) {
-                            handleMove(idx, e.target.value as CriteriaType);
-                            e.target.value = '';
-                          }
-                        }}
-                        className="text-sm border border-gray-300 rounded px-2 py-1"
-                        defaultValue=""
-                      >
-                        <option value="" disabled>Move to...</option>
-                        {activeType !== 'delete' && <option value="delete">Delete</option>}
-                        {activeType !== 'delete1d' && <option value="delete1d">Delete 1-Day</option>}
-                        {activeType !== 'keep' && <option value="keep">Keep</option>}
-                      </select>
+      {/* Domain Groups */}
+      <div className="space-y-2">
+        {Object.keys(groupedByDomain).length === 0 ? (
+          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-8 text-center text-gray-500">
+            No criteria entries found.
+          </div>
+        ) : (
+          Object.entries(groupedByDomain).map(([domain, rules]) => {
+            const isExpanded = expandedDomains.has(domain);
+            const defaultRule = rules.find(r => r.type === 'default' && !r.subdomain);
+            const hasSubdomains = rules.some(r => r.subdomain);
 
-                      <button
-                        onClick={() => handleDelete(idx)}
-                        className="px-2 py-1 text-sm text-red-600 hover:bg-red-50 rounded"
-                      >
-                        Delete
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-              ))
-            )}
-          </tbody>
-        </table>
+            return (
+              <div key={domain} className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+                {/* Domain Header */}
+                <div
+                  className="flex items-center justify-between px-4 py-3 bg-gray-50 cursor-pointer hover:bg-gray-100"
+                  onClick={() => toggleDomain(domain)}
+                >
+                  <div className="flex items-center gap-3">
+                    <span className="text-gray-400">{isExpanded ? '▼' : '▶'}</span>
+                    <span className="font-medium text-gray-900">{domain}</span>
+                    {defaultRule && (
+                      <span className={`px-2 py-0.5 rounded text-xs font-medium ${actionColors[defaultRule.action].bg} ${actionColors[defaultRule.action].text}`}>
+                        {actionColors[defaultRule.action].label}
+                      </span>
+                    )}
+                    {hasSubdomains && (
+                      <span className="px-2 py-0.5 rounded text-xs font-medium bg-purple-100 text-purple-700">
+                        Has Subdomains
+                      </span>
+                    )}
+                    <span className="text-sm text-gray-500">
+                      ({rules.length} rule{rules.length !== 1 ? 's' : ''})
+                    </span>
+                  </div>
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleDeleteDomain(domain);
+                    }}
+                    className="px-2 py-1 text-sm text-red-600 hover:bg-red-50 rounded"
+                  >
+                    Delete All
+                  </button>
+                </div>
+
+                {/* Expanded Rules */}
+                {isExpanded && (
+                  <div className="divide-y divide-gray-100">
+                    {rules.map((rule, idx) => (
+                      <div key={idx} className="flex items-center justify-between px-4 py-2 hover:bg-gray-50">
+                        <div className="flex items-center gap-3">
+                          {rule.subdomain && (
+                            <span className="text-xs text-purple-600 bg-purple-50 px-2 py-0.5 rounded">
+                              {rule.subdomain}
+                            </span>
+                          )}
+                          <span className={`px-2 py-0.5 rounded text-xs font-medium ${actionColors[rule.action].bg} ${actionColors[rule.action].text}`}>
+                            {actionColors[rule.action].label}
+                          </span>
+                          <span className="text-sm text-gray-500">
+                            {rule.type === 'default' ? (
+                              <em>Default action</em>
+                            ) : rule.type === 'exclude' ? (
+                              <span>Exclude: <strong>{rule.value}</strong></span>
+                            ) : (
+                              <span>Pattern: <strong>{rule.value}</strong></span>
+                            )}
+                          </span>
+                        </div>
+                        <button
+                          onClick={() => handleDeleteRule(rule)}
+                          className="px-2 py-1 text-sm text-red-600 hover:bg-red-50 rounded"
+                        >
+                          Remove
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            );
+          })
+        )}
       </div>
 
       <div className="text-sm text-gray-500">
-        Showing {filtered.length} of {criteria.length} entries
+        Showing {Object.keys(groupedByDomain).length} domains with {filteredRules.length} rules
       </div>
     </div>
   );

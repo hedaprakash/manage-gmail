@@ -1,49 +1,39 @@
 /**
- * Criteria Routes
+ * Criteria Routes - Unified Format
  *
- * CRUD operations for criteria files.
+ * API endpoints for managing the unified criteria file.
  */
 
 import { Router, Request, Response } from 'express';
 import {
-  loadJsonFile,
-  saveJsonFile,
-  createCriteriaEntry,
-  isDuplicateCriteria,
-  CRITERIA_FILE,
-  CRITERIA_1DAY_FILE,
-  KEEP_CRITERIA_FILE
+  loadUnifiedCriteria,
+  saveUnifiedCriteria,
+  addRule,
+  removeRule,
+  addExcludeSubjects,
+  getDomainCriteria,
+  getCriteriaStats,
+  invalidateCache,
+  type Action,
+  type DomainRules,
+  type UnifiedCriteria
 } from '../services/criteria.js';
-import type { CriteriaEntry } from '../types/index.js';
 
 const router = Router();
 
-type CriteriaType = 'delete' | 'delete1d' | 'keep';
-
-function getFilePath(type: CriteriaType): string {
-  switch (type) {
-    case 'delete': return CRITERIA_FILE;
-    case 'delete1d': return CRITERIA_1DAY_FILE;
-    case 'keep': return KEEP_CRITERIA_FILE;
-    default: throw new Error(`Unknown criteria type: ${type}`);
-  }
-}
-
 /**
  * GET /api/criteria
- * Get all criteria from all files.
+ * Get the entire unified criteria file.
  */
 router.get('/', (_req: Request, res: Response) => {
   try {
-    const criteria = loadJsonFile<CriteriaEntry>(CRITERIA_FILE);
-    const criteria1d = loadJsonFile<CriteriaEntry>(CRITERIA_1DAY_FILE);
-    const keep = loadJsonFile<CriteriaEntry>(KEEP_CRITERIA_FILE);
+    const criteria = loadUnifiedCriteria();
+    const stats = getCriteriaStats();
 
     res.json({
       success: true,
-      delete: criteria,
-      delete1d: criteria1d,
-      keep
+      criteria,
+      stats
     });
   } catch (error) {
     console.error('Error loading criteria:', error);
@@ -55,23 +45,15 @@ router.get('/', (_req: Request, res: Response) => {
 });
 
 /**
- * GET /api/criteria/:type
- * Get criteria from a specific file.
+ * GET /api/criteria/stats
+ * Get statistics about the criteria.
  */
-router.get('/:type', (req: Request, res: Response) => {
+router.get('/stats', (_req: Request, res: Response) => {
   try {
-    const type = req.params.type as CriteriaType;
-    const filepath = getFilePath(type);
-    const criteria = loadJsonFile<CriteriaEntry>(filepath);
-
-    res.json({
-      success: true,
-      type,
-      count: criteria.length,
-      entries: criteria
-    });
+    const stats = getCriteriaStats();
+    res.json({ success: true, stats });
   } catch (error) {
-    console.error('Error loading criteria:', error);
+    console.error('Error getting stats:', error);
     res.status(500).json({
       success: false,
       error: error instanceof Error ? error.message : 'Unknown error'
@@ -80,13 +62,50 @@ router.get('/:type', (req: Request, res: Response) => {
 });
 
 /**
- * POST /api/criteria/:type
- * Add a new entry to a criteria file.
+ * GET /api/criteria/domain/:domain
+ * Get criteria for a specific domain.
  */
-router.post('/:type', (req: Request, res: Response) => {
+router.get('/domain/:domain', (req: Request, res: Response) => {
   try {
-    const type = req.params.type as CriteriaType;
-    const { domain, subject, excludeSubject } = req.body;
+    const domain = req.params.domain;
+    const rules = getDomainCriteria(domain);
+
+    if (!rules) {
+      res.status(404).json({
+        success: false,
+        error: 'Domain not found in criteria'
+      });
+      return;
+    }
+
+    res.json({
+      success: true,
+      domain,
+      rules
+    });
+  } catch (error) {
+    console.error('Error getting domain criteria:', error);
+    res.status(500).json({
+      success: false,
+      error: error instanceof Error ? error.message : 'Unknown error'
+    });
+  }
+});
+
+/**
+ * POST /api/criteria/rule
+ * Add a new rule to the criteria.
+ *
+ * Body: { domain, action, subjectPattern?, subdomain? }
+ */
+router.post('/rule', (req: Request, res: Response) => {
+  try {
+    const { domain, action, subjectPattern, subdomain } = req.body as {
+      domain: string;
+      action: Action;
+      subjectPattern?: string;
+      subdomain?: string;
+    };
 
     if (!domain) {
       res.status(400).json({
@@ -96,80 +115,32 @@ router.post('/:type', (req: Request, res: Response) => {
       return;
     }
 
-    const filepath = getFilePath(type);
-    const criteria = loadJsonFile<CriteriaEntry>(filepath);
-
-    const newEntry = createCriteriaEntry(domain, subject, excludeSubject);
-
-    if (isDuplicateCriteria(criteria, newEntry)) {
-      res.status(409).json({
-        success: false,
-        error: 'Similar criteria already exists'
-      });
-      return;
-    }
-
-    criteria.push(newEntry);
-    saveJsonFile(filepath, criteria);
-
-    console.log(`Added to ${type}: ${domain} (subject: ${subject || '(all)'})`);
-
-    res.json({
-      success: true,
-      message: `Added to ${type} criteria`,
-      entry: newEntry,
-      totalCount: criteria.length
-    });
-  } catch (error) {
-    console.error('Error adding criteria:', error);
-    res.status(500).json({
-      success: false,
-      error: error instanceof Error ? error.message : 'Unknown error'
-    });
-  }
-});
-
-/**
- * DELETE /api/criteria/:type/:index
- * Delete an entry from a criteria file by index.
- */
-router.delete('/:type/:index', (req: Request, res: Response) => {
-  try {
-    const type = req.params.type as CriteriaType;
-    const index = parseInt(req.params.index, 10);
-
-    if (isNaN(index)) {
+    if (!action || !['delete', 'delete_1d', 'keep'].includes(action)) {
       res.status(400).json({
         success: false,
-        error: 'Invalid index'
+        error: 'Valid action is required (delete, delete_1d, keep)'
       });
       return;
     }
 
-    const filepath = getFilePath(type);
-    const criteria = loadJsonFile<CriteriaEntry>(filepath);
+    addRule(domain, action, subjectPattern, subdomain);
 
-    if (index < 0 || index >= criteria.length) {
-      res.status(404).json({
-        success: false,
-        error: 'Entry not found'
-      });
-      return;
-    }
+    const message = subjectPattern
+      ? `Added ${action} rule for ${domain}: "${subjectPattern}"`
+      : `Set default ${action} for ${domain}`;
 
-    const removed = criteria.splice(index, 1)[0];
-    saveJsonFile(filepath, criteria);
-
-    console.log(`Removed from ${type}: ${removed?.primaryDomain} (subject: ${removed?.subject || '(all)'})`);
+    console.log(message);
 
     res.json({
       success: true,
-      message: `Removed from ${type} criteria`,
-      removed,
-      remainingCount: criteria.length
+      message,
+      domain,
+      action,
+      subjectPattern,
+      subdomain
     });
   } catch (error) {
-    console.error('Error deleting criteria:', error);
+    console.error('Error adding rule:', error);
     res.status(500).json({
       success: false,
       error: error instanceof Error ? error.message : 'Unknown error'
@@ -178,122 +149,220 @@ router.delete('/:type/:index', (req: Request, res: Response) => {
 });
 
 /**
- * PUT /api/criteria/:type/:index
- * Update an entry in a criteria file.
+ * DELETE /api/criteria/rule
+ * Remove a rule from the criteria.
+ *
+ * Body: { domain, action?, subjectPattern?, subdomain? }
  */
-router.put('/:type/:index', (req: Request, res: Response) => {
+router.delete('/rule', (req: Request, res: Response) => {
   try {
-    const type = req.params.type as CriteriaType;
-    const index = parseInt(req.params.index, 10);
-    const { domain, subject, excludeSubject } = req.body;
-
-    if (isNaN(index)) {
-      res.status(400).json({
-        success: false,
-        error: 'Invalid index'
-      });
-      return;
-    }
-
-    const filepath = getFilePath(type);
-    const criteria = loadJsonFile<CriteriaEntry>(filepath);
-
-    if (index < 0 || index >= criteria.length) {
-      res.status(404).json({
-        success: false,
-        error: 'Entry not found'
-      });
-      return;
-    }
-
-    const updated = createCriteriaEntry(
-      domain ?? criteria[index]?.primaryDomain ?? '',
-      subject ?? criteria[index]?.subject,
-      excludeSubject ?? criteria[index]?.excludeSubject
-    );
-
-    criteria[index] = updated;
-    saveJsonFile(filepath, criteria);
-
-    res.json({
-      success: true,
-      message: `Updated ${type} criteria`,
-      entry: updated
-    });
-  } catch (error) {
-    console.error('Error updating criteria:', error);
-    res.status(500).json({
-      success: false,
-      error: error instanceof Error ? error.message : 'Unknown error'
-    });
-  }
-});
-
-/**
- * POST /api/criteria/move
- * Move an entry from one file to another.
- */
-router.post('/move', (req: Request, res: Response) => {
-  try {
-    const { fromType, toType, index } = req.body as {
-      fromType: CriteriaType;
-      toType: CriteriaType;
-      index: number;
+    const { domain, action, subjectPattern, subdomain } = req.body as {
+      domain: string;
+      action?: Action;
+      subjectPattern?: string;
+      subdomain?: string;
     };
 
-    if (!fromType || !toType || typeof index !== 'number') {
+    if (!domain) {
       res.status(400).json({
         success: false,
-        error: 'fromType, toType, and index are required'
+        error: 'Domain is required'
       });
       return;
     }
 
-    const fromPath = getFilePath(fromType);
-    const toPath = getFilePath(toType);
+    const removed = removeRule(domain, action, subjectPattern, subdomain);
 
-    const fromCriteria = loadJsonFile<CriteriaEntry>(fromPath);
-    const toCriteria = loadJsonFile<CriteriaEntry>(toPath);
-
-    if (index < 0 || index >= fromCriteria.length) {
+    if (!removed) {
       res.status(404).json({
         success: false,
-        error: 'Entry not found'
+        error: 'Rule not found'
       });
       return;
     }
 
-    const entry = fromCriteria.splice(index, 1)[0];
-    if (!entry) {
-      res.status(404).json({
-        success: false,
-        error: 'Entry not found'
-      });
-      return;
-    }
+    const message = subjectPattern
+      ? `Removed ${action} rule for ${domain}: "${subjectPattern}"`
+      : action
+        ? `Removed ${action} rules for ${domain}`
+        : `Removed all rules for ${domain}`;
 
-    if (isDuplicateCriteria(toCriteria, entry)) {
-      res.status(409).json({
-        success: false,
-        error: 'Entry already exists in target file'
-      });
-      return;
-    }
-
-    toCriteria.push(entry);
-
-    saveJsonFile(fromPath, fromCriteria);
-    saveJsonFile(toPath, toCriteria);
-
-    console.log(`Moved ${entry.primaryDomain} from ${fromType} to ${toType}`);
+    console.log(message);
 
     res.json({
       success: true,
-      message: `Moved from ${fromType} to ${toType}`,
-      entry
+      message
     });
   } catch (error) {
-    console.error('Error moving criteria:', error);
+    console.error('Error removing rule:', error);
+    res.status(500).json({
+      success: false,
+      error: error instanceof Error ? error.message : 'Unknown error'
+    });
+  }
+});
+
+/**
+ * PUT /api/criteria/domain/:domain
+ * Update all rules for a domain.
+ *
+ * Body: DomainRules object
+ */
+router.put('/domain/:domain', (req: Request, res: Response) => {
+  try {
+    const domain = req.params.domain.toLowerCase();
+    const rules = req.body as DomainRules;
+
+    const criteria = loadUnifiedCriteria();
+    criteria[domain] = rules;
+    saveUnifiedCriteria(criteria);
+
+    console.log(`Updated rules for ${domain}`);
+
+    res.json({
+      success: true,
+      message: `Updated rules for ${domain}`,
+      domain,
+      rules
+    });
+  } catch (error) {
+    console.error('Error updating domain:', error);
+    res.status(500).json({
+      success: false,
+      error: error instanceof Error ? error.message : 'Unknown error'
+    });
+  }
+});
+
+/**
+ * DELETE /api/criteria/domain/:domain
+ * Remove all rules for a domain.
+ */
+router.delete('/domain/:domain', (req: Request, res: Response) => {
+  try {
+    const domain = req.params.domain.toLowerCase();
+
+    const criteria = loadUnifiedCriteria();
+
+    if (!criteria[domain]) {
+      res.status(404).json({
+        success: false,
+        error: 'Domain not found'
+      });
+      return;
+    }
+
+    delete criteria[domain];
+    saveUnifiedCriteria(criteria);
+
+    console.log(`Removed all rules for ${domain}`);
+
+    res.json({
+      success: true,
+      message: `Removed all rules for ${domain}`
+    });
+  } catch (error) {
+    console.error('Error deleting domain:', error);
+    res.status(500).json({
+      success: false,
+      error: error instanceof Error ? error.message : 'Unknown error'
+    });
+  }
+});
+
+/**
+ * POST /api/criteria/exclude
+ * Add exclude subjects to a domain.
+ *
+ * Body: { domain, terms: string[] }
+ */
+router.post('/exclude', (req: Request, res: Response) => {
+  try {
+    const { domain, terms } = req.body as {
+      domain: string;
+      terms: string[];
+    };
+
+    if (!domain || !terms?.length) {
+      res.status(400).json({
+        success: false,
+        error: 'Domain and terms are required'
+      });
+      return;
+    }
+
+    addExcludeSubjects(domain, terms);
+
+    console.log(`Added exclude subjects to ${domain}: ${terms.join(', ')}`);
+
+    res.json({
+      success: true,
+      message: `Added exclude subjects to ${domain}`,
+      domain,
+      terms
+    });
+  } catch (error) {
+    console.error('Error adding exclude subjects:', error);
+    res.status(500).json({
+      success: false,
+      error: error instanceof Error ? error.message : 'Unknown error'
+    });
+  }
+});
+
+/**
+ * POST /api/criteria/refresh
+ * Invalidate the criteria cache.
+ */
+router.post('/refresh', (_req: Request, res: Response) => {
+  try {
+    invalidateCache();
+    res.json({
+      success: true,
+      message: 'Cache invalidated'
+    });
+  } catch (error) {
+    console.error('Error refreshing cache:', error);
+    res.status(500).json({
+      success: false,
+      error: error instanceof Error ? error.message : 'Unknown error'
+    });
+  }
+});
+
+/**
+ * GET /api/criteria/search
+ * Search for domains matching a pattern.
+ */
+router.get('/search', (req: Request, res: Response) => {
+  try {
+    const query = (req.query.q as string || '').toLowerCase();
+
+    if (!query) {
+      res.status(400).json({
+        success: false,
+        error: 'Query parameter q is required'
+      });
+      return;
+    }
+
+    const criteria = loadUnifiedCriteria();
+    const matches: { domain: string; rules: DomainRules }[] = [];
+
+    for (const [domain, rules] of Object.entries(criteria)) {
+      if (domain.includes(query)) {
+        matches.push({ domain, rules });
+      }
+    }
+
+    res.json({
+      success: true,
+      query,
+      count: matches.length,
+      matches
+    });
+  } catch (error) {
+    console.error('Error searching criteria:', error);
     res.status(500).json({
       success: false,
       error: error instanceof Error ? error.message : 'Unknown error'
