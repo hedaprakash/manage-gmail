@@ -1,21 +1,39 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useRef, useEffect } from 'react';
 import { useEmails, useMarkKeep, useAddCriteria, useAddCriteria1d, formatDateRange } from '../hooks/useEmails';
 import type { DomainGroup } from '../hooks/useEmails';
 import StatsCard from '../components/Stats/StatsCard';
 import DomainSection from '../components/Email/DomainSection';
 
 const categories = ['All', 'PROMO', 'NEWSLETTER', 'UNKNOWN', 'SECURITY', 'ALERT', 'STATEMENT', 'ORDER'];
-type SortOption = 'count' | 'alpha';
 
 export default function Review() {
   const [categoryFilter, setCategoryFilter] = useState('All');
-  const [sortBy, setSortBy] = useState<SortOption>('alpha'); // Default to alphabetical for stability
   const { data, isLoading, error } = useEmails();
   const markKeep = useMarkKeep();
   const addCriteria = useAddCriteria();
   const addCriteria1d = useAddCriteria1d();
 
-  // Filter and sort domains - must be called before any early returns (Rules of Hooks)
+  // Snapshot sort: Store the frozen order of domains from initial load
+  // This prevents list jumping when actions change email counts
+  const frozenOrderRef = useRef<string[] | null>(null);
+  const lastCacheFileRef = useRef<string | null>(null);
+
+  // Capture frozen order on initial load or when cache file changes (explicit refresh)
+  useEffect(() => {
+    if (data?.domains && data.cacheFile) {
+      // Only reset frozen order if this is a new cache file (explicit refresh)
+      // or if we don't have a frozen order yet
+      if (frozenOrderRef.current === null || lastCacheFileRef.current !== data.cacheFile) {
+        // Sort by count descending and capture order
+        const sortedByCount = [...data.domains].sort((a, b) => b.totalEmails - a.totalEmails);
+        frozenOrderRef.current = sortedByCount.map(d => d.domain);
+        lastCacheFileRef.current = data.cacheFile;
+        console.log('Frozen order captured:', frozenOrderRef.current.slice(0, 5), '...');
+      }
+    }
+  }, [data]);
+
+  // Filter and sort domains using frozen order
   const filteredDomains = useMemo(() => {
     if (!data) return [];
 
@@ -40,13 +58,19 @@ export default function Review() {
       }).filter(d => d.totalEmails > 0);
     }
 
-    // Sort domains
-    if (sortBy === 'alpha') {
-      return [...domains].sort((a, b) => a.domain.localeCompare(b.domain));
+    // Use frozen order if available, otherwise sort by count
+    if (frozenOrderRef.current) {
+      const orderMap = new Map(frozenOrderRef.current.map((d, i) => [d, i]));
+      return [...domains].sort((a, b) => {
+        const aIndex = orderMap.get(a.domain) ?? 999999;
+        const bIndex = orderMap.get(b.domain) ?? 999999;
+        return aIndex - bIndex;
+      });
     } else {
+      // Fallback: sort by count
       return [...domains].sort((a, b) => b.totalEmails - a.totalEmails);
     }
-  }, [data, categoryFilter, sortBy]);
+  }, [data, categoryFilter]);
 
   if (isLoading) {
     return (
@@ -96,35 +120,21 @@ export default function Review() {
         />
       </div>
 
-      {/* Filters Row */}
-      <div className="flex flex-wrap items-center justify-between gap-4">
-        {/* Category Filters */}
-        <div className="flex flex-wrap gap-2">
-          {categories.map(cat => (
-            <button
-              key={cat}
-              onClick={() => setCategoryFilter(cat)}
-              className={`px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${
-                categoryFilter === cat
-                  ? 'bg-blue-500 text-white'
-                  : 'bg-white text-gray-700 border border-gray-300 hover:bg-gray-50'
-              }`}
-            >
-              {cat}
-            </button>
-          ))}
-        </div>
-
-        {/* Sort Toggle */}
-        <div className="flex items-center gap-2 text-sm">
-          <span className="text-gray-500">Sort:</span>
+      {/* Category Filters */}
+      <div className="flex flex-wrap gap-2">
+        {categories.map(cat => (
           <button
-            onClick={() => setSortBy(sortBy === 'alpha' ? 'count' : 'alpha')}
-            className="px-3 py-1.5 rounded border border-gray-300 bg-white hover:bg-gray-50 font-medium"
+            key={cat}
+            onClick={() => setCategoryFilter(cat)}
+            className={`px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${
+              categoryFilter === cat
+                ? 'bg-blue-500 text-white'
+                : 'bg-white text-gray-700 border border-gray-300 hover:bg-gray-50'
+            }`}
           >
-            {sortBy === 'alpha' ? 'A-Z' : 'Count'}
+            {cat}
           </button>
-        </div>
+        ))}
       </div>
 
       {/* Domain List */}

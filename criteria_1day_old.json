@@ -637,5 +637,14 @@
     "toEmails": "",
     "ccEmails": "",
     "excludeSubject": ""
+  },
+  {
+    "email": "",
+    "subdomain": "",
+    "primaryDomain": "cloudflare.com",
+    "subject": "Your login token for the Cloudflare dashboard",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
   }
 ]

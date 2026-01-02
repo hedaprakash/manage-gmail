@@ -277,5 +277,32 @@
     "toEmails": "",
     "ccEmails": "",
     "excludeSubject": ""
+  },
+  {
+    "email": "",
+    "subdomain": "",
+    "primaryDomain": "davivienda.cr",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "",
+    "subdomain": "",
+    "primaryDomain": "dispatch.me",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "",
+    "subdomain": "",
+    "primaryDomain": "sc.dominionenergyaccount.com",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
   }
 ]

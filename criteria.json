@@ -4061,15 +4061,6 @@
   {
     "email": "",
     "subdomain": "",
-    "primaryDomain": "co.in",
-    "subject": "Funds/Securities Balance",
-    "toEmails": "",
-    "ccEmails": "",
-    "excludeSubject": ""
-  },
-  {
-    "email": "",
-    "subdomain": "",
     "primaryDomain": "anker.com",
     "subject": "Reminder: Please Sign and Upload Your NDA",
     "toEmails": "",
@@ -4126,6 +4117,51 @@
     "subdomain": "",
     "primaryDomain": "aws-experience.com",
     "subject": "Your event is about to start",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "",
+    "subdomain": "",
+    "primaryDomain": "carrier.com",
+    "subject": "Service Fully Restored",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "",
+    "subdomain": "",
+    "primaryDomain": "clerk.com",
+    "subject": "Clerk Update",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "",
+    "subdomain": "",
+    "primaryDomain": "co.in",
+    "subject": "Payments made fast and super easy",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "",
+    "subdomain": "",
+    "primaryDomain": "customersc.dominionenergyinfo.com",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "",
+    "subdomain": "",
+    "primaryDomain": "e-vanguard.com",
+    "subject": "Unloc(k) your potential",
     "toEmails": "",
     "ccEmails": "",
     "excludeSubject": ""

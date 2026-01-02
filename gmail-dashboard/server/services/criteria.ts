@@ -135,9 +135,11 @@ export function removeFromCriteria(domain: string, subjectPattern: string): numb
 /**
  * Check if an email matches any criteria in the list.
  * Also respects excludeSubject - if the subject contains any excluded term, it won't match.
+ * Supports matching against both primaryDomain and subdomain (full domain like alerts.sbi.co.in).
  */
 export function matchesAnyCriteria(emailData: EmailData, criteriaList: CriteriaEntry[]): boolean {
   const domain = emailData.primaryDomain.toLowerCase();
+  const subdomain = emailData.subdomain?.toLowerCase() ?? '';
   const subject = emailData.subject.toLowerCase();
 
   for (const c of criteriaList) {
@@ -145,7 +147,14 @@ export function matchesAnyCriteria(emailData: EmailData, criteriaList: CriteriaE
     const cSubject = c.subject.toLowerCase();
     const excludeSubject = c.excludeSubject?.toLowerCase() ?? '';
 
-    if (cDomain && domain.includes(cDomain)) {
+    // Match if criteria domain matches either primaryDomain or subdomain
+    const domainMatches = cDomain && (
+      domain.includes(cDomain) ||
+      subdomain.includes(cDomain) ||
+      subdomain === cDomain
+    );
+
+    if (domainMatches) {
       // Check excludeSubject first - if any excluded term matches, skip this criteria
       if (excludeSubject) {
         const excludeTerms = excludeSubject.split(',').map(t => t.trim()).filter(t => t);

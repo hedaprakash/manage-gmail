@@ -21,6 +21,19 @@ function SubdomainSection({ subdomain, primaryDomain, onKeep, onDelete, onDelete
   const [expanded, setExpanded] = useState(true);
   const hasMultipleSubdomains = subdomain.subdomain !== primaryDomain;
 
+  // Use full subdomain for actions (e.g., alerts.sbi.co.in)
+  const handleKeepSubdomain = () => {
+    onKeep(subdomain.subdomain, '', 'SUBDOMAIN');
+  };
+
+  const handleDeleteSubdomain = () => {
+    onDelete(subdomain.subdomain, '');
+  };
+
+  const handleDelete1dSubdomain = () => {
+    onDelete1d(subdomain.subdomain, '');
+  };
+
   return (
     <div className="border-l-4 border-blue-200">
       {/* Subdomain Header - only show if different from primary */}
@@ -46,6 +59,31 @@ function SubdomainSection({ subdomain, primaryDomain, onKeep, onDelete, onDelete
                 {subdomain.totalEmails}
               </span>
             </button>
+
+            {/* Subdomain-level action buttons */}
+            <div className="flex gap-1">
+              <button
+                onClick={handleKeepSubdomain}
+                className="px-2 py-0.5 text-xs font-medium bg-green-500 hover:bg-green-600 text-white rounded"
+                title={`Keep all from ${subdomain.subdomain}`}
+              >
+                Keep
+              </button>
+              <button
+                onClick={handleDeleteSubdomain}
+                className="px-2 py-0.5 text-xs font-medium bg-red-500 hover:bg-red-600 text-white rounded"
+                title={`Delete all from ${subdomain.subdomain}`}
+              >
+                Del
+              </button>
+              <button
+                onClick={handleDelete1dSubdomain}
+                className="px-2 py-0.5 text-xs font-medium bg-orange-500 hover:bg-orange-600 text-white rounded"
+                title={`Delete after 1 day from ${subdomain.subdomain}`}
+              >
+                1d
+              </button>
+            </div>
           </div>
         </div>
       )}
@@ -58,9 +96,9 @@ function SubdomainSection({ subdomain, primaryDomain, onKeep, onDelete, onDelete
               key={`${pattern.subdomain}-${pattern.subject}-${idx}`}
               pattern={pattern}
               showSender={true}
-              onKeep={(selectedText) => onKeep(pattern.domain, selectedText ?? pattern.subject, pattern.category)}
-              onDelete={(selectedText) => onDelete(pattern.domain, selectedText ?? pattern.subject)}
-              onDelete1d={(selectedText) => onDelete1d(pattern.domain, selectedText ?? pattern.subject)}
+              onKeep={(selectedText) => onKeep(pattern.subdomain, selectedText ?? pattern.subject, pattern.category)}
+              onDelete={(selectedText) => onDelete(pattern.subdomain, selectedText ?? pattern.subject)}
+              onDelete1d={(selectedText) => onDelete1d(pattern.subdomain, selectedText ?? pattern.subject)}
             />
           ))}
         </div>
