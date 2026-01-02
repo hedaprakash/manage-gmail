@@ -569,33 +569,6 @@
   {
     "email": "",
     "subdomain": "",
-    "primaryDomain": "camsmgt.com",
-    "subject": "Holiday Hours and",
-    "toEmails": "",
-    "ccEmails": "",
-    "excludeSubject": ""
-  },
-  {
-    "email": "",
-    "subdomain": "",
-    "primaryDomain": "camsmgt.com",
-    "subject": "Holiday newsletter",
-    "toEmails": "",
-    "ccEmails": "",
-    "excludeSubject": ""
-  },
-  {
-    "email": "",
-    "subdomain": "",
-    "primaryDomain": "camsmgt.com",
-    "subject": "Holiday office hours",
-    "toEmails": "",
-    "ccEmails": "",
-    "excludeSubject": ""
-  },
-  {
-    "email": "",
-    "subdomain": "",
     "primaryDomain": "newrez-shellpoint.com",
     "subject": "Password Changed",
     "toEmails": "",
@@ -670,6 +643,33 @@
     "subdomain": "",
     "primaryDomain": "hdfcbank.net",
     "subject": "[No Action Needed]: Kindly Ignore Our Recent Email",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "",
+    "subdomain": "",
+    "primaryDomain": "notify.newrezservicing.com",
+    "subject": "Your billing statement",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "",
+    "subdomain": "",
+    "primaryDomain": "thumbtack.com",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "",
+    "subdomain": "",
+    "primaryDomain": "lorventech.com",
+    "subject": "",
     "toEmails": "",
     "ccEmails": "",
     "excludeSubject": ""
