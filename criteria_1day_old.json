@@ -574,5 +574,68 @@
     "toEmails": "",
     "ccEmails": "",
     "excludeSubject": ""
+  },
+  {
+    "email": "",
+    "subdomain": "",
+    "primaryDomain": "camsmgt.com",
+    "subject": "Holiday newsletter",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "",
+    "subdomain": "",
+    "primaryDomain": "camsmgt.com",
+    "subject": "Holiday office hours",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "",
+    "subdomain": "",
+    "primaryDomain": "newrez-shellpoint.com",
+    "subject": "Password Changed",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "",
+    "subdomain": "",
+    "primaryDomain": "samsung-mail.com",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "",
+    "subdomain": "",
+    "primaryDomain": "setindia.com",
+    "subject": "OTP for Registration",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "",
+    "subdomain": "",
+    "primaryDomain": "tp-link.com",
+    "subject": "We Noticed a New Login",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "",
+    "subdomain": "",
+    "primaryDomain": "aws.com",
+    "subject": "Important Notification Regarding Your AWS Marketpl",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
   }
 ]

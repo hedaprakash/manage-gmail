@@ -214,5 +214,68 @@
     "toEmails": "",
     "ccEmails": "",
     "excludeSubject": ""
+  },
+  {
+    "email": "",
+    "subdomain": "",
+    "primaryDomain": "camsmgt.com",
+    "subject": "Account Statement",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "",
+    "subdomain": "",
+    "primaryDomain": "hpsmart.com",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "",
+    "subdomain": "",
+    "primaryDomain": "sheinnotice.com",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "",
+    "subdomain": "",
+    "primaryDomain": "shopifyemail.com",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "",
+    "subdomain": "",
+    "primaryDomain": "lastpass.com",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "",
+    "subdomain": "",
+    "primaryDomain": "amfam.com",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "",
+    "subdomain": "",
+    "primaryDomain": "breadfinancial.com",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
   }
 ]

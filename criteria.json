@@ -3782,15 +3782,6 @@
   {
     "email": "",
     "subdomain": "",
-    "primaryDomain": "hpsmart.com",
-    "subject": "Helping you save ⏰ and 💰.",
-    "toEmails": "",
-    "ccEmails": "",
-    "excludeSubject": ""
-  },
-  {
-    "email": "",
-    "subdomain": "",
     "primaryDomain": "e-vanguard.com",
     "subject": "Preeti, schedule a free meeting with a Vanguard ad",
     "toEmails": "",
@@ -4090,6 +4081,51 @@
     "subdomain": "",
     "primaryDomain": "abesofmaine.com",
     "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "",
+    "subdomain": "",
+    "primaryDomain": "flybayarea.com",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "",
+    "subdomain": "",
+    "primaryDomain": "indiatimes-mail.com",
+    "subject": "Top News at a Glance",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "",
+    "subdomain": "",
+    "primaryDomain": "kw.com",
+    "subject": "News and Views |  The Foreign Footprint on Califor",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "",
+    "subdomain": "",
+    "primaryDomain": "avature.net",
+    "subject": "KPMG LLP Follow-Up for the Lead Specialist, Databa",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "",
+    "subdomain": "",
+    "primaryDomain": "aws-experience.com",
+    "subject": "Your event is about to start",
     "toEmails": "",
     "ccEmails": "",
     "excludeSubject": ""
