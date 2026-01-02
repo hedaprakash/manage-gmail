@@ -25,7 +25,7 @@
   },
   "adidas.in": {
     "default": "delete_1d",
-    "excludeSubjects": [
+    "keep": [
       "Order"
     ]
   },
@@ -166,7 +166,7 @@
   },
   "bestbuy.com": {
     "default": "delete",
-    "excludeSubjects": [
+    "keep": [
       "Order"
     ]
   },
@@ -208,7 +208,7 @@
   },
   "capcut.com": {
     "default": "delete",
-    "excludeSubjects": [
+    "keep": [
       "order"
     ]
   },
@@ -308,7 +308,7 @@
   },
   "costco.com": {
     "default": "delete",
-    "excludeSubjects": [
+    "keep": [
       "Order"
     ]
   },
@@ -426,7 +426,7 @@
   },
   "ebay.com": {
     "default": "delete",
-    "excludeSubjects": [
+    "keep": [
       "Order"
     ]
   },
@@ -471,7 +471,7 @@
   },
   "etsy.com": {
     "default": "delete_1d",
-    "excludeSubjects": [
+    "keep": [
       "Order"
     ]
   },
@@ -565,13 +565,13 @@
   },
   "goodbuygear.com": {
     "default": "delete_1d",
-    "excludeSubjects": [
+    "keep": [
       "Order"
     ]
   },
   "google.com": {
     "default": "delete",
-    "excludeSubjects": [
+    "keep": [
       "order"
     ]
   },
@@ -1014,7 +1014,7 @@
   },
   "pge.com": {
     "default": "delete",
-    "excludeSubjects": [
+    "keep": [
       "Payment"
     ]
   },
@@ -1125,7 +1125,7 @@
   },
   "schwab.com": {
     "default": "delete_1d",
-    "excludeSubjects": [
+    "keep": [
       "statement"
     ]
   },
@@ -1151,7 +1151,7 @@
   },
   "shef.com": {
     "default": "delete_1d",
-    "excludeSubjects": [
+    "keep": [
       "Order"
     ]
   },
@@ -1292,7 +1292,7 @@
   },
   "topcashback.com": {
     "default": "delete",
-    "excludeSubjects": [
+    "keep": [
       "Transaction"
     ]
   },
