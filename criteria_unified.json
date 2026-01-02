@@ -92,6 +92,22 @@
   "appfolio.com": {
     "default": "delete"
   },
+  "apple.com": {
+    "subdomains": {
+      "email.apple.com": {
+        "delete": [
+          "Get your new iPhone",
+          "has been updated"
+        ],
+        "keep": [
+          "Preeti Dua invited"
+        ]
+      },
+      "insideapple.apple.com": {
+        "default": "delete"
+      }
+    }
+  },
   "arizent.com": {
     "default": "delete"
   },
@@ -371,8 +387,15 @@
   "docusign.com": {
     "delete": [
       "You tried signing, so try this",
-      "Hi, you’ve signed and sent, bu"
+      "Hi, you've signed and sent, bu"
     ]
+  },
+  "dominionenergyaccount.com": {
+    "subdomains": {
+      "sc.dominionenergyaccount.com": {
+        "default": "keep"
+      }
+    }
   },
   "dominionenergyinfo.com": {
     "delete": [
@@ -413,9 +436,6 @@
   "economictimesnews.com": {
     "default": "delete"
   },
-  "em1.turbotax.intuit.com": {
-    "default": "delete"
-  },
   "email-fordpassrewards.com": {
     "default": "delete"
   },
@@ -424,15 +444,6 @@
   },
   "email-marriott.com": {
     "default": "delete"
-  },
-  "email.apple.com": {
-    "delete": [
-      "Get your new iPhone",
-      "has been updated"
-    ],
-    "keep": [
-      "Preeti Dua invited"
-    ]
   },
   "emeraldx.com": {
     "default": "delete"
@@ -688,9 +699,6 @@
   "influitive.com": {
     "default": "delete"
   },
-  "insideapple.apple.com": {
-    "default": "delete"
-  },
   "insidermonkey.com": {
     "default": "delete"
   },
@@ -712,7 +720,12 @@
     "default": "delete"
   },
   "intuit.com": {
-    "default": "keep"
+    "default": "keep",
+    "subdomains": {
+      "em1.turbotax.intuit.com": {
+        "default": "delete"
+      }
+    }
   },
   "investorshub.com": {
     "default": "delete"
@@ -1106,9 +1119,6 @@
         "default": "delete"
       }
     }
-  },
-  "sc.dominionenergyaccount.com": {
-    "default": "keep"
   },
   "sceg.com": {
     "default": "keep"
