@@ -145,16 +145,17 @@ function getActionFromRules(rules: DomainRules, subject: string): { action: Acti
     }
   }
 
-  // 2. Apply default action (if set)
+  // 2. Check excludeSubjects - if matched, KEEP the email
+  if (rules.excludeSubjects?.length && isExcludedSubject(subject, rules.excludeSubjects)) {
+    return { action: 'keep', reason: 'subject matches excludeSubjects (protected)' };
+  }
+
+  // 3. Apply default action (if set)
   if (rules.default) {
-    // Check excludeSubjects first (only applies to default action)
-    if (rules.excludeSubjects?.length && isExcludedSubject(subject, rules.excludeSubjects)) {
-      return { action: null, reason: 'subject excluded from default action' };
-    }
     return { action: rules.default, reason: 'default action' };
   }
 
-  // 3. No match
+  // 4. No match
   return { action: null, reason: 'no matching rule' };
 }
 

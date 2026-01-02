@@ -252,6 +252,203 @@ export function useUpdateDomain() {
   });
 }
 
+// Add exclude subjects to a domain
+async function addExcludeSubjects(domain: string, terms: string[]) {
+  const res = await fetch('/api/criteria/exclude', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ domain, terms })
+  });
+  if (!res.ok) throw new Error('Failed to add exclude subjects');
+  return res.json();
+}
+
+export function useAddExcludeSubjects() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({ domain, terms }: { domain: string; terms: string[] }) =>
+      addExcludeSubjects(domain, terms),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['criteria'] });
+    }
+  });
+}
+
+// Remove exclude subject from a domain
+async function removeExcludeSubject(domain: string, term: string) {
+  // Need to load current rules, remove the term, and save
+  const res = await fetch(`/api/criteria/domain/${encodeURIComponent(domain)}`);
+  if (!res.ok) throw new Error('Failed to load domain');
+  const data = await res.json();
+
+  const rules = data.rules as DomainRules;
+  if (rules.excludeSubjects) {
+    rules.excludeSubjects = rules.excludeSubjects.filter(t => t.toLowerCase() !== term.toLowerCase());
+    if (rules.excludeSubjects.length === 0) {
+      delete rules.excludeSubjects;
+    }
+  }
+
+  const updateRes = await fetch(`/api/criteria/domain/${encodeURIComponent(domain)}`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(rules)
+  });
+  if (!updateRes.ok) throw new Error('Failed to update domain');
+  return updateRes.json();
+}
+
+export function useRemoveExcludeSubject() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({ domain, term }: { domain: string; term: string }) =>
+      removeExcludeSubject(domain, term),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['criteria'] });
+    }
+  });
+}
+
+// Set default action for a domain
+async function setDefaultAction(domain: string, action: Action | null) {
+  const res = await fetch(`/api/criteria/domain/${encodeURIComponent(domain)}`);
+  let rules: DomainRules = {};
+
+  if (res.ok) {
+    const data = await res.json();
+    rules = data.rules || {};
+  }
+
+  if (action) {
+    rules.default = action;
+  } else {
+    delete rules.default;
+  }
+
+  const updateRes = await fetch(`/api/criteria/domain/${encodeURIComponent(domain)}`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(rules)
+  });
+  if (!updateRes.ok) throw new Error('Failed to set default action');
+  return updateRes.json();
+}
+
+export function useSetDefaultAction() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({ domain, action }: { domain: string; action: Action | null }) =>
+      setDefaultAction(domain, action),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['criteria'] });
+      queryClient.invalidateQueries({ queryKey: ['emails'] });
+      queryClient.invalidateQueries({ queryKey: ['stats'] });
+    }
+  });
+}
+
+// Add a new domain with initial rules
+async function addDomain(domain: string, defaultAction?: Action) {
+  const rules: DomainRules = {};
+  if (defaultAction) {
+    rules.default = defaultAction;
+  }
+
+  const res = await fetch(`/api/criteria/domain/${encodeURIComponent(domain.toLowerCase())}`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(rules)
+  });
+  if (!res.ok) throw new Error('Failed to add domain');
+  return res.json();
+}
+
+export function useAddDomain() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({ domain, defaultAction }: { domain: string; defaultAction?: Action }) =>
+      addDomain(domain, defaultAction),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['criteria'] });
+    }
+  });
+}
+
+// Add subdomain rule
+async function addSubdomainRule(domain: string, subdomain: string, action: Action) {
+  const res = await fetch(`/api/criteria/domain/${encodeURIComponent(domain)}`);
+  let rules: DomainRules = {};
+
+  if (res.ok) {
+    const data = await res.json();
+    rules = data.rules || {};
+  }
+
+  if (!rules.subdomains) {
+    rules.subdomains = {};
+  }
+  rules.subdomains[subdomain.toLowerCase()] = { default: action };
+
+  const updateRes = await fetch(`/api/criteria/domain/${encodeURIComponent(domain)}`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(rules)
+  });
+  if (!updateRes.ok) throw new Error('Failed to add subdomain');
+  return updateRes.json();
+}
+
+export function useAddSubdomainRule() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({ domain, subdomain, action }: { domain: string; subdomain: string; action: Action }) =>
+      addSubdomainRule(domain, subdomain, action),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['criteria'] });
+    }
+  });
+}
+
+// Remove subdomain rule
+async function removeSubdomainRule(domain: string, subdomain: string) {
+  const res = await fetch(`/api/criteria/domain/${encodeURIComponent(domain)}`);
+  if (!res.ok) throw new Error('Failed to load domain');
+  const data = await res.json();
+
+  const rules = data.rules as DomainRules;
+  if (rules.subdomains) {
+    delete rules.subdomains[subdomain.toLowerCase()];
+    if (Object.keys(rules.subdomains).length === 0) {
+      delete rules.subdomains;
+    }
+  }
+
+  const updateRes = await fetch(`/api/criteria/domain/${encodeURIComponent(domain)}`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(rules)
+  });
+  if (!updateRes.ok) throw new Error('Failed to remove subdomain');
+  return updateRes.json();
+}
+
+export function useRemoveSubdomainRule() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({ domain, subdomain }: { domain: string; subdomain: string }) =>
+      removeSubdomainRule(domain, subdomain),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['criteria'] });
+    }
+  });
+}
+
 // Legacy exports for backwards compatibility
 export type CriteriaEntry = {
   email: string;

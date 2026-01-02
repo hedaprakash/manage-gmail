@@ -43,7 +43,6 @@ function createEmail(overrides: Partial<EmailData>): EmailData {
     email: overrides.email || 'sender@example.com',
     subject: overrides.subject || 'Test Subject',
     date: overrides.date || new Date().toISOString(),
-    snippet: overrides.snippet || '',
     category: overrides.category || 'UNKNOWN',
     categoryIcon: '🔵',
     categoryColor: '#0d6efd',
@@ -52,7 +51,7 @@ function createEmail(overrides: Partial<EmailData>): EmailData {
     subdomain: overrides.subdomain || 'example.com',
     toEmails: overrides.toEmails || '',
     ccEmails: overrides.ccEmails || '',
-    labelIds: overrides.labelIds || [],
+    matchedKeyword: null,
   };
 }
 
@@ -315,25 +314,25 @@ const testGroups: TestGroup[] = [
   },
 
   // -------------------------------------------------------------------------
-  // Group 4: excludeSubjects Behavior
+  // Group 4: excludeSubjects Behavior (excludeSubjects → KEEP)
   // -------------------------------------------------------------------------
   {
     name: "4. excludeSubjects Behavior",
     setup: TEST_CRITERIA,
     tests: [
       {
-        name: "Subject containing excluded term should be UNDECIDED",
-        description: "excludeSubjects blocks default action",
+        name: "Subject containing excluded term should be KEEP",
+        description: "excludeSubjects protects emails (keeps them)",
         email: { primaryDomain: "exclude-test.com", subject: "Your order has shipped" },
-        expectedAction: null,
-        expectedReason: "excluded from default"
+        expectedAction: "keep",
+        expectedReason: "excludeSubjects"
       },
       {
-        name: "Subject containing another excluded term should be UNDECIDED",
+        name: "Subject containing another excluded term should be KEEP",
         description: "Multiple exclude terms work",
         email: { primaryDomain: "exclude-test.com", subject: "Payment receipt attached" },
-        expectedAction: null,
-        expectedReason: "excluded from default"
+        expectedAction: "keep",
+        expectedReason: "excludeSubjects"
       },
       {
         name: "Subject not containing excluded term should DELETE",
@@ -354,7 +353,7 @@ const testGroups: TestGroup[] = [
     tests: [
       {
         name: "Explicit delete[] pattern should DELETE even if contains excluded term",
-        description: "Explicit patterns ignore excludeSubjects",
+        description: "Explicit patterns take priority over excludeSubjects",
         email: { primaryDomain: "exclude-with-patterns.com", subject: "Flash sale important items" },
         expectedAction: "delete",
         expectedReason: "delete pattern"
@@ -367,11 +366,11 @@ const testGroups: TestGroup[] = [
         expectedReason: "keep pattern"
       },
       {
-        name: "Only excluded term (no pattern match) should be UNDECIDED",
-        description: "excludeSubjects blocks default",
+        name: "Only excluded term (no pattern match) should KEEP",
+        description: "excludeSubjects protects emails",
         email: { primaryDomain: "exclude-with-patterns.com", subject: "Important notice" },
-        expectedAction: null,
-        expectedReason: "excluded from default"
+        expectedAction: "keep",
+        expectedReason: "excludeSubjects"
       }
     ]
   },

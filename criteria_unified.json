@@ -92,9 +92,6 @@
   "appfolio.com": {
     "default": "delete"
   },
-  "apple.com": {
-    "default": "delete"
-  },
   "arizent.com": {
     "default": "delete"
   },
@@ -428,6 +425,15 @@
   "email-marriott.com": {
     "default": "delete"
   },
+  "email.apple.com": {
+    "delete": [
+      "Get your new iPhone",
+      "has been updated"
+    ],
+    "keep": [
+      "Preeti Dua invited"
+    ]
+  },
   "emeraldx.com": {
     "default": "delete"
   },
@@ -651,6 +657,11 @@
       "Nominee updation for your ICICI Bank Account",
       "ICICI Bank Statement from November 01, 2025 to Nov",
       "Form 16A (TDS certificate) for the period July 1 t"
+    ],
+    "delete_1d": [
+      "Transaction alert for your",
+      "GST Invoice For the Month",
+      "ICICI Bank Statement"
     ]
   },
   "iciciprulife.com": {
@@ -675,6 +686,9 @@
     "default": "delete"
   },
   "influitive.com": {
+    "default": "delete"
+  },
+  "insideapple.apple.com": {
     "default": "delete"
   },
   "insidermonkey.com": {
