@@ -173,15 +173,6 @@
   {
     "email": "",
     "subdomain": "",
-    "primaryDomain": "avail.co",
-    "subject": "",
-    "toEmails": "",
-    "ccEmails": "",
-    "excludeSubject": "Payment"
-  },
-  {
-    "email": "",
-    "subdomain": "",
     "primaryDomain": "delinea.com",
     "subject": "",
     "toEmails": "",
@@ -571,6 +562,15 @@
     "subdomain": "",
     "primaryDomain": "fsastore.com",
     "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "",
+    "subdomain": "",
+    "primaryDomain": "camsmgt.com",
+    "subject": "Holiday Hours and",
     "toEmails": "",
     "ccEmails": "",
     "excludeSubject": ""

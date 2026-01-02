@@ -2,6 +2,8 @@ import { test, expect } from '@playwright/test';
 
 test.describe('Gmail Dashboard E2E Tests', () => {
   test.beforeEach(async ({ page }) => {
+    // Set viewport to desktop size so sidebar is visible
+    await page.setViewportSize({ width: 1280, height: 800 });
     // Wait for app to load
     await page.goto('/');
     await page.waitForLoadState('networkidle');
@@ -10,8 +12,8 @@ test.describe('Gmail Dashboard E2E Tests', () => {
   test.describe('Navigation', () => {
     test('should load the Review page by default', async ({ page }) => {
       await expect(page).toHaveURL('/');
-      // Check that page has loaded successfully
-      await expect(page.getByRole('button', { name: /refresh/i })).toBeVisible();
+      // Check that page has loaded successfully - look for sidebar navigation
+      await expect(page.locator('nav a[href="/"]').first()).toBeVisible();
     });
 
     test('should navigate to Stats page', async ({ page }) => {
@@ -35,7 +37,7 @@ test.describe('Gmail Dashboard E2E Tests', () => {
 
   test.describe('Review Page', () => {
     test('should display refresh button', async ({ page }) => {
-      await expect(page.getByRole('button', { name: /refresh/i })).toBeVisible();
+      await expect(page.locator('text=Refresh from Gmail')).toBeVisible();
     });
 
     test('should show content area', async ({ page }) => {

@@ -205,5 +205,14 @@
     "toEmails": "",
     "ccEmails": "",
     "excludeSubject": ""
+  },
+  {
+    "email": "",
+    "subdomain": "",
+    "primaryDomain": "avail.co",
+    "subject": "",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
   }
 ]

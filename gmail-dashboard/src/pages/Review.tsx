@@ -15,26 +15,7 @@ export default function Review() {
   const addCriteria = useAddCriteria();
   const addCriteria1d = useAddCriteria1d();
 
-  if (isLoading) {
-    return (
-      <div className="flex items-center justify-center h-64">
-        <div className="text-lg text-gray-500">Loading emails...</div>
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-6 text-center">
-        <h2 className="text-lg font-semibold text-yellow-800 mb-2">No Cached Emails</h2>
-        <p className="text-yellow-700 mb-4">
-          {error instanceof Error ? error.message : 'Click "Refresh from Gmail" to fetch emails.'}
-        </p>
-      </div>
-    );
-  }
-
-  // Filter and sort domains
+  // Filter and sort domains - must be called before any early returns (Rules of Hooks)
   const filteredDomains = useMemo(() => {
     if (!data) return [];
 
@@ -66,6 +47,25 @@ export default function Review() {
       return [...domains].sort((a, b) => b.totalEmails - a.totalEmails);
     }
   }, [data, categoryFilter, sortBy]);
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center h-64">
+        <div className="text-lg text-gray-500">Loading emails...</div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-6 text-center">
+        <h2 className="text-lg font-semibold text-yellow-800 mb-2">No Cached Emails</h2>
+        <p className="text-yellow-700 mb-4">
+          {error instanceof Error ? error.message : 'Click "Refresh from Gmail" to fetch emails.'}
+        </p>
+      </div>
+    );
+  }
 
   if (!data) return null;
 
