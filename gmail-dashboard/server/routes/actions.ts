@@ -10,6 +10,8 @@ import {
   saveJsonFile,
   createCriteriaEntry,
   isDuplicateCriteria,
+  findExistingEntry,
+  mergeExclusions,
   removeFromCriteria,
   CRITERIA_FILE,
   CRITERIA_1DAY_FILE,
@@ -37,9 +39,28 @@ router.post('/add-criteria', (req: Request, res: Response) => {
     }
 
     const criteria = loadJsonFile<CriteriaEntry>(CRITERIA_FILE);
-    const newEntry = createCriteriaEntry(domain, subject_pattern, exclude_subject);
 
-    if (isDuplicateCriteria(criteria, newEntry)) {
+    // Check if an entry with same domain+subject already exists
+    const existingEntry = findExistingEntry(criteria, domain, subject_pattern || '');
+
+    if (existingEntry) {
+      // Entry exists - try to merge exclusions if provided
+      if (exclude_subject) {
+        const merged = mergeExclusions(existingEntry, exclude_subject);
+        if (merged) {
+          saveJsonFile(CRITERIA_FILE, criteria);
+          console.log(`Merged exclusions for ${domain}: added "${exclude_subject}"`);
+          res.json({
+            success: true,
+            message: `Merged exclusions: ${existingEntry.excludeSubject}`,
+            entry: existingEntry,
+            total_criteria: criteria.length,
+            merged: true
+          });
+          return;
+        }
+      }
+      // No new exclusions to add - it's a duplicate
       res.status(409).json({
         success: false,
         error: 'Similar criteria already exists'
@@ -47,6 +68,8 @@ router.post('/add-criteria', (req: Request, res: Response) => {
       return;
     }
 
+    // New entry - add it
+    const newEntry = createCriteriaEntry(domain, subject_pattern, exclude_subject);
     criteria.push(newEntry);
     saveJsonFile(CRITERIA_FILE, criteria);
 
@@ -87,9 +110,28 @@ router.post('/add-criteria-1d', (req: Request, res: Response) => {
     }
 
     const criteria = loadJsonFile<CriteriaEntry>(CRITERIA_1DAY_FILE);
-    const newEntry = createCriteriaEntry(domain, subject_pattern, exclude_subject);
 
-    if (isDuplicateCriteria(criteria, newEntry)) {
+    // Check if an entry with same domain+subject already exists
+    const existingEntry = findExistingEntry(criteria, domain, subject_pattern || '');
+
+    if (existingEntry) {
+      // Entry exists - try to merge exclusions if provided
+      if (exclude_subject) {
+        const merged = mergeExclusions(existingEntry, exclude_subject);
+        if (merged) {
+          saveJsonFile(CRITERIA_1DAY_FILE, criteria);
+          console.log(`Merged 1d exclusions for ${domain}: added "${exclude_subject}"`);
+          res.json({
+            success: true,
+            message: `Merged exclusions: ${existingEntry.excludeSubject}`,
+            entry: existingEntry,
+            total_criteria: criteria.length,
+            merged: true
+          });
+          return;
+        }
+      }
+      // No new exclusions to add - it's a duplicate
       res.status(409).json({
         success: false,
         error: 'Similar criteria already exists'
@@ -97,6 +139,8 @@ router.post('/add-criteria-1d', (req: Request, res: Response) => {
       return;
     }
 
+    // New entry - add it
+    const newEntry = createCriteriaEntry(domain, subject_pattern, exclude_subject);
     criteria.push(newEntry);
     saveJsonFile(CRITERIA_1DAY_FILE, criteria);
 

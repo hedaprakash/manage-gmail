@@ -7,7 +7,7 @@
 import fs from 'fs';
 import path from 'path';
 import type { EmailData, DomainGroup, SubdomainGroup, EmailPattern } from '../types/index.js';
-import { matchesAnyCriteria, loadJsonFile, CRITERIA_FILE, CRITERIA_1DAY_FILE, KEEP_CRITERIA_FILE } from './criteria.js';
+import { matchesAnyCriteria, isExcludedByCriteria, loadJsonFile, CRITERIA_FILE, CRITERIA_1DAY_FILE, KEEP_CRITERIA_FILE } from './criteria.js';
 import type { CriteriaEntry } from '../types/index.js';
 
 const PROJECT_ROOT = path.resolve(process.cwd(), '..');
@@ -232,7 +232,10 @@ export function groupEmailsByPattern(emailDetails: EmailData[]): DomainGroup[] {
 }
 
 /**
- * Filter out emails that already have a decision (in criteria or keep_criteria).
+ * Filter out emails that already have a decision:
+ * - Matches delete criteria (will be deleted)
+ * - Matches keep criteria (will be kept)
+ * - Explicitly excluded by criteria (decision: don't delete this pattern)
  */
 export function filterDecidedEmails(
   emails: EmailData[],
@@ -245,8 +248,9 @@ export function filterDecidedEmails(
   for (const email of emails) {
     const inDelete = matchesAnyCriteria(email, criteria);
     const inKeep = matchesAnyCriteria(email, keep);
+    const isExcluded = isExcludedByCriteria(email, criteria);
 
-    if (inDelete || inKeep) {
+    if (inDelete || inKeep || isExcluded) {
       removedCount++;
     } else {
       filtered.push(email);

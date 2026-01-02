@@ -646,5 +646,32 @@
     "toEmails": "",
     "ccEmails": "",
     "excludeSubject": ""
+  },
+  {
+    "email": "",
+    "subdomain": "",
+    "primaryDomain": "hdfcbank.net",
+    "subject": "View: Account update for your HDFC Bank A/c",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "",
+    "subdomain": "",
+    "primaryDomain": "hdfcbank.net",
+    "subject": "FD booking for NRE accounts just got easier 🌟",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
+  },
+  {
+    "email": "",
+    "subdomain": "",
+    "primaryDomain": "hdfcbank.net",
+    "subject": "[No Action Needed]: Kindly Ignore Our Recent Email",
+    "toEmails": "",
+    "ccEmails": "",
+    "excludeSubject": ""
   }
 ]

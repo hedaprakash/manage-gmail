@@ -72,6 +72,53 @@ export function isDuplicateCriteria(criteriaList: CriteriaEntry[], newEntry: Cri
 }
 
 /**
+ * Find an existing entry with matching domain and subject.
+ */
+export function findExistingEntry(
+  criteriaList: CriteriaEntry[],
+  domain: string,
+  subject: string
+): CriteriaEntry | undefined {
+  const domainLower = domain.toLowerCase();
+  const subjectLower = subject.toLowerCase();
+  return criteriaList.find(
+    entry =>
+      entry.primaryDomain.toLowerCase() === domainLower &&
+      entry.subject.toLowerCase() === subjectLower
+  );
+}
+
+/**
+ * Merge exclusion terms into an existing entry.
+ * Returns true if exclusions were added, false if already present.
+ */
+export function mergeExclusions(entry: CriteriaEntry, newExclusions: string): boolean {
+  if (!newExclusions) return false;
+
+  const existingTerms = entry.excludeSubject
+    ? entry.excludeSubject.split(',').map(t => t.trim().toLowerCase()).filter(t => t)
+    : [];
+
+  const newTerms = newExclusions.split(',').map(t => t.trim()).filter(t => t);
+  const newTermsLower = newTerms.map(t => t.toLowerCase());
+
+  // Find terms that don't already exist
+  const termsToAdd = newTerms.filter((_, i) => !existingTerms.includes(newTermsLower[i]));
+
+  if (termsToAdd.length === 0) {
+    return false; // All terms already exist
+  }
+
+  // Merge: keep existing + add new
+  const merged = entry.excludeSubject
+    ? `${entry.excludeSubject},${termsToAdd.join(',')}`
+    : termsToAdd.join(',');
+
+  entry.excludeSubject = merged;
+  return true;
+}
+
+/**
  * Check if a criteria entry matches the given domain and subject pattern.
  */
 export function matchesCriteriaPattern(
@@ -130,6 +177,41 @@ export function removeFromCriteria(domain: string, subjectPattern: string): numb
   totalRemoved += removedCount1d;
 
   return totalRemoved;
+}
+
+/**
+ * Check if an email is explicitly excluded by any criteria.
+ * Returns true if the email's domain matches a criteria AND the subject is in excludeSubject.
+ * This means a decision was made: "don't delete emails with this subject from this domain".
+ */
+export function isExcludedByCriteria(emailData: EmailData, criteriaList: CriteriaEntry[]): boolean {
+  const domain = emailData.primaryDomain.toLowerCase();
+  const subdomain = emailData.subdomain?.toLowerCase() ?? '';
+  const subject = emailData.subject.toLowerCase();
+
+  for (const c of criteriaList) {
+    const cDomain = c.primaryDomain.toLowerCase();
+    const excludeSubject = c.excludeSubject?.toLowerCase() ?? '';
+
+    if (!excludeSubject) continue; // No exclusions on this entry
+
+    // Check if domain matches
+    const domainMatches = cDomain && (
+      domain.includes(cDomain) ||
+      subdomain.includes(cDomain) ||
+      subdomain === cDomain
+    );
+
+    if (domainMatches) {
+      // Check if subject matches any excluded term
+      const excludeTerms = excludeSubject.split(',').map(t => t.trim()).filter(t => t);
+      const hasExcludedTerm = excludeTerms.some(term => subject.includes(term));
+      if (hasExcludedTerm) {
+        return true; // This email is explicitly excluded
+      }
+    }
+  }
+  return false;
 }
 
 /**
