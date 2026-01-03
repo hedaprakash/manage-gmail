@@ -10,7 +10,9 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 **Key files for understanding the system:**
 - `SPEC.md` - Complete functional specification with flowcharts and decision matrices
-- `SESSION_LOG.md` - Ongoing work tracker (read this first when resuming)
+- `gmail-dashboard/SESSION_LOG.md` - Current state and what's been built (READ THIS FIRST)
+- `gmail-dashboard/CRITERIA_SPEC.md` - Unified criteria format specification
+- `gmail-dashboard/scripts/db/README.md` - SQL Server setup and stored procedures
 
 ## Quick Start
 
@@ -150,11 +152,54 @@ These are important nuances that must be preserved:
 | ORDER | Cyan | Keep (purchases) |
 | UNKNOWN | Yellow | Needs manual review |
 
+## SQL Server Architecture (NEW)
+
+The criteria are now stored in SQL Server with a stored procedure for batch evaluation.
+
+### Quick Start
+```bash
+cd gmail-dashboard
+
+# Start SQL Server
+docker-compose up -d
+
+# Run setup (schema + data + stored procedures)
+./scripts/db/setup.sh
+
+# Start Node.js server with SQL enabled
+USE_SQL_DATABASE=true npm run dev
+```
+
+### Database: GmailCriteria
+- **criteria** - 435 entries (domains, subdomains, email addresses)
+- **patterns** - 81 subject patterns (keep, delete, delete_1d)
+- **email_patterns** - fromEmails/toEmails rules
+
+### Stored Procedure: EvaluateEmails
+Batch evaluates emails against all criteria. Matching priority:
+1. Email address as top-level key (highest)
+2. fromEmails keep/delete rules
+3. toEmails keep/delete rules
+4. Subject patterns (keep > delete > delete_1d)
+5. Default action
+6. No match = undecided (lowest)
+
+```sql
+DECLARE @Emails dbo.EmailInputType;
+INSERT INTO @Emails VALUES ('E1', 'news@example.com', 'me@gmail.com', 'Newsletter', 'example.com', NULL, GETDATE());
+EXEC dbo.EvaluateEmails @Emails = @Emails, @Verbose = 1;
+```
+
+### Key Files
+- `gmail-dashboard/scripts/db/03-create-evaluate-procedure.sql` - Stored procedure
+- `gmail-dashboard/scripts/db/05-comprehensive-test.sql` - 37 test cases
+- `gmail-dashboard/.env` - Database credentials (gitignored)
+
 ## When Resuming Work
 
-1. **Read SESSION_LOG.md first** - Contains current status and pending tasks
+1. **Read gmail-dashboard/SESSION_LOG.md first** - Contains current status and what's been built
 2. **Check git status** - See what files have been modified
-3. **Read SPEC.md** - Full system documentation if needed
+3. **Read CRITERIA_SPEC.md** - Unified criteria format specification
 
 ## Common Issues
 
